@@ -11,7 +11,7 @@ import SwiftUI
 struct CangkrukApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            MainScreen()
         }
     }
 }
