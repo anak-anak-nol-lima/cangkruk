@@ -15,9 +15,10 @@ struct AppButton: View {
     var body: some View {
         Button {
             action()
+            
         } label: {
             VStack {
-                Text(label)
+                Text("hello")
                     .foregroundStyle(.white)
                     .bold()
             }
