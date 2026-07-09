@@ -14,6 +14,10 @@ struct LevelInfo {
 }
 
 struct HomeScreen: View {
+    // MARK: - Environment
+    @Environment(RouterViewModel.self) private var router
+    
+    // MARK: - State
     @State private var levelInfo: [LevelInfo] = [
         LevelInfo(level: 1, description: "Pengetahuan akan produk", isLock: false),
         LevelInfo(level: 2, description: "Memahami kebutuhan pelanggan", isLock: false)
@@ -21,18 +25,23 @@ struct HomeScreen: View {
     
     
     var body: some View {
-        VStack {
-            ForEach(levelInfo.indices, id: \.self) { idx in
-                let level = levelInfo[idx]
-                
-                AppLevel(level: level.level, description: level.description, isLock: level.isLock, isManager: true
-                ) {
-                    // locking or unlock the app
-                    levelInfo[idx].isLock.toggle()
-                } onClick: {
-                    // navigation to next screen
+        ZStack {
+            VStack {
+                ForEach(levelInfo.indices, id: \.self) { idx in
+                    let level = levelInfo[idx]
                     
+                    AppLevel(level: level.level, description: level.description, isLock: level.isLock, isManager: true
+                    ) {
+                        // locking or unlock the app
+                        levelInfo[idx].isLock.toggle()
+                    } onClick: {
+                        // navigation to next screen
+                        router.push(.level)
+                    }
                 }
+                
+                
+                Spacer()
             }
         }
     }
@@ -40,4 +49,5 @@ struct HomeScreen: View {
 
 #Preview {
     HomeScreen()
+        .environment(RouterViewModel())
 }
