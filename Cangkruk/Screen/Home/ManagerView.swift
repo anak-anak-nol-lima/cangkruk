@@ -36,34 +36,32 @@ struct ManagerView: View {
 
     private static let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
-        formatter.dateFormat = "dd-MM-yyyy"
+        formatter.dateFormat = "yyyy-MM-dd"
         return formatter
     }()
 
     @State private var importTarget: TrainingFileSection?
     @State private var isImporterPresented = false
     @State private var showUnsupportedFileAlert = false
-    @State private var fileToDelete: TrainingFile?
 
     var body: some View {
-        ZStack(alignment: .top) {
-            Color("Background")
-                .ignoresSafeArea()
+        VStack(alignment: .leading, spacing: 0) {
+            HStack {
+                Text("Unggah SOP & Menu")
+                    .font(.title2)
+                    .bold()
 
-            ScrollView {
-                VStack(alignment: .leading, spacing: 16) {
-                    Image("uploadFileTitle")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(height: 30)
-                        .padding(.top, 12)
-
-                    sectionCard(titleAsset: "sopSectionTitle", target: .sop, files: sopFiles)
-                    sectionCard(titleAsset: "menuSectionTitle", target: .resep, files: resepFiles)
-                }
-                .padding(20)
-                .padding(.bottom, 220)
+                Spacer()
             }
+            .padding(.horizontal, 20)
+            .padding(.top, 20)
+
+            List {
+                fileSection(title: "SOP", target: .sop, files: sopFiles)
+                fileSection(title: "Resep", target: .resep, files: resepFiles)
+            }
+            .listStyle(.plain)
+            .scrollContentBackground(.hidden)
         }
         .overlay(alignment: .topTrailing) {
             Button {
@@ -103,57 +101,41 @@ struct ManagerView: View {
         } message: {
             Text("Hanya mendukung file PDF dan Docs.")
         }
-        .alert(item: $fileToDelete) { file in
-            Alert(
-                title: Text("Hapus file ini?"),
-                message: Text(file.name),
-                primaryButton: .destructive(Text("Hapus")) {
-                    delete(file)
-                },
-                secondaryButton: .cancel(Text("Batal"))
-            )
-        }
     }
 
     @ViewBuilder
-    private func sectionCard(
-        titleAsset: String,
+    private func fileSection(
+        title: String,
         target: TrainingFileSection,
         files: [TrainingFile]
     ) -> some View {
-        VStack(alignment: .leading, spacing: 12) {
-            UploadFieldView(titleAsset: titleAsset) {
+        Section {
+            UploadFieldView(fileName: files.first?.name) {
                 importTarget = target
                 isImporterPresented = true
             }
+            .listRowSeparator(.hidden)
+            .listRowInsets(EdgeInsets(top: 8, leading: 20, bottom: 8, trailing: 20))
 
-            List {
-                ForEach(files) { file in
-                    FileRowView(fileName: file.name, date: Self.dateFormatter.string(from: file.date))
-                        .listRowSeparator(.hidden)
-                        .listRowBackground(Color.clear)
-                        .listRowInsets(EdgeInsets(top: 4, leading: 0, bottom: 4, trailing: 0))
-                        .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-                            Button(role: .destructive) {
-                                fileToDelete = file
-                            } label: {
-                                Label("Hapus", systemImage: "trash")
-                            }
+            ForEach(files) { file in
+                FileRowView(fileName: file.name, date: Self.dateFormatter.string(from: file.date))
+                    .listRowSeparator(.hidden)
+                    .listRowInsets(EdgeInsets(top: 6, leading: 20, bottom: 6, trailing: 20))
+                    .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                        Button(role: .destructive) {
+                            delete(file)
+                        } label: {
+                            Label("Hapus", systemImage: "trash")
                         }
-                }
+                    }
             }
-            .listStyle(.plain)
-            .scrollContentBackground(.hidden)
-            .scrollDisabled(true)
-            .frame(height: CGFloat(files.count) * 56)
+        } header: {
+            Text(title)
+                .font(.headline)
+                .foregroundStyle(.primary)
+                .textCase(nil)
         }
-        .padding(16)
-        .background(Color.white)
-        .clipShape(RoundedRectangle(cornerRadius: 20))
-        .overlay(
-            RoundedRectangle(cornerRadius: 20)
-                .stroke(.black, lineWidth: 2)
-        )
+        .listRowBackground(Color.clear)
     }
 
     private func handleImportResult(_ result: Result<[URL], Error>) {
