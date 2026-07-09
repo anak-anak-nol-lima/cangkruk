@@ -12,8 +12,21 @@ struct RolePlayScreen: View {
     // MARK: - Binding
     @Binding var isPresented: Bool
     
-    // MARK: - State
+    // MARK: - ViewModel
     @State private var speechToText: SpeechToTextViewModel = SpeechToTextViewModel()
+    @State private var textToSpeech: TextToSpeechViewModel = TextToSpeechViewModel()
+    
+    // MARK: - State
+    @State private var isError: Bool = false
+    @State private var errorText: String = ""
+    
+    
+    // MARK: - Internal Function
+    private func showError(_ message: String?) {
+        guard let message, !message.isEmpty else { return }
+        errorText = message
+        isError = true
+    }
     
     var body: some View {
         ZStack {
@@ -34,7 +47,7 @@ struct RolePlayScreen: View {
                 
                 VStack {
                     ForEach(speechToText.result.indices, id: \.self) { idx in
-                            
+                        
                         let speech = speechToText.result[idx]
                         
                         VStack {
@@ -46,6 +59,9 @@ struct RolePlayScreen: View {
                         .padding()
                         .background(.black.opacity(0.5))
                         .clipShape(RoundedRectangle(cornerRadius: 12))
+                        .onTapGesture {
+                            textToSpeech.speak(speech)
+                        }
                     }
                 }
                 
@@ -72,6 +88,17 @@ struct RolePlayScreen: View {
                     speechToText.processMic()
                 }
             }
+        }
+        .overlay(alignment: .bottom) {
+            if isError {
+                AppSnackbar(errorMessage: errorText, type: .error, isPresented: $isError)
+            }
+        }
+        .onChange(of: speechToText.errorMessage) { _, newValue in
+            showError(newValue)
+        }
+        .onChange(of: textToSpeech.errorMessage) { _, newValue in
+            showError(newValue)
         }
     }
 }

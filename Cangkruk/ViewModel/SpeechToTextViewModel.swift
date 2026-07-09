@@ -20,6 +20,13 @@ class SpeechToTextViewModel {
     var finalText = ""
     var result: [String] = []
     
+    init() {
+        // initialize self.requestPermission to ask whenever the roleplay initialized
+        Task {
+            await self.requestPermission()
+        }
+    }
+    
     // requestPermission will requesting microphone & speech permission
     func requestPermission() async -> Bool {
         let micPermission = await audioEngineManager.setupPermission()
@@ -44,6 +51,8 @@ class SpeechToTextViewModel {
     // will also start the engine faucet ( for the buffer flowing in )
     // finally will run startTranscribe that run the recognizer when getting the processBuffer
     func startPlaying() async {
+        errorMessage = "" // reset error message every call
+
         guard await requestPermission() else {
             errorMessage = "Permission Denied"
             return
