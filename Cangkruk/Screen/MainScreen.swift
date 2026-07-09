@@ -20,10 +20,12 @@ struct MainScreen: View {
                         LevelScreen()
                     case .roleplay:
                         RolePlayScreen()
+                    case .manager:
+                        ManagerView()
                     }
                 }
-                .environment(router)
         }
+        .environment(router)
     }
 }
 
