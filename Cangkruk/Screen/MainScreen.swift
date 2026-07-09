@@ -18,10 +18,14 @@ struct MainScreen: View {
                     switch route {
                     case .level:
                         LevelScreen()
+                    case .roleplay:
+                        RolePlayScreen()
+                    case .manager:
+                        ManagerView()
                     }
                 }
-                .environment(router)
         }
+        .environment(router)
     }
 }
 
