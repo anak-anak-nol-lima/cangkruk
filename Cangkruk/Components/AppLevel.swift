@@ -23,10 +23,11 @@ struct AppLevel: View {
                     .font(.title3)
                     .bold()
                     .padding(.bottom, 8)
-                
+
                 Text(description)
                     .font(.default)
             }
+            .foregroundStyle(.black)
             .padding(.vertical, 8)
             .padding(.horizontal, 12)
             
