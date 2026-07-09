@@ -8,14 +8,21 @@
 import SwiftUI
 
 struct MainScreen: View {
-    @State private var pageStateVM = PageStateViewModel()
+    // MARK: - ViewModel
+    @State private var router = RouterViewModel() // route view model to use functionality for dynamic routing
     
     var body: some View {
-        switch pageStateVM.currentPage {
-        case .home:
+        NavigationStack(path: $router.path) {
             HomeScreen()
-        case .detail:
-            Text("Detail Screen")
+                .navigationDestination(for: Route.self) { route in
+                    switch route {
+                    case .level:
+                        LevelScreen()
+                    case .roleplay:
+                        RolePlayScreen()
+                    }
+                }
+                .environment(router)
         }
     }
 }

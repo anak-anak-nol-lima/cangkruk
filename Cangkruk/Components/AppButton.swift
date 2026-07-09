@@ -24,8 +24,8 @@ struct AppButton: View {
             .padding()
             .frame(maxWidth: .infinity)
             .frame(height: 60)
-            .background(Color.blue)
-            .clipShape(RoundedRectangle(cornerRadius: 12))
+            .background(Color.black)
+            .clipShape(Capsule())
         }
     }
 }
