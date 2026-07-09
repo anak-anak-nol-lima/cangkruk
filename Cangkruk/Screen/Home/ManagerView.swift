@@ -10,7 +10,7 @@ import SwiftData
 import UniformTypeIdentifiers
 
 struct ManagerView: View {
-    @Environment(RouterViewModel.self) private var router
+    @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
 
     @Query(
@@ -177,6 +177,5 @@ struct ManagerView: View {
 
 #Preview {
     ManagerView()
-        .environment(RouterViewModel())
         .modelContainer(for: TrainingFile.self, inMemory: true)
 }
