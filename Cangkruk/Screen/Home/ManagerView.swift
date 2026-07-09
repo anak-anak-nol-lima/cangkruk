@@ -10,7 +10,7 @@ import SwiftData
 import UniformTypeIdentifiers
 
 struct ManagerView: View {
-    @Environment(\.dismiss) private var dismiss
+    @Environment(RouterViewModel.self) private var router
     @Environment(\.modelContext) private var modelContext
 
     @Query(
@@ -65,7 +65,7 @@ struct ManagerView: View {
         }
         .overlay(alignment: .topTrailing) {
             Button {
-                dismiss()
+                router.popToRoot()
             } label: {
                 Image(systemName: "xmark")
                     .foregroundStyle(.primary)
@@ -177,5 +177,6 @@ struct ManagerView: View {
 
 #Preview {
     ManagerView()
+        .environment(RouterViewModel())
         .modelContainer(for: TrainingFile.self, inMemory: true)
 }
