@@ -12,7 +12,7 @@ import SwiftData
 struct CangkrukApp: App {
     var body: some Scene {
         WindowGroup {
-            MainScreen()
+            ManagerView()
         }
         .modelContainer(for: TrainingFile.self) // to enable modelContext to be accessed by all view
     }
