@@ -10,9 +10,22 @@
 		C8EAA5842FFD04DB0024B4CC /* Cangkruk.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Cangkruk.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		C8EAA5DB2FFF93170024B4CC /* Exceptions for "Cangkruk" folder in "Cangkruk" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = C8EAA5832FFD04DB0024B4CC /* Cangkruk */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		C8EAA5862FFD04DB0024B4CC /* Cangkruk */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				C8EAA5DB2FFF93170024B4CC /* Exceptions for "Cangkruk" folder in "Cangkruk" target */,
+			);
 			path = Cangkruk;
 			sourceTree = "<group>";
 		};
@@ -256,6 +269,9 @@
 				DEVELOPMENT_TEAM = HK5U3FU2AP;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Cangkruk/Info.plist;
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Izinkan akses mikrofon untuk merekam catatan suara Anda.";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Aplikasi ini menggunakan pengenalan suara untuk mengubah ucapan Anda menjadi teks.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -288,6 +304,9 @@
 				DEVELOPMENT_TEAM = HK5U3FU2AP;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Cangkruk/Info.plist;
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Izinkan akses mikrofon untuk merekam catatan suara Anda.";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Aplikasi ini menggunakan pengenalan suara untuk mengubah ucapan Anda menjadi teks.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
