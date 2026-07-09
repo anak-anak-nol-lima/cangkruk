@@ -9,8 +9,7 @@ import SwiftUI
 
 
 enum Route {
-    case level,
-         roleplay
+    case level
 }
 
 @MainActor
