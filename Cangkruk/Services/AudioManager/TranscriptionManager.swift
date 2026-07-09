@@ -44,6 +44,8 @@ class TranscriptionManager {
         
         request = SFSpeechAudioBufferRecognitionRequest()
         request?.shouldReportPartialResults = true
+        request?.addsPunctuation = true
+        request?.taskHint = .dictation
         
         
         task = recognizer.recognitionTask(with: request!) { (res, err) in
