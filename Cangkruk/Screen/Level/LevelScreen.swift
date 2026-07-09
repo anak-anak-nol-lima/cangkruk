@@ -8,6 +8,11 @@
 import SwiftUI
 
 struct LevelScreen: View {
+    
+    // MARK: - State
+    @State private var isRolePlaying: Bool = false
+    
+    
     var body: some View {
         ZStack {
             VStack(alignment: .leading) {
@@ -36,13 +41,16 @@ struct LevelScreen: View {
                 Spacer()
                 
                 AppButton(label: "Uji Pengetahuan Anda") {
-                    
+                    isRolePlaying = true
                 }
             }
             .padding()
         }
         .navigationTitle("Capaian 1 - Produk")
         .padding()
+        .fullScreenCover(isPresented: $isRolePlaying) {
+            RolePlayScreen(isPresented: $isRolePlaying)
+        }
     }
 }
 
