@@ -22,28 +22,13 @@ struct MainScreen: View {
                     case .level:
                         LevelScreen()
                     case .roleplay:
-                        RolePlayScreen(isPresented: Binding(
-                            get: { true },
-                            set: { isPresented in
-                                if !isPresented {
-                                    router.pop()
-                                }
-                            }
-                        ))
+                        RolePlayScreen()
                     case .manager:
                         ManagerView()
                     }
                 }
         }
         .environment(router)
-        
-        .onChange(of: scenePhase) { oldPhase, newPhase in
-            if newPhase == .background {
-                notificationViewModel.onAppBackgrounded()
-            } else if newPhase == .active {
-                notificationViewModel.onAppForegrounded()
-            }
-        }
     }
 }
 
