@@ -31,8 +31,35 @@ struct AppButton: View {
 }
 
 
+struct RecordButton: View {
+    var action: () -> Void
+    
+    var body: some View {
+        Button {
+            action()
+        } label: {
+            ZStack {
+                Circle()
+                    .fill(.red)
+                    .frame(width: 120, height: 120)
+                Circle()
+                    .fill(.white)
+                    .frame(width: 105, height: 105)
+                Circle()
+                    .fill(.red)
+                    .frame(width: 90, height: 90)
+            }
+        }
+    }
+}
+
+
 #Preview {
     AppButton(label: "Button Click") {
+        
+    }
+    
+    RecordButton() {
         
     }
 }
