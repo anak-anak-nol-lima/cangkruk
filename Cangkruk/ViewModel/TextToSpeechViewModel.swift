@@ -21,7 +21,6 @@ class TextToSpeechViewModel {
             do {
                 try await Task.sleep(for: .milliseconds(50)) // sleep for allow the observer to reset the errorMessage
                 try textToSpeech.speak(text)
-                errorMessage = "Error when calling the text to speech"
             } catch {
                 errorMessage = error.localizedDescription
             }
