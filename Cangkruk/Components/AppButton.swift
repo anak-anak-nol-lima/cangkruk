@@ -54,12 +54,34 @@ struct RecordButton: View {
 }
 
 
+struct AppImageButton: View {
+    var imageName: String
+    var action: () -> Void
+
+    var body: some View {
+        Button {
+            action()
+        } label: {
+            Image(imageName)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(height: 46)
+        }
+    }
+}
+
+
 #Preview {
     AppButton(label: "Button Click") {
         
     }
     
     RecordButton() {
+        
+    }
+    
+    
+    AppImageButton(imageName: "mulaiButton") {
         
     }
 }

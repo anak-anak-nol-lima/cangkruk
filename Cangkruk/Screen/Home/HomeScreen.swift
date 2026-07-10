@@ -38,16 +38,21 @@ struct HomeScreen: View {
                                 .stroke(.black, lineWidth: 1.5)
                         }
                         .clipShape(Circle())
+                        .onTapGesture {
+                            isManager = true
+                        }
                 }
                 .padding()
                 
-                if isManager {
-                    EmptyView()
-                } else {
+                if !isManager {
                     GuestViewScreen()
                 }
             }
         }
+        .fullScreenCover(isPresented: $isManager) {
+            ManagerView()
+        }
+        .navigationBarBackButtonHidden()
     }
 }
 
