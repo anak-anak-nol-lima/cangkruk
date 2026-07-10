@@ -19,7 +19,14 @@ struct MainScreen: View {
                     case .level:
                         LevelScreen()
                     case .roleplay:
-                        RolePlayScreen()
+                        RolePlayScreen(isPresented: Binding(
+                            get: { true },
+                            set: { isPresented in
+                                if !isPresented {
+                                    router.pop()
+                                }
+                            }
+                        ))
                     case .manager:
                         ManagerView()
                     }
