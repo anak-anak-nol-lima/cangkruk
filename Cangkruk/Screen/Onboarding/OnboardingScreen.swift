@@ -44,9 +44,13 @@ struct OnboardingScreen: View {
                     .font(.caption)
                     .foregroundStyle(Color("Secondary"))
                 
-                Text("Syarat & Ketentuan")
-                    .font(.caption)
-                    .foregroundStyle(Color("Primary"))
+                Button {
+                    router.push(.termsConditions)
+                } label: {
+                    Text("Syarat & Ketentuan")
+                        .font(.caption)
+                        .foregroundStyle(Color("Primary"))
+                }
             }
         }
     }
