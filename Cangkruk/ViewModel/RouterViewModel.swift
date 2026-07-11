@@ -11,7 +11,8 @@ import SwiftUI
 enum Route {
     case level,
          roleplay,
-         home
+         home,
+         termsConditions
 }
 
 @MainActor

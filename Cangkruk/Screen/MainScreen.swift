@@ -19,6 +19,8 @@ struct MainScreen: View {
                     switch route {
                     case .home:
                         HomeScreen()
+                    case .termsConditions:
+                        TermsConditionsScreen()
                     case .level:
                         LevelScreen()
                     case .roleplay:

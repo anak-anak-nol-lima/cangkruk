@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct TermsConditionsScreen: View {
+    @Environment(RouterViewModel.self) private var router
+
     var body: some View {
         ZStack(alignment: .top) {
             Color("Background")
@@ -86,10 +88,12 @@ struct TermsConditionsScreen: View {
                 Spacer()
 
                 AppImageButton(imageName: "kembaliButton") {
+                    router.pop()
                 }
                 .padding(.bottom, 24)
             }
         }
+        .navigationBarBackButtonHidden()
     }
 
     @ViewBuilder
@@ -109,4 +113,5 @@ struct TermsConditionsScreen: View {
 
 #Preview {
     TermsConditionsScreen()
+        .environment(RouterViewModel())
 }
