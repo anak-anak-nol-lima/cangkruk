@@ -54,14 +54,13 @@ struct ManagerView: View {
                     Image("uploadFileTitle")
                         .resizable()
                         .scaledToFit()
-                        .frame(height: 44)
+                        .frame(height: 30)
                         .padding(.top, 12)
 
                     sectionCard(titleAsset: "sopSectionTitle", target: .sop, files: sopFiles)
                     sectionCard(titleAsset: "menuSectionTitle", target: .resep, files: resepFiles)
                 }
                 .padding(20)
-                // TODO: adjust this bottom padding so the last card isn't hidden behind the floating Lottie + Simpan button
                 .padding(.bottom, 220)
             }
         }
