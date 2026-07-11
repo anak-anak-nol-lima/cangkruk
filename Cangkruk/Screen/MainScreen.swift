@@ -21,6 +21,10 @@ struct MainScreen: View {
                         HomeScreen()
                     case .termsConditions:
                         TermsConditionsScreen()
+                    case .register:
+                        RegisterScreen()
+                    case .login:
+                        LoginScreen()
                     case .level:
                         LevelScreen()
                     case .roleplay:

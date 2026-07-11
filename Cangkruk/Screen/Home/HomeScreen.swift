@@ -14,12 +14,12 @@ struct LevelInfo {
 }
 
 struct HomeScreen: View {
-    // MARK: - State
-    
-    // TODO: please update this into proper viewModel
-    @State private var isManager: Bool = false
-    
+    // MARK: - Environment
+    @Environment(RouterViewModel.self) private var router
+
     var body: some View {
+        @Bindable var router = router
+
         ZStack {
             VStack {
                 HStack {
@@ -39,17 +39,17 @@ struct HomeScreen: View {
                         }
                         .clipShape(Circle())
                         .onTapGesture {
-                            isManager = true
+                            router.push(.register)
                         }
                 }
                 .padding()
-                
-                if !isManager {
+
+                if !router.isManagerUnlocked {
                     GuestViewScreen()
                 }
             }
         }
-        .sheet(isPresented: $isManager) {
+        .sheet(isPresented: $router.isManagerUnlocked) {
             ManagerView()
         }
         .navigationBarBackButtonHidden()
