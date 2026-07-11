@@ -37,6 +37,7 @@ struct RegisterScreen: View {
                     AppLottie(animation: "CangkrukLay")
                         .frame(height: 500)
                         .frame(maxWidth: .infinity, alignment: .center)
+                        .allowsHitTesting(false)
 
                     AppImageButton(imageName: "simpanButton") {
                         // TODO: validate/persist registration before moving on
@@ -49,6 +50,7 @@ struct RegisterScreen: View {
 
             }
         }
+        .ignoresSafeArea(.keyboard, edges: .bottom)
     }
 }
 
@@ -74,6 +76,8 @@ struct LoginScreen: View {
                         AppLottie(animation: "CangkrukClimb")
                             .frame(width: 300, height: 300)
                             .offset(x: 20, y: 210)
+                            .allowsHitTesting(false)
+                        
                     }
 
                 Spacer()
@@ -90,6 +94,7 @@ struct LoginScreen: View {
                 .padding(.bottom, 180)
             }
         }
+        .ignoresSafeArea(.keyboard, edges: .bottom)
     }
 }
 
