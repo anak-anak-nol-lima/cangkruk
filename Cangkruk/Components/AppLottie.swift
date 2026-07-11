@@ -21,5 +21,16 @@ struct AppLottie: View {
 
 
 #Preview {
-    AppLottie(animation: "CangkrukLay")
+    ScrollView {
+        VStack {
+            AppLottie(animation: "CangkrukLay")
+                .frame(height: 400)
+            AppLottie(animation: "CangkrukClimb")
+                .frame(height: 300)
+            AppLottie(animation: "CangkrukWipe")
+                .frame(height: 200)
+            AppLottie(animation: "CangkrukHero")
+                .frame(height: 400)
+        }
+    }
 }
