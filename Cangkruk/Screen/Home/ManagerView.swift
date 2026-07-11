@@ -10,7 +10,7 @@ import SwiftData
 import UniformTypeIdentifiers
 
 struct ManagerView: View {
-    @Environment(RouterViewModel.self) private var router
+    @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
 
     @Query(
@@ -36,7 +36,7 @@ struct ManagerView: View {
 
     private static let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
+        formatter.dateFormat = "dd-MM-yyyy"
         return formatter
     }()
 
@@ -45,27 +45,29 @@ struct ManagerView: View {
     @State private var showUnsupportedFileAlert = false
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            HStack {
-                Text("Unggah SOP & Menu")
-                    .font(.title2)
-                    .bold()
+        ZStack(alignment: .top) {
+            Color("Background")
+                .ignoresSafeArea()
 
-                Spacer()
-            }
-            .padding(.horizontal, 20)
-            .padding(.top, 20)
+            ScrollView {
+                VStack(alignment: .leading, spacing: 16) {
+                    Image("uploadFileTitle")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(height: 44)
+                        .padding(.top, 12)
 
-            List {
-                fileSection(title: "SOP", target: .sop, files: sopFiles)
-                fileSection(title: "Resep", target: .resep, files: resepFiles)
+                    sectionCard(titleAsset: "sopSectionTitle", target: .sop, files: sopFiles)
+                    sectionCard(titleAsset: "menuSectionTitle", target: .resep, files: resepFiles)
+                }
+                .padding(20)
+                // TODO: adjust this bottom padding so the last card isn't hidden behind the floating Lottie + Simpan button
+                .padding(.bottom, 220)
             }
-            .listStyle(.plain)
-            .scrollContentBackground(.hidden)
         }
         .overlay(alignment: .topTrailing) {
             Button {
-                router.popToRoot()
+                dismiss()
             } label: {
                 Image(systemName: "xmark")
                     .foregroundStyle(.primary)
@@ -76,6 +78,7 @@ struct ManagerView: View {
             .padding(20)
         }
         .overlay(alignment: .bottom) {
+            // Floating Lottie + Simpan button — stays pinned to the bottom regardless of scroll content
             VStack(spacing: -193) {
                 AppLottie(animation: "CangkrukLay")
                     .frame(height: 500)
@@ -86,6 +89,7 @@ struct ManagerView: View {
                 .frame(maxWidth: .infinity, alignment: .center)
             }
             .frame(maxWidth: .infinity)
+            // TODO: adjust horizontal/bottom position of the floating button here
             .padding(.horizontal, 20)
             .padding(.bottom, 12)
         }
@@ -104,38 +108,44 @@ struct ManagerView: View {
     }
 
     @ViewBuilder
-    private func fileSection(
-        title: String,
+    private func sectionCard(
+        titleAsset: String,
         target: TrainingFileSection,
         files: [TrainingFile]
     ) -> some View {
-        Section {
-            UploadFieldView(fileName: files.first?.name) {
+        VStack(alignment: .leading, spacing: 12) {
+            UploadFieldView(titleAsset: titleAsset) {
                 importTarget = target
                 isImporterPresented = true
             }
-            .listRowSeparator(.hidden)
-            .listRowInsets(EdgeInsets(top: 8, leading: 20, bottom: 8, trailing: 20))
 
-            ForEach(files) { file in
-                FileRowView(fileName: file.name, date: Self.dateFormatter.string(from: file.date))
-                    .listRowSeparator(.hidden)
-                    .listRowInsets(EdgeInsets(top: 6, leading: 20, bottom: 6, trailing: 20))
-                    .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-                        Button(role: .destructive) {
-                            delete(file)
-                        } label: {
-                            Label("Hapus", systemImage: "trash")
+            List {
+                ForEach(files) { file in
+                    FileRowView(fileName: file.name, date: Self.dateFormatter.string(from: file.date))
+                        .listRowSeparator(.hidden)
+                        .listRowBackground(Color.clear)
+                        .listRowInsets(EdgeInsets(top: 4, leading: 0, bottom: 4, trailing: 0))
+                        .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                            Button(role: .destructive) {
+                                delete(file)
+                            } label: {
+                                Label("Hapus", systemImage: "trash")
+                            }
                         }
-                    }
+                }
             }
-        } header: {
-            Text(title)
-                .font(.headline)
-                .foregroundStyle(.primary)
-                .textCase(nil)
+            .listStyle(.plain)
+            .scrollContentBackground(.hidden)
+            .scrollDisabled(true)
+            .frame(height: CGFloat(files.count) * 56)
         }
-        .listRowBackground(Color.clear)
+        .padding(16)
+        .background(Color.white)
+        .clipShape(RoundedRectangle(cornerRadius: 20))
+        .overlay(
+            RoundedRectangle(cornerRadius: 20)
+                .stroke(.black, lineWidth: 2)
+        )
     }
 
     private func handleImportResult(_ result: Result<[URL], Error>) {
@@ -177,6 +187,5 @@ struct ManagerView: View {
 
 #Preview {
     ManagerView()
-        .environment(RouterViewModel())
         .modelContainer(for: TrainingFile.self, inMemory: true)
 }

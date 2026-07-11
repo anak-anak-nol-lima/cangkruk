@@ -8,17 +8,15 @@
 import SwiftUI
 
 struct UploadFieldView: View {
-    var fileName: String?
-    var placeholder: String = "Unggah file"
+    var titleAsset: String
     var action: () -> Void
 
     var body: some View {
-        HStack(spacing: 12) {
-            Image(systemName: "doc.text")
-                .foregroundStyle(.secondary)
-
-            Text(fileName ?? placeholder)
-                .foregroundStyle(fileName == nil ? .secondary : .primary)
+        HStack {
+            Image(titleAsset)
+                .resizable()
+                .scaledToFit()
+                .frame(height: 28)
 
             Spacer()
 
@@ -26,23 +24,14 @@ struct UploadFieldView: View {
                 Image(systemName: "square.and.arrow.up")
                     .foregroundStyle(.white)
                     .frame(width: 36, height: 36)
-                    .background(Color.blue)
+                    .background(Color("Primary"))
                     .clipShape(Circle())
             }
         }
-        .padding(.horizontal, 16)
-        .frame(height: 56)
-        .overlay(
-            RoundedRectangle(cornerRadius: 28)
-                .stroke(Color(.systemGray4), lineWidth: 1)
-        )
     }
 }
 
 #Preview {
-    VStack(spacing: 16) {
-        UploadFieldView(fileName: "File_SOP.pdf") {}
-        UploadFieldView(fileName: nil) {}
-    }
-    .padding()
+    UploadFieldView(titleAsset: "sopSectionTitle") {}
+        .padding()
 }
