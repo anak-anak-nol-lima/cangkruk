@@ -16,7 +16,7 @@ struct UploadFieldView: View {
             Image(titleAsset)
                 .resizable()
                 .scaledToFit()
-                .frame(height: 28)
+                .frame(height: 22)
 
             Spacer()
 
