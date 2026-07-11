@@ -43,6 +43,7 @@ struct ManagerView: View {
     @State private var importTarget: TrainingFileSection?
     @State private var isImporterPresented = false
     @State private var showUnsupportedFileAlert = false
+    @State private var fileToDelete: TrainingFile?
 
     var body: some View {
         ZStack(alignment: .top) {
@@ -104,6 +105,16 @@ struct ManagerView: View {
         } message: {
             Text("Hanya mendukung file PDF dan Docs.")
         }
+        .alert(item: $fileToDelete) { file in
+            Alert(
+                title: Text("Hapus file ini?"),
+                message: Text(file.name),
+                primaryButton: .destructive(Text("Hapus")) {
+                    delete(file)
+                },
+                secondaryButton: .cancel(Text("Batal"))
+            )
+        }
     }
 
     @ViewBuilder
@@ -126,7 +137,7 @@ struct ManagerView: View {
                         .listRowInsets(EdgeInsets(top: 4, leading: 0, bottom: 4, trailing: 0))
                         .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                             Button(role: .destructive) {
-                                delete(file)
+                                fileToDelete = file
                             } label: {
                                 Label("Hapus", systemImage: "trash")
                             }
