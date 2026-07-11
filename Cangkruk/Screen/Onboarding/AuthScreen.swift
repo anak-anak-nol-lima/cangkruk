@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct RegisterScreen: View {
+    @Environment(RouterViewModel.self) private var router
     @State private var username: String = ""
     @State private var password: String = ""
 
@@ -38,6 +39,8 @@ struct RegisterScreen: View {
                         .frame(maxWidth: .infinity, alignment: .center)
 
                     AppImageButton(imageName: "simpanButton") {
+                        // TODO: validate/persist registration before moving on
+                        router.push(.login)
                     }
                     .frame(maxWidth: .infinity, alignment: .center)
                 }
@@ -50,6 +53,7 @@ struct RegisterScreen: View {
 }
 
 struct LoginScreen: View {
+    @Environment(RouterViewModel.self) private var router
     @State private var username: String = ""
     @State private var password: String = ""
 
@@ -80,6 +84,7 @@ struct LoginScreen: View {
                 Spacer()
 
                 AppImageButton(imageName: "masukButton") {
+                    // TODO: hook up login action
                 }
                 .padding(.horizontal, 24)
                 .padding(.bottom, 180)
@@ -133,8 +138,10 @@ private struct AuthFormCard: View {
 
 #Preview("Daftar") {
     RegisterScreen()
+        .environment(RouterViewModel())
 }
 
 #Preview("Masuk") {
     LoginScreen()
+        .environment(RouterViewModel())
 }
