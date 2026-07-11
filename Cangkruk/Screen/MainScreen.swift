@@ -10,12 +10,15 @@ import SwiftUI
 struct MainScreen: View {
     // MARK: - ViewModel
     @State private var router = RouterViewModel() // route view model to use functionality for dynamic routing
+    @State private var notificationViewModel = NotificationViewModel()
+    @Environment(\.scenePhase) var scenePhase
     
     var body: some View {
         NavigationStack(path: $router.path) {
-            HomeScreen()
-                .navigationDestination(for: Route.self) { route in
+            OnboardingScreen()                .navigationDestination(for: Route.self) { route in
                     switch route {
+                    case .home:
+                        HomeScreen()
                     case .level:
                         LevelScreen()
                     case .roleplay:
@@ -33,6 +36,14 @@ struct MainScreen: View {
                 }
         }
         .environment(router)
+        
+        .onChange(of: scenePhase) { oldPhase, newPhase in
+            if newPhase == .background {
+                notificationViewModel.onAppBackgrounded()
+            } else if newPhase == .active {
+                notificationViewModel.onAppForegrounded()
+            }
+        }
     }
 }
 

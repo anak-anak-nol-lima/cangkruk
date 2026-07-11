@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		C8EAA631300111A30024B4CC /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = C8EAA630300111A30024B4CC /* Lottie */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		C8EAA5842FFD04DB0024B4CC /* Cangkruk.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Cangkruk.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -36,6 +40,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C8EAA631300111A30024B4CC /* Lottie in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,6 +83,7 @@
 			);
 			name = Cangkruk;
 			packageProductDependencies = (
+				C8EAA630300111A30024B4CC /* Lottie */,
 			);
 			productName = Cangkruk;
 			productReference = C8EAA5842FFD04DB0024B4CC /* Cangkruk.app */;
@@ -107,6 +113,9 @@
 			);
 			mainGroup = C8EAA57B2FFD04DB0024B4CC;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				C8EAA62F300111A30024B4CC /* XCRemoteSwiftPackageReference "lottie-ios" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = C8EAA5852FFD04DB0024B4CC /* Products */;
 			projectDirPath = "";
@@ -270,6 +279,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Cangkruk/Info.plist;
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Izinkan akses mikrofon untuk merekam catatan suara Anda.";
 				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Aplikasi ini menggunakan pengenalan suara untuk mengubah ucapan Anda menjadi teks.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -305,6 +315,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Cangkruk/Info.plist;
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Izinkan akses mikrofon untuk merekam catatan suara Anda.";
 				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Aplikasi ini menggunakan pengenalan suara untuk mengubah ucapan Anda menjadi teks.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -351,6 +362,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		C8EAA62F300111A30024B4CC /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-ios";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.6.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		C8EAA630300111A30024B4CC /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C8EAA62F300111A30024B4CC /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			productName = Lottie;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = C8EAA57C2FFD04DB0024B4CC /* Project object */;
 }
