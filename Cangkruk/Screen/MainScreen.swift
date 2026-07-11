@@ -36,8 +36,6 @@ struct MainScreen: View {
                                 }
                             }
                         ))
-                    case .manager:
-                        ManagerView()
                     }
                 }
         }
