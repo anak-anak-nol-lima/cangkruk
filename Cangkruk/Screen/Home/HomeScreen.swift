@@ -64,7 +64,7 @@ struct HomeScreen: View {
                 }
             }
         }
-        .sheet(isPresented: $router.isManagerUnlocked) {
+        .sheet(isPresented: $isManager) {
             ManagerView()
         }
         .navigationBarBackButtonHidden()

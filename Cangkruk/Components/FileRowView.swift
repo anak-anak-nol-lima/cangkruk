@@ -12,31 +12,28 @@ struct FileRowView: View {
     var date: String
 
     var body: some View {
-        HStack(spacing: 12) {
-            Image(systemName: "doc.text")
-                .foregroundStyle(.secondary)
-
+        HStack {
             Text(fileName)
+                .foregroundStyle(.black)
 
             Spacer()
 
             Text(date)
-                .font(.footnote)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(.black.opacity(0.6))
         }
         .padding(.horizontal, 16)
-        .frame(height: 56)
+        .frame(height: 48)
         .overlay(
             RoundedRectangle(cornerRadius: 12)
-                .stroke(Color(.systemGray4), lineWidth: 1)
+                .stroke(.black.opacity(0.6), lineWidth: 1)
         )
     }
 }
 
 #Preview {
     VStack(spacing: 12) {
-        FileRowView(fileName: "FileABCDE.pdf", date: "2024-10-27")
-        FileRowView(fileName: "FileABCDE.pdf", date: "2024-10-27")
+        FileRowView(fileName: "FileABCDE.pdf", date: "10-10-2026")
+        FileRowView(fileName: "FileABCDE.pdf", date: "10-10-2026")
     }
     .padding()
 }
