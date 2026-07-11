@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C8EAA631300111A30024B4CC /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = C8EAA630300111A30024B4CC /* Lottie */; };
+		490B00813002B83000A08740 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 490B00803002B83000A08740 /* Lottie */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,7 +40,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C8EAA631300111A30024B4CC /* Lottie in Frameworks */,
+				490B00813002B83000A08740 /* Lottie in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -83,7 +83,7 @@
 			);
 			name = Cangkruk;
 			packageProductDependencies = (
-				C8EAA630300111A30024B4CC /* Lottie */,
+				490B00803002B83000A08740 /* Lottie */,
 			);
 			productName = Cangkruk;
 			productReference = C8EAA5842FFD04DB0024B4CC /* Cangkruk.app */;
@@ -114,7 +114,7 @@
 			mainGroup = C8EAA57B2FFD04DB0024B4CC;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				C8EAA62F300111A30024B4CC /* XCRemoteSwiftPackageReference "lottie-ios" */,
+				490B007F3002B83000A08740 /* XCRemoteSwiftPackageReference "lottie-ios" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = C8EAA5852FFD04DB0024B4CC /* Products */;
@@ -275,11 +275,10 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = HK5U3FU2AP;
+				DEVELOPMENT_TEAM = 95C9G5AYFC;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Cangkruk/Info.plist;
-				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Izinkan akses mikrofon untuk merekam catatan suara Anda.";
 				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Aplikasi ini menggunakan pengenalan suara untuk mengubah ucapan Anda menjadi teks.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -311,11 +310,10 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = HK5U3FU2AP;
+				DEVELOPMENT_TEAM = 95C9G5AYFC;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Cangkruk/Info.plist;
-				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Izinkan akses mikrofon untuk merekam catatan suara Anda.";
 				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Aplikasi ini menggunakan pengenalan suara untuk mengubah ucapan Anda menjadi teks.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -364,7 +362,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		C8EAA62F300111A30024B4CC /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
+		490B007F3002B83000A08740 /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/airbnb/lottie-ios";
 			requirement = {
@@ -375,9 +373,9 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		C8EAA630300111A30024B4CC /* Lottie */ = {
+		490B00803002B83000A08740 /* Lottie */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = C8EAA62F300111A30024B4CC /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			package = 490B007F3002B83000A08740 /* XCRemoteSwiftPackageReference "lottie-ios" */;
 			productName = Lottie;
 		};
 /* End XCSwiftPackageProductDependency section */

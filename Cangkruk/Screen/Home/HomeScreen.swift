@@ -61,7 +61,7 @@ struct HomeScreen: View {
                 }
             }
         }
-        .fullScreenCover(isPresented: $isManager) {
+        .sheet(isPresented: $isManager) {
             ManagerView()
         }
         .navigationBarBackButtonHidden()
