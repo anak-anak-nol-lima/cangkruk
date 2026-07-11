@@ -78,7 +78,6 @@ struct ManagerView: View {
             .padding(20)
         }
         .overlay(alignment: .bottom) {
-            // Floating Lottie + Simpan button — stays pinned to the bottom regardless of scroll content
             VStack(spacing: -193) {
                 AppLottie(animation: "CangkrukLay")
                     .frame(height: 500)
@@ -89,7 +88,6 @@ struct ManagerView: View {
                 .frame(maxWidth: .infinity, alignment: .center)
             }
             .frame(maxWidth: .infinity)
-            // TODO: adjust horizontal/bottom position of the floating button here
             .padding(.horizontal, 20)
             .padding(.bottom, 12)
         }
