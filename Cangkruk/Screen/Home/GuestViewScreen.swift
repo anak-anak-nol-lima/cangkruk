@@ -23,11 +23,6 @@ struct GuestViewScreen: View {
     var body: some View {
         ZStack {
             VStack {
-                // TODO: use proper animation here
-                // CangkrukLay should be on MANAGER login
-                AppLottie(animation: "CangkrukLay")
-                    .frame(height: 250)
-
                 ForEach(levelInfo.indices, id: \.self) { idx in
                     let level = levelInfo[idx]
                     
