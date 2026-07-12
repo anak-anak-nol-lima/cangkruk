@@ -44,7 +44,7 @@ struct AuthFormCard: View {
             }
         }
         .padding(32)
-        .background(Color(red: 1.0, green: 250 / 255, blue: 240 / 255))
+        .background(Color("lightBackground"))
         .clipShape(RoundedRectangle(cornerRadius: 24))
         .padding(.horizontal, 5)
     }
