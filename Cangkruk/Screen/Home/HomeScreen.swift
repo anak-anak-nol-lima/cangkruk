@@ -24,6 +24,8 @@ struct HomeScreen: View {
     ]
 
     var body: some View {
+        @Bindable var router = router
+
         VStack(alignment: .leading, spacing: 0) {
             HStack {
                 Text("Tantangan")
@@ -41,6 +43,9 @@ struct HomeScreen: View {
                             .stroke(.black, lineWidth: 1.5)
                     }
                     .clipShape(Circle())
+                    .onTapGesture {
+                        router.push(.register)
+                    }
             }
             .padding()
 
