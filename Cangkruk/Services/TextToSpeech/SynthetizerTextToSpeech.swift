@@ -11,12 +11,12 @@ import AVFoundation
 
 // interface for the textToSpeech functionality
 // need to implement the functionality specified
-protocol ITextToSpeech {
+protocol TextToSpeechProtocol {
     func speak(_ text: String) throws
 }
 
 
-class SynthetizerTextToSpeech: ITextToSpeech {
+class SynthetizerTextToSpeech: TextToSpeechProtocol {
     private let synthetizer = AVSpeechSynthesizer()
     
     // speak will accept text from the caller ( viewmodel )
@@ -28,14 +28,14 @@ class SynthetizerTextToSpeech: ITextToSpeech {
         try session.setActive(true)
         
         let utterance = AVSpeechUtterance(string: text)
-        utterance.voice = getPremiumQuality()
+        let bestVoice = getPremiumQuality(voices: AVSpeechSynthesisVoice.speechVoices())
+        utterance.voice = bestVoice
         synthetizer.speak(utterance)
     }
     
     
     // getPremiumQuality will filtering all the damayanti voices and get the most premium quality it can get
-    func getPremiumQuality() -> AVSpeechSynthesisVoice? {
-        let voices = AVSpeechSynthesisVoice.speechVoices()
+    func getPremiumQuality(voices: [AVSpeechSynthesisVoice]) -> AVSpeechSynthesisVoice? {
         let filteredVoice = voices.filter { voice in
             voice.name == "Damayanti"
         }
