@@ -78,7 +78,7 @@ struct TermsConditionsScreen: View {
                     }
                     .padding(25)
                 }
-                .background(Color(red: 1.0, green: 250/255, blue: 240/255))
+                .background(Color("lightBackground"))
                 .clipShape(RoundedRectangle(cornerRadius: 30))
                 .padding(.top, -105)
                 .padding(.horizontal, 30)
