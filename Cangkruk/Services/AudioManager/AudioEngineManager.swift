@@ -8,8 +8,14 @@
 import SwiftUI
 import AVFoundation
 
+protocol AudioEngineProtocol {
+    func setupAudioSession() throws
+    func setupPermission() async -> Bool
+    func startAudioEngine(onBuffer: @escaping(AVAudioPCMBuffer) -> Void) throws
+    func stopAudioEngine()
+}
 
-class AudioEngineManager {
+class AudioEngineManager: AudioEngineProtocol {
     private let engine = AVAudioEngine()
     private var tapInstalled = false
     

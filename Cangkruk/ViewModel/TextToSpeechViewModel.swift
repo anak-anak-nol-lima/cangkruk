@@ -7,11 +7,14 @@
 
 import SwiftUI
 
-@MainActor
 @Observable
 class TextToSpeechViewModel {
-    let textToSpeech: ITextToSpeech = SynthetizerTextToSpeech()
+    let textToSpeech: TextToSpeechProtocol
     var errorMessage: String?
+    
+    init(textToSpeech: TextToSpeechProtocol = SynthetizerTextToSpeech()) {
+        self.textToSpeech = textToSpeech
+    }
     
     // speak will use the text here and passed into the synthetizer to process the audio
     func speak(_ text: String) {
