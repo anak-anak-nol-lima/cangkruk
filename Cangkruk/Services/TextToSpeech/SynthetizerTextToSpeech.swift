@@ -33,9 +33,15 @@ class SynthetizerTextToSpeech: TextToSpeechProtocol {
         synthetizer.speak(utterance)
     }
     
-    
-    // getPremiumQuality will filtering all the damayanti voices and get the most premium quality it can get
+    // getPremiumQuality will get the filter voice
+    // if none return anything that available
     func getPremiumQuality(voices: [AVSpeechSynthesisVoice]) -> AVSpeechSynthesisVoice? {
+        let filteredVoice = filterPremiumQuality(voices: voices)
+        return filteredVoice ?? AVSpeechSynthesisVoice(language: "id-ID")
+    }
+    
+    // filterPremiumQuality will filtering all the damayanti voices and get the most premium quality it can get
+    func filterPremiumQuality(voices: [AVSpeechSynthesisVoice]) -> AVSpeechSynthesisVoice? {
         let filteredVoice = voices.filter { voice in
             voice.name == "Damayanti"
         }
@@ -44,6 +50,6 @@ class SynthetizerTextToSpeech: TextToSpeechProtocol {
             // if current < next and next is bigger, then current = next ( next loop current will be next )
             current.quality.rawValue < next.quality.rawValue
         }
-        return bestQuality ?? AVSpeechSynthesisVoice(language: "id-ID")
+        return bestQuality
     }
 }
