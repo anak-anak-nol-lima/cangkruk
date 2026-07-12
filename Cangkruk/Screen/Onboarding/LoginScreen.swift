@@ -1,0 +1,56 @@
+//
+//  LoginScreen.swift
+//  Cangkruk
+//
+//  Created by Ivone Liwang on 12/07/26.
+//
+
+import SwiftUI
+
+struct LoginScreen: View {
+    @Environment(RouterViewModel.self) private var router
+    @State private var username: String = ""
+    @State private var password: String = ""
+
+    var body: some View {
+        ZStack {
+            Color("Background")
+                .ignoresSafeArea()
+
+            VStack(spacing: 24) {
+                Image("masukTitle")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(height: 60)
+                    .padding(.top, 60)
+
+                AuthFormCard(username: $username, password: $password)
+                    .overlay(alignment: .bottomTrailing) {
+                        AppLottie(animation: "CangkrukClimb")
+                            .frame(width: 300, height: 300)
+                            .offset(x: 20, y: 210)
+                            .allowsHitTesting(false)
+                        
+                    }
+
+                Spacer()
+            }
+            .padding(24)
+
+            VStack {
+                Spacer()
+
+                AppImageButton(imageName: "masukButton") {
+                }
+                .padding(.horizontal, 24)
+                .padding(.bottom, 180)
+            }
+        }
+        .ignoresSafeArea(.keyboard, edges: .bottom)
+    }
+}
+
+#Preview("Masuk") {
+    LoginScreen()
+        .environment(RouterViewModel())
+}
