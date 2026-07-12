@@ -7,20 +7,26 @@
 
 import SwiftUI
 
-
-@MainActor
 @Observable
 class SpeechToTextViewModel {
-    let audioEngineManager = AudioEngineManager()
-    let transcriptionManager = TranscriptionManager()
+    let audioEngineManager: AudioEngineProtocol
+    let transcriptionManager: TranscriptionManagerProtocol
     
     var errorMessage: String?
-    var isPlaying = false
+    var isPlaying: Bool
     var currentText = ""
     var finalText = ""
     var result: [String] = []
     
-    init() {
+    init(
+        audioEngineManager: AudioEngineProtocol = AudioEngineManager(),
+        transcriptionManager: TranscriptionManagerProtocol = TranscriptionManager(),
+        isPlaying: Bool = false
+    ) {
+        self.audioEngineManager = audioEngineManager
+        self.transcriptionManager = transcriptionManager
+        self.isPlaying = isPlaying
+        
         // initialize self.requestPermission to ask whenever the roleplay initialized
         Task {
             await self.requestPermission()
@@ -36,13 +42,11 @@ class SpeechToTextViewModel {
     
     // processMic will running the start playing if it's not play state
     // will run the stop play when click again ( play state )
-    func processMic() {
-        Task {
-            if isPlaying {
-                stopPlaying()
-            } else {
-                await startPlaying()
-            }
+    func processMic() async {
+        if isPlaying {
+            stopPlaying()
+        } else {
+            await startPlaying()
         }
     }
         
@@ -59,10 +63,7 @@ class SpeechToTextViewModel {
         }
         
         do {
-            isPlaying = true
-            
             try audioEngineManager.setupAudioSession()
-            
             try transcriptionManager.startTranscribe { [weak self] output in
                 guard let self = self else { return }
                 
@@ -87,8 +88,11 @@ class SpeechToTextViewModel {
                 guard let self = self else { return }
                 self.transcriptionManager.processAudioBuffer(buffer)
             }
+            
+            isPlaying = true
         } catch {
             errorMessage = error.localizedDescription
+            isPlaying = false
         }
     }
     

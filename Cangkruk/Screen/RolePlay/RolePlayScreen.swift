@@ -85,7 +85,9 @@ struct RolePlayScreen: View {
                 }
                 
                 RecordButton() {
-                    speechToText.processMic()
+                    Task {
+                        await speechToText.processMic()
+                    }
                 }
             }
         }

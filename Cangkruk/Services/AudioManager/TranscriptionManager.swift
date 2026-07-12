@@ -9,13 +9,20 @@ import SwiftUI
 import AVFoundation
 import Speech
 
+protocol TranscriptionManagerProtocol {
+    func setupPermission() async -> Bool
+    func startTranscribe(onResult: @escaping (Result<(String, Bool), Error>) -> Void) throws
+    func processAudioBuffer(_ buffer: AVAudioPCMBuffer)
+    func stopTranscribe()
+}
+
 enum TranscriptionError: Error {
     case failedToInitialize,
         failedToTranscribe,
         failedToStart
 }
 
-class TranscriptionManager {
+class TranscriptionManager: TranscriptionManagerProtocol {
     private var request: SFSpeechAudioBufferRecognitionRequest?
     private var recognizer: SFSpeechRecognizer?
     private var task: SFSpeechRecognitionTask?
