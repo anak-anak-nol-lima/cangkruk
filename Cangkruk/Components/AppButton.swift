@@ -73,15 +73,15 @@ struct AppImageButton: View {
 
 #Preview {
     AppButton(label: "Button Click") {
-        
+
     }
-    
+
     RecordButton() {
-        
+
     }
-    
-    
+
+
     AppImageButton(imageName: "mulaiButton") {
-        
+
     }
 }
