@@ -20,14 +20,14 @@ struct OnboardingScreen: View {
             VStack {
                 ZStack {
                     AppLottie(animation: "CangkrukHero")
-                        .frame(height: 500)
+                        .frame(height: 350)
                     
                     Image("cangkrukHero")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(maxWidth: .infinity)
                         .frame(height: 100)
-                        .offset(y: -175)
+                        .offset(y: -210)
                 }
                 
                 
