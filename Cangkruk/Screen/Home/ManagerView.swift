@@ -168,7 +168,13 @@ struct ManagerView: View {
 
             do {
                 let storedFileName = try FileStorageManager.save(from: url)
-                let file = TrainingFile(name: url.lastPathComponent, section: target, storedFileName: storedFileName)
+                let extractedText = TextExtractionService.extractText(from: url)
+                let file = TrainingFile(
+                    name: url.lastPathComponent,
+                    section: target,
+                    storedFileName: storedFileName,
+                    extractedText: extractedText
+                )
                 modelContext.insert(file)
             } catch {
                 showUnsupportedFileAlert = true
