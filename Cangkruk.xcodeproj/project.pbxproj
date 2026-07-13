@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		490B00813002B83000A08740 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 490B00803002B83000A08740 /* Lottie */; };
+		496FC53E3004D47D000900A9 /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = 496FC53D3004D47D000900A9 /* ZIPFoundation */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -64,17 +65,26 @@
 			buildActionMask = 2147483647;
 			files = (
 				490B00813002B83000A08740 /* Lottie in Frameworks */,
+				496FC53E3004D47D000900A9 /* ZIPFoundation in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		496FC53C3004D47D000900A9 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		C8EAA57B2FFD04DB0024B4CC = {
 			isa = PBXGroup;
 			children = (
 				C8EAA5862FFD04DB0024B4CC /* Cangkruk */,
 				C8B53CBF300342DB00BEA38F /* CangkrukUnitTests */,
+				496FC53C3004D47D000900A9 /* Frameworks */,
 				C8EAA5852FFD04DB0024B4CC /* Products */,
 			);
 			sourceTree = "<group>";
@@ -132,6 +142,7 @@
 			name = Cangkruk;
 			packageProductDependencies = (
 				490B00803002B83000A08740 /* Lottie */,
+				496FC53D3004D47D000900A9 /* ZIPFoundation */,
 			);
 			productName = Cangkruk;
 			productReference = C8EAA5842FFD04DB0024B4CC /* Cangkruk.app */;
@@ -168,6 +179,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				490B007F3002B83000A08740 /* XCRemoteSwiftPackageReference "lottie-ios" */,
+				496FC53B3004D450000900A9 /* XCRemoteSwiftPackageReference "ZIPFoundation" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = C8EAA5852FFD04DB0024B4CC /* Products */;
@@ -396,7 +408,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = HK5U3FU2AP;
+				DEVELOPMENT_TEAM = 95C9G5AYFC;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Cangkruk/Info.plist;
@@ -431,7 +443,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = HK5U3FU2AP;
+				DEVELOPMENT_TEAM = 95C9G5AYFC;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Cangkruk/Info.plist;
@@ -500,6 +512,14 @@
 				minimumVersion = 4.6.1;
 			};
 		};
+		496FC53B3004D450000900A9 /* XCRemoteSwiftPackageReference "ZIPFoundation" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/weichsel/ZIPFoundation";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.9.20;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -507,6 +527,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 490B007F3002B83000A08740 /* XCRemoteSwiftPackageReference "lottie-ios" */;
 			productName = Lottie;
+		};
+		496FC53D3004D47D000900A9 /* ZIPFoundation */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 496FC53B3004D450000900A9 /* XCRemoteSwiftPackageReference "ZIPFoundation" */;
+			productName = ZIPFoundation;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

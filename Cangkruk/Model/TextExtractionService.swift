@@ -91,21 +91,42 @@ enum TextExtractionService {
 
     private static func extractTextFromDocx(at url: URL) -> String? {
         // .docx is a ZIP archive of XML files — the document's text lives in word/document.xml.
-        guard let archive = try? Archive(url: url, accessMode: .read) else { return nil }
-        guard let entry = archive["word/document.xml"] else { return nil }
+        let archive: Archive
+        do {
+            archive = try Archive(url: url, accessMode: .read)
+        } catch {
+            print("[TextExtractionService] docx: failed to open archive: \(error)")
+            return nil
+        }
+
+        guard let entry = archive["word/document.xml"] else {
+            print("[TextExtractionService] docx: entry 'word/document.xml' not found. Entries found: \(archive.map(\.path))")
+            return nil
+        }
 
         var xmlData = Data()
-        guard (try? archive.extract(entry, consumer: { chunk in
-            xmlData.append(chunk)
-        })) != nil else { return nil }
+        do {
+            _ = try archive.extract(entry, consumer: { chunk in
+                xmlData.append(chunk)
+            })
+        } catch {
+            print("[TextExtractionService] docx: failed to extract entry: \(error)")
+            return nil
+        }
 
         let parser = XMLParser(data: xmlData)
         let delegate = DocxTextParserDelegate()
         parser.delegate = delegate
 
-        guard parser.parse() else { return nil }
+        guard parser.parse() else {
+            print("[TextExtractionService] docx: XML parse failed: \(String(describing: parser.parserError))")
+            return nil
+        }
 
         let text = delegate.extractedText.trimmingCharacters(in: .whitespacesAndNewlines)
+        if text.isEmpty {
+            print("[TextExtractionService] docx: parsed successfully but no <w:t> text was found")
+        }
         return text.isEmpty ? nil : text
     }
 }
