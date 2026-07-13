@@ -78,11 +78,13 @@ class AuthenticationViewModel {
             return nil
         }
         
-        guard let user = getUser(context: context, username: username) else {
+        guard let user = getUser(context: context, username: username.lowercased()) else {
+            errorMessage = "User not found"
+            isError = true
             return nil
         }
         
-        let verify = cryptoManager.verify(data: user.password, text: password)
+        let verify = cryptoManager.verify(data: user.password, text: password.lowercased())
         if !verify {
             errorMessage = "Invalid password"
             isError = true

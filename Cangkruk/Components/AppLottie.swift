@@ -14,6 +14,7 @@ struct AppLottie: View {
     
     var body: some View {
         LottieView(animation: .named(animation))
+            .configuration(LottieConfiguration(renderingEngine: .coreAnimation))
             .playing()
             .looping()
     }
