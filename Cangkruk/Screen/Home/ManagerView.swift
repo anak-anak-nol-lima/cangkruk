@@ -43,6 +43,7 @@ struct ManagerView: View {
     @State private var importTarget: TrainingFileSection?
     @State private var isImporterPresented = false
     @State private var showUnsupportedFileAlert = false
+    @State private var isExtractingText = false
 
     var body: some View {
         ZStack(alignment: .top) {
@@ -98,12 +99,25 @@ struct ManagerView: View {
             allowedContentTypes: Self.allowedContentTypes,
             allowsMultipleSelection: false
         ) { result in
-            handleImportResult(result)
+            Task {
+                await handleImportResult(result)
+            }
         }
         .alert("File tidak didukung", isPresented: $showUnsupportedFileAlert) {
             Button("OK", role: .cancel) {}
         } message: {
             Text("Hanya mendukung file PDF dan Docs.")
+        }
+        .overlay {
+            if isExtractingText {
+                ZStack {
+                    Color.black.opacity(0.3).ignoresSafeArea()
+                    ProgressView("Memproses file...")
+                        .padding(20)
+                        .background(Color.white)
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                }
+            }
         }
     }
 
@@ -148,7 +162,7 @@ struct ManagerView: View {
         )
     }
 
-    private func handleImportResult(_ result: Result<[URL], Error>) {
+    private func handleImportResult(_ result: Result<[URL], Error>) async {
         guard let target = importTarget else { return }
 
         switch result {
@@ -168,7 +182,11 @@ struct ManagerView: View {
 
             do {
                 let storedFileName = try FileStorageManager.save(from: url)
-                let extractedText = TextExtractionService.extractText(from: url)
+
+                isExtractingText = true
+                let extractedText = await TextExtractionService.extractText(from: url)
+                isExtractingText = false
+
                 let file = TrainingFile(
                     name: url.lastPathComponent,
                     section: target,
@@ -177,6 +195,7 @@ struct ManagerView: View {
                 )
                 modelContext.insert(file)
             } catch {
+                isExtractingText = false
                 showUnsupportedFileAlert = true
             }
 
