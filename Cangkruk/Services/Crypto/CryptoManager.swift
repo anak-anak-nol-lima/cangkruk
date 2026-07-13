@@ -42,6 +42,7 @@ class CryptoManager: CryptoProtocol {
             let decrypted = String(decoding: decryptedData, as: UTF8.self)
             return decrypted == text
         } catch {
+            print(error)
             return false
         }
     }
