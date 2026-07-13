@@ -9,6 +9,7 @@ import Foundation
 import PDFKit
 import Vision
 import UIKit
+import ZIPFoundation
 
 enum TextExtractionService {
     /// A page needs OCR when its extracted text is shorter than this — likely a scanned image, not real text.
@@ -20,8 +21,10 @@ enum TextExtractionService {
         switch url.pathExtension.lowercased() {
         case "pdf":
             return extractTextFromPDF(at: url)
+        case "docx":
+            return extractTextFromDocx(at: url)
         default:
-            // TODO: Case 3 — .docx extraction (unzip + parse word/document.xml) not implemented yet
+            // .doc (legacy binary Word format, pre-2007) is not ZIP-based — this approach doesn't apply to it.
             return nil
         }
     }
@@ -84,5 +87,65 @@ enum TextExtractionService {
             .joined(separator: "\n")
 
         return recognizedText.isEmpty ? nil : recognizedText
+    }
+
+    private static func extractTextFromDocx(at url: URL) -> String? {
+        // .docx is a ZIP archive of XML files — the document's text lives in word/document.xml.
+        guard let archive = try? Archive(url: url, accessMode: .read) else { return nil }
+        guard let entry = archive["word/document.xml"] else { return nil }
+
+        var xmlData = Data()
+        guard (try? archive.extract(entry, consumer: { chunk in
+            xmlData.append(chunk)
+        })) != nil else { return nil }
+
+        let parser = XMLParser(data: xmlData)
+        let delegate = DocxTextParserDelegate()
+        parser.delegate = delegate
+
+        guard parser.parse() else { return nil }
+
+        let text = delegate.extractedText.trimmingCharacters(in: .whitespacesAndNewlines)
+        return text.isEmpty ? nil : text
+    }
+}
+
+/// Collects the text inside Word's `<w:t>` (text run) elements while walking word/document.xml,
+/// inserting a newline at the end of each `<w:p>` (paragraph) to preserve paragraph breaks.
+private final class DocxTextParserDelegate: NSObject, XMLParserDelegate {
+    private(set) var extractedText = ""
+    private var isInsideTextRun = false
+
+    func parser(
+        _ parser: XMLParser,
+        didStartElement elementName: String,
+        namespaceURI: String?,
+        qualifiedName qName: String?,
+        attributes attributeDict: [String: String] = [:]
+    ) {
+        if elementName == "w:t" {
+            isInsideTextRun = true
+        }
+    }
+
+    func parser(_ parser: XMLParser, foundCharacters string: String) {
+        guard isInsideTextRun else { return }
+        extractedText += string
+    }
+
+    func parser(
+        _ parser: XMLParser,
+        didEndElement elementName: String,
+        namespaceURI: String?,
+        qualifiedName qName: String?
+    ) {
+        switch elementName {
+        case "w:t":
+            isInsideTextRun = false
+        case "w:p":
+            extractedText += "\n"
+        default:
+            break
+        }
     }
 }
