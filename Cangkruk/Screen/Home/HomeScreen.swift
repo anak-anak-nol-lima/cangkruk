@@ -28,6 +28,7 @@ struct HomeScreen: View {
         LevelInfo(level: 2, description: "Memahami kebutuhan pelanggan", isLock: false)
     ]
     @State private var user: User?
+    @State private var isSOPOpen: Bool = false
 
     var body: some View {
         @Bindable var router = router
@@ -64,7 +65,7 @@ struct HomeScreen: View {
                     ForEach(levelInfo.indices, id: \.self) { idx in
                         let level = levelInfo[idx]
 
-                        AppLevel(level: level.level, description: level.description, isLock: level.isLock, isManager: true
+                        AppLevel(level: level.level, description: level.description, isLock: level.isLock, isManager: router.isManagerUnlocked
                         ) {
                             // locking or unlock the app
                             levelInfo[idx].isLock.toggle()
@@ -81,8 +82,9 @@ struct HomeScreen: View {
         }
         .onAppear {
             self.user = authVM.getLastUser(context: modelContext)
+            self.isSOPOpen = router.isManagerUnlocked
         }
-        .sheet(isPresented: $router.isManagerUnlocked) {
+        .sheet(isPresented: $isSOPOpen) {
             ManagerView()
         }
         .navigationBarBackButtonHidden()
