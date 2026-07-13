@@ -35,8 +35,8 @@ struct RegisterScreen: View {
 
                 VStack(spacing: -193) {
                     AppLottie(animation: "CangkrukLay")
-                        .frame(height: 500)
-                        .frame(maxWidth: .infinity, alignment: .center)
+                        .frame(height: 200)
+                        .offset(y: -175)
                         .allowsHitTesting(false)
 
                     AppImageButton(imageName: "simpanButton") {

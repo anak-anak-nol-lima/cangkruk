@@ -27,8 +27,8 @@ struct LoginScreen: View {
                 AuthFormCard(username: $username, password: $password)
                     .overlay(alignment: .bottomTrailing) {
                         AppLottie(animation: "CangkrukClimb")
-                            .frame(width: 300, height: 300)
-                            .offset(x: 20, y: 210)
+                            .frame(height: 300)
+                            .offset(x: 50, y: 205)
                             .allowsHitTesting(false)
                         
                     }
@@ -46,7 +46,7 @@ struct LoginScreen: View {
                     router.pop(2) // pop Login + Register, landing back on HomeScreen
                 }
                 .padding(.horizontal, 24)
-                .padding(.bottom, 180)
+                .padding(.bottom, 230)
             }
         }
         .ignoresSafeArea(.keyboard, edges: .bottom)

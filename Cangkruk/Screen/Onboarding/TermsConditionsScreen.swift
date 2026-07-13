@@ -27,8 +27,8 @@ struct TermsConditionsScreen: View {
                     }
 
                     AppLottie(animation: "CangkrukWipe")
-                        .frame(width: 185)
-                        .offset(x: -8, y: -5)
+                        .frame(width: 200, height: 200)
+                        .offset(x: 10, y: -5)
                 }
                 .padding(.horizontal, 30)
                 .padding(.top, 20)
