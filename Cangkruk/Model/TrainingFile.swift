@@ -20,12 +20,20 @@ final class TrainingFile {
     var date: Date
     var section: String
     var storedFileName: String
+    var extractedText: String?
 
-    init(name: String, date: Date = .now, section: TrainingFileSection, storedFileName: String) {
+    init(
+        name: String,
+        date: Date = .now,
+        section: TrainingFileSection,
+        storedFileName: String,
+        extractedText: String? = nil
+    ) {
         self.id = UUID()
         self.name = name
         self.date = date
         self.section = section.rawValue
         self.storedFileName = storedFileName
+        self.extractedText = extractedText
     }
 }

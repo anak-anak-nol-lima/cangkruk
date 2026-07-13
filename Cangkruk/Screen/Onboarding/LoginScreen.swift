@@ -41,6 +41,9 @@ struct LoginScreen: View {
                 Spacer()
 
                 AppImageButton(imageName: "masukButton") {
+                    // TODO: validate credentials before unlocking manager mode
+                    router.isManagerUnlocked = true
+                    router.pop(2) // pop Login + Register, landing back on HomeScreen
                 }
                 .padding(.horizontal, 24)
                 .padding(.bottom, 180)
