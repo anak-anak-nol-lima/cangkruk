@@ -38,4 +38,14 @@ class RouterViewModel {
         // jump to first page
         path = NavigationPath()
     }
+    
+    
+    func replacePath(_ p: Route) {
+        // replace current path with next path
+        if !path.isEmpty {
+            path.removeLast()
+        }
+        
+        path.append(p)
+    }
 }

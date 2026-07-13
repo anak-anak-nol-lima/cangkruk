@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct LevelInfo {
     var level: Int
@@ -14,14 +15,19 @@ struct LevelInfo {
 }
 
 struct HomeScreen: View {
-    // MARK: - Environment
+    // MARK: - Storage
+    @Environment(\.modelContext) private var modelContext
+    
+    // MARK: - ViewModel
     @Environment(RouterViewModel.self) private var router
+    @Environment(AuthenticationViewModel.self) private var authVM
     
     // MARK: - State
     @State private var levelInfo: [LevelInfo] = [
         LevelInfo(level: 1, description: "Pengetahuan akan produk", isLock: false),
         LevelInfo(level: 2, description: "Memahami kebutuhan pelanggan", isLock: false)
     ]
+    @State private var user: User?
 
     var body: some View {
         @Bindable var router = router
@@ -34,18 +40,22 @@ struct HomeScreen: View {
 
                 Spacer()
 
-                Image(systemName: "lock")
-                    .frame(width: 44, height: 44)
-                    .foregroundStyle(.black)
-                    .background(.white)
-                    .overlay {
-                        Circle()
-                            .stroke(.black, lineWidth: 1.5)
-                    }
-                    .clipShape(Circle())
-                    .onTapGesture {
-                        router.push(.register)
-                    }
+                if authVM.isLoading {
+                    ProgressView()
+                } else {
+                    Image(systemName: "lock")
+                        .frame(width: 44, height: 44)
+                        .foregroundStyle(.black)
+                        .background(.white)
+                        .overlay {
+                            Circle()
+                                .stroke(.black, lineWidth: 1.5)
+                        }
+                        .clipShape(Circle())
+                        .onTapGesture {
+                            router.push(user == nil ? .register : .login)
+                        }
+                }
             }
             .padding()
 
@@ -68,6 +78,9 @@ struct HomeScreen: View {
                     Spacer()
                 }
             }
+        }
+        .onAppear {
+            self.user = authVM.getLastUser(context: modelContext)
         }
         .sheet(isPresented: $router.isManagerUnlocked) {
             ManagerView()
