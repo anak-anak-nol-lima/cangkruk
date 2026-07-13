@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		490B00813002B83000A08740 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 490B00803002B83000A08740 /* Lottie */; };
 		496FC53E3004D47D000900A9 /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = 496FC53D3004D47D000900A9 /* ZIPFoundation */; };
+		C8FE005B30054FF800BE7CEE /* Release.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = C8FE005A30054FF800BE7CEE /* Release.xcconfig */; };
+		C8FEFF533004E91600BE7CEE /* Debug.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = C8FEFF523004E91600BE7CEE /* Debug.xcconfig */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -24,6 +26,8 @@
 /* Begin PBXFileReference section */
 		C8B53CBE300342DB00BEA38F /* CangkrukUnitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CangkrukUnitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C8EAA5842FFD04DB0024B4CC /* Cangkruk.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Cangkruk.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C8FE005A30054FF800BE7CEE /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
+		C8FEFF523004E91600BE7CEE /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -86,6 +90,8 @@
 				C8B53CBF300342DB00BEA38F /* CangkrukUnitTests */,
 				496FC53C3004D47D000900A9 /* Frameworks */,
 				C8EAA5852FFD04DB0024B4CC /* Products */,
+				C8FEFF523004E91600BE7CEE /* Debug.xcconfig */,
+				C8FE005A30054FF800BE7CEE /* Release.xcconfig */,
 			);
 			sourceTree = "<group>";
 		};
@@ -204,6 +210,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C8FE005B30054FF800BE7CEE /* Release.xcconfig in Resources */,
+				C8FEFF533004E91600BE7CEE /* Debug.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -282,6 +290,7 @@
 		};
 		C8EAA58D2FFD04DC0024B4CC /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C8FEFF523004E91600BE7CEE /* Debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -346,6 +355,7 @@
 		};
 		C8EAA58E2FFD04DC0024B4CC /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C8FE005A30054FF800BE7CEE /* Release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -408,7 +418,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 95C9G5AYFC;
+				DEVELOPMENT_TEAM = HK5U3FU2AP;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Cangkruk/Info.plist;
@@ -443,7 +453,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 95C9G5AYFC;
+				DEVELOPMENT_TEAM = HK5U3FU2AP;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Cangkruk/Info.plist;

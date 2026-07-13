@@ -56,16 +56,21 @@ struct RecordButton: View {
 
 struct AppImageButton: View {
     var imageName: String
+    var isLoading: Bool = false
     var action: () -> Void
 
     var body: some View {
         Button {
             action()
         } label: {
-            Image(imageName)
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(height: 46)
+            VStack {
+                if isLoading {
+                    ProgressView()
+                } else {
+                    Image(imageName)
+                }
+            }
+            .frame(height: 46)
         }
     }
 }

@@ -11,6 +11,9 @@ struct MainScreen: View {
     // MARK: - ViewModel
     @State private var router = RouterViewModel() // route view model to use functionality for dynamic routing
     @State private var notificationViewModel = NotificationViewModel()
+    @State private var authenticationViewModel = AuthenticationViewModel()
+    
+    // MARK: - Environment
     @Environment(\.scenePhase) var scenePhase
     
     var body: some View {
@@ -40,6 +43,8 @@ struct MainScreen: View {
                 }
         }
         .environment(router)
+        .environment(notificationViewModel)
+        .environment(authenticationViewModel)
     }
 }
 
