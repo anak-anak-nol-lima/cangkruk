@@ -29,7 +29,7 @@ enum TextExtractionService {
         }
     }
 
-    private static func extractTextFromPDF(at url: URL) -> String? {
+    nonisolated private static func extractTextFromPDF(at url: URL) -> String? {
         guard let document = PDFDocument(url: url) else { return nil }
 
         var pageTexts: [String] = []
@@ -50,7 +50,7 @@ enum TextExtractionService {
         return combined.isEmpty ? nil : combined
     }
 
-    private static func ocrText(from page: PDFPage) -> String? {
+    nonisolated private static func ocrText(from page: PDFPage) -> String? {
         let bounds = page.bounds(for: .mediaBox)
         guard bounds.width > 0, bounds.height > 0 else { return nil }
 
@@ -89,7 +89,7 @@ enum TextExtractionService {
         return recognizedText.isEmpty ? nil : recognizedText
     }
 
-    private static func extractTextFromDocx(at url: URL) -> String? {
+    nonisolated private static func extractTextFromDocx(at url: URL) -> String? {
         // .docx is a ZIP archive of XML files — the document's text lives in word/document.xml.
         let archive: Archive
         do {
@@ -133,7 +133,7 @@ enum TextExtractionService {
 
 /// Collects the text inside Word's `<w:t>` (text run) elements while walking word/document.xml,
 /// inserting a newline at the end of each `<w:p>` (paragraph) to preserve paragraph breaks.
-private final class DocxTextParserDelegate: NSObject, XMLParserDelegate {
+nonisolated private final class DocxTextParserDelegate: NSObject, XMLParserDelegate {
     private(set) var extractedText = ""
     private var isInsideTextRun = false
 
