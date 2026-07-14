@@ -8,5 +8,7 @@
 	<array>
 		<string>ShakyHandSomeComic_bold.otf</string>
 	</array>
+	<key>UIFileSharingEnabled</key>
+	<false/>
 </dict>
 </plist>
