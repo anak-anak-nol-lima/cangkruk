@@ -10,22 +10,32 @@ import SwiftUI
 
 struct AppButton: View {
     var label: String
+    var isLoading: Bool = false
     var action: () -> Void
     
     var body: some View {
         Button {
-            action()
+            if !isLoading {
+                action()
+            }
         } label: {
             VStack {
-                Text(label)
-                    .foregroundStyle(.white)
-                    .bold()
+                if isLoading {
+                    ProgressView()
+                } else {
+                    Text(label)
+                        .foregroundStyle(.white)
+                        .bold()
+                        .font(.shakyComicBold(size: 31))
+                        .textCase(.uppercase)
+                }
+                
             }
             .padding()
             .frame(maxWidth: .infinity)
             .frame(height: 60)
-            .background(Color.black)
-            .clipShape(Capsule())
+            .background(isLoading ? .gray : Color("Primary"))
+            .clipShape(RoundedRectangle(cornerRadius: 12))
         }
     }
 }

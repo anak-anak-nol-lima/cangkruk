@@ -42,23 +42,23 @@ struct RegisterScreen: View {
             .padding(24)
 
             VStack {
-                Spacer()
 
-                VStack(spacing: -193) {
+                VStack {
+                    
                     AppLottie(animation: "CangkrukLay")
                         .frame(height: 200)
-                        .offset(y: -175)
                         .allowsHitTesting(false)
+                        .offset(y: 25)
 
-                    AppImageButton(imageName: "simpanButton", isLoading: authVM.isLoading) {
+                    AppButton(label: "Simpan", isLoading: authVM.isLoading) {
                         Task {
                             _ = await authVM.register(context: modelContext, username: username, password: password)
                         }
                     }
                     .frame(maxWidth: .infinity, alignment: .center)
                 }
-                .padding(.horizontal, 24)
-                .padding(.bottom, 180)
+                .padding(.top, 250)
+                .padding(.horizontal, 30)
 
             }
         }
