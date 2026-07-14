@@ -63,3 +63,5 @@ fastlane/test_output
 .DS_Store
 
 Release.xcconfig
+# Local LLM weights (3.5GB — never commit; each dev downloads their own copy)
+Models/
