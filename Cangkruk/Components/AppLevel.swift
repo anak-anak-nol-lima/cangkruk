@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct AppLevel: View {
-    // MARK: - From props
     var level: Int
     var description: String
     var isLock: Bool
@@ -17,61 +16,178 @@ struct AppLevel: View {
     var onClick: () -> Void
         
     var body: some View {
+        if isManager {
+            if isLock {
+                levelLockedManager
+            } else {
+                levelOpenedManager
+            }
+        } else {
+            if isLock {
+                levelLocked
+            } else {
+                levelOpened
+            }
+        }
+    }
+    
+    @ViewBuilder
+    private var levelOpened: some View {
         HStack {
             VStack(alignment: .leading) {
-                Text("Capaian \(level)")
-                    .font(.title3)
-                    .bold()
-                    .padding(.bottom, 8)
-
+                Text("LEVEL \(level)")
+                    .font(.shakyComicBold(size: 25))
+                    .foregroundStyle(Color("Secondary"))
+                    .padding(.bottom, 2)
+                
                 Text(description)
-                    .font(.default)
+                    .foregroundStyle(Color("Secondary"))
+                    .font(.system(size: 12))
+                    .multilineTextAlignment(.leading)
+                    .fixedSize(horizontal: false, vertical: true)
             }
-            .foregroundStyle(.black)
-            .padding(.vertical, 8)
-            .padding(.horizontal, 12)
+            .padding(5)
+            .padding(.trailing, 70)
             
             Spacer()
-            
-            if isManager {
-                Image(systemName: isLock ? "lock.fill" : "lock.open.fill")
-                    .frame(width: 50, height: 50)
-                    .foregroundStyle(isLock ? .white : .black)
-                    .background(isLock ? .black : .white)
-                    .overlay {
-                        Circle()
-                            .stroke(.black, lineWidth: 1.5)
-                    }
-                    .clipShape(Circle())
-                    .onTapGesture {
-                        toggleLock()
-                    }
-            }
         }
         .padding()
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(Color.white)
+        .background(Color("lightBackground"))
+        .overlay(alignment: .trailing) {
+            Image("startButtonOrange")
+                .resizable()
+                .scaledToFit()
+                .frame(height: 130)
+                .offset(x: 25)
+        }
         .clipShape(RoundedRectangle(cornerRadius: 12))
-        .shadow(color: Color.black.opacity(0.2), radius: 10)
-        .padding(.bottom, 12)
+        .padding(.bottom, 5)
         .onTapGesture {
             onClick()
+        }
+    }
+    
+    @ViewBuilder
+    private var levelOpenedManager: some View {
+        HStack {
+            VStack(alignment: .leading) {
+                Text("LEVEL \(level)")
+                    .font(.shakyComicBold(size: 25))
+                    .foregroundStyle(Color("Secondary"))
+                    .padding(.bottom, 2)
+                
+                Text(description)
+                    .foregroundStyle(Color("Secondary"))
+                    .font(.system(size: 12))
+                    .multilineTextAlignment(.leading)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            .padding(5)
+            .padding(.trailing, 70)
+            
+            Spacer()
+        }
+        .padding()
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Color("lightBackground"))
+        .overlay(alignment: .trailing) {
+            Image("startButtonOrange")
+                .resizable()
+                .scaledToFit()
+                .frame(height: 130)
+                .offset(x: 25)
+        }
+        .clipShape(RoundedRectangle(cornerRadius: 12))
+        .padding(.bottom, 5)
+        .onTapGesture {
+            toggleLock()
+        }
+    }
+    
+    @ViewBuilder
+    private var levelLocked: some View {
+        HStack {
+            VStack(alignment: .leading) {
+                Text("LEVEL \(level)")
+                    .font(.shakyComicBold(size: 25))
+                    .foregroundStyle(Color("Yellow"))
+                    .padding(.bottom, 2)
+                
+                Text(description)
+                    .foregroundStyle(Color("Yellow"))
+                    .font(.system(size: 12))
+                    .multilineTextAlignment(.leading)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            .padding(5)
+            .padding(.trailing, 70)
+            
+            Spacer()
+        }
+        .padding()
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Color("Secondary"))
+        .overlay(alignment: .trailing) {
+            Image("startButtonBrown")
+                .resizable()
+                .scaledToFit()
+                .frame(height: 130)
+                .offset(x: 25)
+                .opacity(0.5)
+        }
+        .clipShape(RoundedRectangle(cornerRadius: 12))
+        .padding(.bottom, 5)
+        .opacity(0.5)
+    }
+    
+    @ViewBuilder
+    private var levelLockedManager: some View {
+        HStack {
+            VStack(alignment: .leading) {
+                Text("LEVEL \(level)")
+                    .font(.shakyComicBold(size: 25))
+                    .foregroundStyle(Color("Yellow"))
+                    .padding(.bottom, 2)
+                
+                Text(description)
+                    .foregroundStyle(Color("Yellow"))
+                    .font(.system(size: 12))
+                    .multilineTextAlignment(.leading)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            .padding(5)
+            .padding(.trailing, 70)
+            
+            Spacer()
+        }
+        .padding()
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Color("Secondary"))
+        .overlay(alignment: .trailing) {
+            Image("lockButtonBrown")
+                .resizable()
+                .scaledToFit()
+                .frame(height: 130)
+                .offset(x: 25)
+                .opacity(0.5)
+        }
+        .clipShape(RoundedRectangle(cornerRadius: 12))
+        .padding(.bottom, 5)
+        .opacity(0.5)
+        .onTapGesture {
+            toggleLock()
         }
     }
 }
 
 #Preview {
-    VStack {
-        AppLevel(
-            level: 1,
-            description: "Pengetahuan akan produk",
-            isLock: false,
-            isManager: true
-        ) {
-            
-        } onClick: {
-            
-        }
-    }
-    .padding()
+    AppLevel(
+        level: 4,
+        description: "Membangun hubungan baik dengan pelanggan",
+        isLock: false,
+        isManager: false,
+        toggleLock: {},
+        onClick: {}
+    )
 }
