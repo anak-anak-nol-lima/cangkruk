@@ -11,6 +11,12 @@
 		496FC53E3004D47D000900A9 /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = 496FC53D3004D47D000900A9 /* ZIPFoundation */; };
 		C8FE005B30054FF800BE7CEE /* Release.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = C8FE005A30054FF800BE7CEE /* Release.xcconfig */; };
 		C8FEFF533004E91600BE7CEE /* Debug.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = C8FEFF523004E91600BE7CEE /* Debug.xcconfig */; };
+		FD0A0A4930051D62008F359C /* MLXLLM in Frameworks */ = {isa = PBXBuildFile; productRef = FD0A0A4830051D62008F359C /* MLXLLM */; };
+		FD0A0A4B30051D62008F359C /* MLXLMCommon in Frameworks */ = {isa = PBXBuildFile; productRef = FD0A0A4A30051D62008F359C /* MLXLMCommon */; };
+		FD0A0A4D30051D62008F359C /* MLXVLM in Frameworks */ = {isa = PBXBuildFile; productRef = FD0A0A4C30051D62008F359C /* MLXVLM */; };
+		FDA0DE11300500000000A002 /* gemma-4-e2b-it-4bit in Resources */ = {isa = PBXBuildFile; fileRef = FDA0DE10300500000000A001 /* gemma-4-e2b-it-4bit */; };
+		FDA0DE23300500000000B004 /* Tokenizers in Frameworks */ = {isa = PBXBuildFile; productRef = FDA0DE21300500000000B002 /* Tokenizers */; };
+		FDA0DE24300500000000B005 /* MLXHuggingFace in Frameworks */ = {isa = PBXBuildFile; productRef = FDA0DE22300500000000B003 /* MLXHuggingFace */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -28,6 +34,7 @@
 		C8EAA5842FFD04DB0024B4CC /* Cangkruk.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Cangkruk.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C8FE005A30054FF800BE7CEE /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
 		C8FEFF523004E91600BE7CEE /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
+		FDA0DE10300500000000A001 /* gemma-4-e2b-it-4bit */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "gemma-4-e2b-it-4bit"; path = "Models/gemma-4-e2b-it-4bit"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -70,6 +77,11 @@
 			files = (
 				490B00813002B83000A08740 /* Lottie in Frameworks */,
 				496FC53E3004D47D000900A9 /* ZIPFoundation in Frameworks */,
+				FD0A0A4D30051D62008F359C /* MLXVLM in Frameworks */,
+				FD0A0A4930051D62008F359C /* MLXLLM in Frameworks */,
+				FD0A0A4B30051D62008F359C /* MLXLMCommon in Frameworks */,
+				FDA0DE23300500000000B004 /* Tokenizers in Frameworks */,
+				FDA0DE24300500000000B005 /* MLXHuggingFace in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -89,6 +101,7 @@
 				C8EAA5862FFD04DB0024B4CC /* Cangkruk */,
 				C8B53CBF300342DB00BEA38F /* CangkrukUnitTests */,
 				496FC53C3004D47D000900A9 /* Frameworks */,
+				FDA0DE10300500000000A001 /* gemma-4-e2b-it-4bit */,
 				C8EAA5852FFD04DB0024B4CC /* Products */,
 				C8FEFF523004E91600BE7CEE /* Debug.xcconfig */,
 				C8FE005A30054FF800BE7CEE /* Release.xcconfig */,
@@ -149,6 +162,11 @@
 			packageProductDependencies = (
 				490B00803002B83000A08740 /* Lottie */,
 				496FC53D3004D47D000900A9 /* ZIPFoundation */,
+				FD0A0A4830051D62008F359C /* MLXLLM */,
+				FD0A0A4A30051D62008F359C /* MLXLMCommon */,
+				FD0A0A4C30051D62008F359C /* MLXVLM */,
+				FDA0DE21300500000000B002 /* Tokenizers */,
+				FDA0DE22300500000000B003 /* MLXHuggingFace */,
 			);
 			productName = Cangkruk;
 			productReference = C8EAA5842FFD04DB0024B4CC /* Cangkruk.app */;
@@ -186,6 +204,8 @@
 			packageReferences = (
 				490B007F3002B83000A08740 /* XCRemoteSwiftPackageReference "lottie-ios" */,
 				496FC53B3004D450000900A9 /* XCRemoteSwiftPackageReference "ZIPFoundation" */,
+				FDCE76D03005193D00EB0B8F /* XCRemoteSwiftPackageReference "mlx-swift-lm" */,
+				FDA0DE20300500000000B001 /* XCRemoteSwiftPackageReference "swift-transformers" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = C8EAA5852FFD04DB0024B4CC /* Products */;
@@ -212,6 +232,7 @@
 			files = (
 				C8FE005B30054FF800BE7CEE /* Release.xcconfig in Resources */,
 				C8FEFF533004E91600BE7CEE /* Debug.xcconfig in Resources */,
+				FDA0DE11300500000000A002 /* gemma-4-e2b-it-4bit in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -250,10 +271,10 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = HK5U3FU2AP;
+				DEVELOPMENT_TEAM = P9RHX8FDH9;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.bee.swift.CangkrukUnitTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Joren.swift.CangkrukUnitTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
@@ -273,10 +294,10 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = HK5U3FU2AP;
+				DEVELOPMENT_TEAM = P9RHX8FDH9;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.bee.swift.CangkrukUnitTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Joren.swift.CangkrukUnitTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
@@ -416,9 +437,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Cangkruk/Cangkruk.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 95C9G5AYFC;
+				DEVELOPMENT_TEAM = P9RHX8FDH9;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Cangkruk/Info.plist;
@@ -434,7 +456,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.bee.swift.Cangkruk;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Joren.swift.Cangkruk;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
@@ -451,9 +473,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Cangkruk/Cangkruk.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 95C9G5AYFC;
+				DEVELOPMENT_TEAM = P9RHX8FDH9;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Cangkruk/Info.plist;
@@ -469,7 +492,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.bee.swift.Cangkruk;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Joren.swift.Cangkruk;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
@@ -530,6 +553,24 @@
 				minimumVersion = 0.9.20;
 			};
 		};
+		FDA0DE20300500000000B001 /* XCRemoteSwiftPackageReference "swift-transformers" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/huggingface/swift-transformers";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.2.1;
+			};
+			traits = (
+			);
+		};
+		FDCE76D03005193D00EB0B8F /* XCRemoteSwiftPackageReference "mlx-swift-lm" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ml-explore/mlx-swift-lm";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.31.4;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -542,6 +583,31 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 496FC53B3004D450000900A9 /* XCRemoteSwiftPackageReference "ZIPFoundation" */;
 			productName = ZIPFoundation;
+		};
+		FD0A0A4830051D62008F359C /* MLXLLM */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FDCE76D03005193D00EB0B8F /* XCRemoteSwiftPackageReference "mlx-swift-lm" */;
+			productName = MLXLLM;
+		};
+		FD0A0A4A30051D62008F359C /* MLXLMCommon */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FDCE76D03005193D00EB0B8F /* XCRemoteSwiftPackageReference "mlx-swift-lm" */;
+			productName = MLXLMCommon;
+		};
+		FD0A0A4C30051D62008F359C /* MLXVLM */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FDCE76D03005193D00EB0B8F /* XCRemoteSwiftPackageReference "mlx-swift-lm" */;
+			productName = MLXVLM;
+		};
+		FDA0DE21300500000000B002 /* Tokenizers */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FDA0DE20300500000000B001 /* XCRemoteSwiftPackageReference "swift-transformers" */;
+			productName = Tokenizers;
+		};
+		FDA0DE22300500000000B003 /* MLXHuggingFace */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FDCE76D03005193D00EB0B8F /* XCRemoteSwiftPackageReference "mlx-swift-lm" */;
+			productName = MLXHuggingFace;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
