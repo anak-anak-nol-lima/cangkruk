@@ -23,10 +23,6 @@ class SynthetizerTextToSpeech: TextToSpeechProtocol {
     // it will initialize the audioSession with playback mode
     // it will filter the premium quality of the voice
     func speak(_ text: String) throws {
-        let session = AVAudioSession.sharedInstance()
-        try session.setCategory(.playback, mode: .default)
-        try session.setActive(true)
-        
         let utterance = AVSpeechUtterance(string: text)
         let bestVoice = getPremiumQuality(voices: AVSpeechSynthesisVoice.speechVoices())
         utterance.voice = bestVoice

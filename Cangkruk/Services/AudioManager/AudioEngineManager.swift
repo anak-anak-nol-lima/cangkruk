@@ -23,7 +23,7 @@ class AudioEngineManager: AudioEngineProtocol {
     // setting up audio session ( for setting to be record mode )
     func setupAudioSession() throws {
         let session = AVAudioSession.sharedInstance()
-        try session.setCategory(.record, mode: .measurement, options: .duckOthers)
+        try session.setCategory(.playAndRecord, mode: .spokenAudio, options: [.defaultToSpeaker, .duckOthers])
         try session.setActive(true)
     }
     
