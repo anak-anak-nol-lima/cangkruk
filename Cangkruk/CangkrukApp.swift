@@ -14,6 +14,6 @@ struct CangkrukApp: App {
         WindowGroup {
             MainScreen()
         }
-        .modelContainer(for: [User.self, TrainingFile.self]) // to enable modelContext to be accessed by all view
+        .modelContainer(for: [User.self, TrainingFile.self, FeedbackResult.self]) // to enable modelContext to be accessed by all view
     }
 }

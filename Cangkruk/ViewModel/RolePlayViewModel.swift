@@ -15,11 +15,17 @@ class RolePlayViewModel {
     var isPreparing = true
     var isThinking = false
     var isSessionOver = false
+    var isGeneratingFeedback = false
+    var feedbackSummary: String?
+    var feedbackText: String?
     var errorMessage: String?
 
     private var timerTask: Task<Void, Never>?
 
-    init(scenario: RolePlayScenario, llm: ILLMService = MLXLLMService()) {
+    // satu baris ini yang menentukan otaknya di mana:
+    // APILLMService() = server (app ramping, butuh internet)
+    // MLXLLMService() = on-device (offline, app bawa model 3.5GB)
+    init(scenario: RolePlayScenario, llm: ILLMService = APILLMService()) {
         self.scenario = scenario
         self.llm = llm
 
@@ -40,7 +46,7 @@ class RolePlayViewModel {
                 isPreparing = false
                 startTimer()
             } catch {
-                isPreparing = false   // stop the spinner — otherwise it spins forever behind the error
+                isPreparing = false
                 errorMessage = "Gagal memuat model: \(error.localizedDescription)"
             }
         }
@@ -50,8 +56,51 @@ class RolePlayViewModel {
         timerTask = Task {
             try? await Task.sleep(for: sessionLength)
             guard !Task.isCancelled else { return }
-            endSession()
+            finishSession()
         }
+    }
+
+    // dipanggil saat timer habis: sesi berakhir NORMAL, jadi minta penilaian.
+    // beda dengan endSession() yang dipanggil tombol X (keluar paksa, tanpa nilai)
+    private func finishSession() {
+        speechToText.stopPlaying()
+        isSessionOver = true
+
+        guard !messages.isEmpty else {
+            llm.endsession()
+            return
+        }
+
+        isGeneratingFeedback = true
+        Task {
+            do {
+                let transcript = messages
+                    .map { "\($0.role == .barista ? "Barista" : "Pelanggan"): \($0.text)" }
+                    .joined(separator: "\n")
+                let raw = try await llm.generateFeedback(transcript: transcript)
+                (feedbackSummary, feedbackText) = Self.parseFeedback(raw)
+            } catch {
+                errorMessage = "Gagal membuat penilaian: \(error.localizedDescription)"
+            }
+            isGeneratingFeedback = false
+            llm.endsession()
+        }
+    }
+
+    // model kecil kadang tidak patuh format — parser ini memaafkan:
+    // kalau marker FEEDBACK: tidak ketemu, seluruh teks jadi summary
+    static func parseFeedback(_ raw: String) -> (String, String) {
+        let text = raw.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard let marker = text.range(of: "FEEDBACK:", options: .caseInsensitive) else {
+            return (text, "")
+        }
+        var summary = String(text[..<marker.lowerBound])
+        if let s = summary.range(of: "SUMMARY:", options: .caseInsensitive) {
+            summary = String(summary[s.upperBound...])
+        }
+        let feedback = String(text[marker.upperBound...])
+        return (summary.trimmingCharacters(in: .whitespacesAndNewlines),
+                feedback.trimmingCharacters(in: .whitespacesAndNewlines))
     }
 
     func endSession() {

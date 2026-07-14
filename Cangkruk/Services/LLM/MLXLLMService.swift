@@ -49,6 +49,22 @@ final class MLXLLMService: ILLMService {
         return reply.trimmingCharacters(in: .whitespacesAndNewlines)
     }
 
+    func generateFeedback(transcript: String) async throws -> String {
+        guard let model = Self.loadedModel else { throw LLMError.modelNotFound }
+        
+        let evaluator = ChatSession(model, instructions: """
+            Kamu adalah senior barista yang menilai latihan komunikasi barista junior. \
+            Nilai berdasarkan: sapaan, konfirmasi pesanan, pengetahuan menu, dan penutup interaksi. \
+            Jawab dalam bahasa Indonesia, panggil barista dengan "kamu", dan pakai format PERSIS seperti ini:
+            SUMMARY: <2-3 kalimat penilaian keseluruhan>
+            FEEDBACK: <2-3 kalimat saran konkret beserta contoh kalimat yang bisa langsung dipakai>
+            """)
+
+        let reply = try await evaluator.respond(
+            to: "Berikut transkrip latihannya:\n\n\(transcript)\n\nBerikan penilaianmu sesuai format.")
+        return reply.trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+
     func endsession() {
         session = nil
     }
