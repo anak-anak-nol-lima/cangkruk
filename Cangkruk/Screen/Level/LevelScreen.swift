@@ -73,7 +73,7 @@ struct LevelScreen: View {
                 Spacer()
                 
                 AppImageButton(imageName: "mulaiButton") { //ujiPengetahuanButton
-                    router.pop()
+                    router.push(.roleplay)
                 }
                 .padding(.bottom, 15)
             }
