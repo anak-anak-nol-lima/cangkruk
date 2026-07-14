@@ -46,8 +46,7 @@ struct RolePlayScreen: View {
                 .padding(.horizontal, 24)
                 .padding(.vertical, 12)
 
-                // the conversation — reads the ViewModel's messages,
-                // NOT speechToText.result
+              
                 ScrollView {
                     VStack(spacing: 12) {
                         ForEach(viewModel.messages) { message in
@@ -81,7 +80,7 @@ struct RolePlayScreen: View {
                         .padding(.bottom, 24)
                 } else if !viewModel.isSessionOver {
                     RecordButton() {
-                        viewModel.speechToText.processMic()
+                        Task { await viewModel.speechToText.processMic() }
                     }
                     .disabled(viewModel.isThinking)
                     .opacity(viewModel.isThinking ? 0.4 : 1)
@@ -89,7 +88,6 @@ struct RolePlayScreen: View {
                     VStack(spacing: 8) {
                         Text("Sesi selesai!").font(.headline)
                         AppButton(label: "Lihat Hasil") {
-                            // Hasil page: our next build
                         }
                     }
                     .padding(.bottom, 24)
