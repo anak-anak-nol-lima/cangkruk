@@ -1,5 +1,5 @@
 {
-  "originHash" : "acddeb59512407f3a90f3786d974aa9419ffc908aec55ad99b6870e5e05ee917",
+  "originHash" : "d3ab4c2858991ae1a809971374e5d8a9781b07ba76978a026f3602b0c4cc7703",
   "pins" : [
     {
       "identity" : "eventsource",
@@ -20,12 +20,6 @@
       }
     },
     {
-      "identity" : "zipfoundation",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/weichsel/ZIPFoundation",
-      "state" : {
-        "revision" : "22787ffb59de99e5dc1fbfe80b19c97a904ad48d",
-        "version" : "0.9.20"
       "identity" : "mlx-swift",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ml-explore/mlx-swift",
@@ -158,6 +152,15 @@
       "state" : {
         "revision" : "8b4a38dc994a110abaec8a400615567bd996105f",
         "version" : "0.12.0"
+      }
+    },
+    {
+      "identity" : "zipfoundation",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/weichsel/ZIPFoundation",
+      "state" : {
+        "revision" : "22787ffb59de99e5dc1fbfe80b19c97a904ad48d",
+        "version" : "0.9.20"
       }
     }
   ],
