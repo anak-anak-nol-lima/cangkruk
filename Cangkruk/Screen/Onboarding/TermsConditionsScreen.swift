@@ -87,10 +87,11 @@ struct TermsConditionsScreen: View {
             VStack {
                 Spacer()
 
-                AppImageButton(imageName: "kembaliButton") {
+                AppButton(label: "Kembali") {
                     router.pop()
                 }
                 .padding(.bottom, 24)
+                .padding(.horizontal, 30)
             }
         }
         .navigationBarBackButtonHidden()

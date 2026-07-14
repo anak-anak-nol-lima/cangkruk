@@ -35,29 +35,27 @@ struct LoginScreen: View {
                     .padding(.top, 60)
 
                 AuthFormCard(username: $username, password: $password)
-                    .overlay(alignment: .bottomTrailing) {
-                        AppLottie(animation: "CangkrukClimb")
-                            .frame(height: 300)
-                            .offset(x: 50, y: 205)
-                            .allowsHitTesting(false)
-                        
-                    }
-
+            
                 Spacer()
             }
             .padding(24)
 
             VStack {
-                Spacer()
-
-                AppImageButton(imageName: "masukButton", isLoading: authVM.isLoading) {
+                AppLottie(animation: "CangkrukClimb")
+                    .frame(height: 250)
+                    .allowsHitTesting(false)
+                    .offset(x: 45, y: 125)
+                    .zIndex(1)
+                
+                AppButton(label: "Masuk", isLoading: authVM.isLoading) {
                     Task {
                         _ = await authVM.login(context: modelContext, username: username, password: password)
                     }
                 }
-                .padding(.horizontal, 24)
-                .padding(.bottom, 230)
+                .padding(.horizontal, 30)
+                .padding(.top, 40)
             }
+           
         }
         .ignoresSafeArea(.keyboard, edges: .bottom)
         .overlay(alignment: .bottom) {
@@ -77,4 +75,5 @@ struct LoginScreen: View {
 #Preview("Masuk") {
     LoginScreen()
         .environment(RouterViewModel())
+        .environment(AuthenticationViewModel())
 }
