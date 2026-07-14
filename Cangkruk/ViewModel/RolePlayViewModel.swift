@@ -54,7 +54,7 @@ class RolePlayViewModel {
         }
     }
 
-    func endSession() {          // NOT private — the screen's X button calls this
+    func endSession() {
         timerTask?.cancel()
         speechToText.stopPlaying()
         llm.endsession()
