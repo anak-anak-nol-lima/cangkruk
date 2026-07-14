@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import MLX
 import MLXLMCommon
 import MLXLLM
 import MLXVLM
@@ -24,6 +25,9 @@ final class MLXLLMService: ILLMService {
     private let modelFolderName = "gemma-4-e2b-it-4bit"
 
     func startsession(systemPrompt: String) async throws {
+        
+        MLX.GPU.set(cacheLimit: 20 * 1024 * 1024)
+
         if Self.loadedModel == nil {
             
             guard let modelDir = Bundle.main.url(forResource: modelFolderName, withExtension: nil) else {
