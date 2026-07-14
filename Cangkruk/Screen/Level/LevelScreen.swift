@@ -6,12 +6,18 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct LevelScreen: View {
-    
+
     // MARK: - State
     @State private var isRolePlaying: Bool = false
     @Environment(RouterViewModel.self) private var router
+
+    // hasil latihan tersimpan, terbaru di atas — @Query bikin list ini
+    // refresh sendiri tiap ada FeedbackResult baru masuk SwiftData
+    @Query(sort: \FeedbackResult.date, order: .reverse) private var results: [FeedbackResult]
+    @State private var selectedResult: FeedbackResult?
     
     var body: some View {
         ZStack {
@@ -59,6 +65,7 @@ struct LevelScreen: View {
                             title: "SOP",
                             content: "SOP adalah panduan langkah kerja yang wajib diikuti agar kualitas dan pelayanan tetap konsisten di setiap shift, siapa pun baristanya.\n\nSebelum buka bersihkan area bar, cek & kalibrasi mesin, siapkan bahan (susu, sirup, biji kopi).\n\nSaat melayani sapa pelanggan dengan ramah, konfirmasi pesanan, dan buat sesuai resep baku.\n\nSebelum menyajikan untuk manual brew, cicipi dulu hasilnya sebelum diberikan ke pelanggan.\n\nSetelah shift catat stok, bersihkan alat, dan lakukan handover ke shift berikutnya.\n\nIntinya: SOP memastikan setiap cangkir punya rasa dan kualitas yang sama."
                         )
+                        hasilSection
                     }
                     .padding(25)
                 }
@@ -79,8 +86,44 @@ struct LevelScreen: View {
             }
         }
         .navigationBarBackButtonHidden()
+        .sheet(item: $selectedResult) { result in
+            HasilScreen(summary: result.summary, feedback: result.feedback)
+        }
     }
-    
+
+    @ViewBuilder
+    private var hasilSection: some View {
+        if !results.isEmpty {
+            VStack(alignment: .leading, spacing: 8) {
+                Text("HASIL")
+                    .font(.shakyComicBold(size: 30))
+                    .bold()
+                    .foregroundStyle(Color("Secondary"))
+
+                // nomor urut kronologis: hasil paling lama = Summary 1
+                ForEach(Array(results.enumerated()), id: \.element.id) { index, result in
+                    Button {
+                        selectedResult = result
+                    } label: {
+                        HStack {
+                            Text("Summary \(results.count - index)")
+                            Spacer()
+                            Text(result.date.formatted(date: .numeric, time: .omitted))
+                        }
+                        .font(.body)
+                        .foregroundStyle(.black.opacity(0.75))
+                        .padding(12)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 8)
+                                .stroke(.black.opacity(0.2), lineWidth: 1)
+                        )
+                    }
+                    .buttonStyle(.plain)
+                }
+            }
+        }
+    }
+
     @ViewBuilder
     private func moduleSection(title: String, content: String) -> some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -99,4 +142,5 @@ struct LevelScreen: View {
 #Preview {
     LevelScreen()
         .environment(RouterViewModel())
+        .modelContainer(for: FeedbackResult.self, inMemory: true)
 }

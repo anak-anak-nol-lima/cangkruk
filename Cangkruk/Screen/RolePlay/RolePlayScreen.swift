@@ -4,15 +4,19 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct RolePlayScreen: View {
     @Binding var isPresented: Bool
+    @Environment(\.modelContext) private var modelContext
 
-   
+
     @State private var viewModel: RolePlayViewModel
 
     @State private var isError: Bool = false
     @State private var errorText: String = ""
+    @State private var showHasil = false
+    @State private var hasSavedResult = false
 
     init(isPresented: Binding<Bool>, scenario: RolePlayScenario = RolePlayScenario.all[0]) {
         self._isPresented = isPresented
@@ -66,8 +70,7 @@ struct RolePlayScreen: View {
 
                 Spacer()
 
-                // live transcript while recording — note: viewModel.speechToText,
-                // the ViewModel's mic station, not a private copy
+            
                 if viewModel.speechToText.isPlaying {
                     Text("Sedang mendengarkan...")
                         .font(.caption).bold().foregroundStyle(.red)
@@ -87,7 +90,12 @@ struct RolePlayScreen: View {
                 } else {
                     VStack(spacing: 8) {
                         Text("Sesi selesai!").font(.headline)
-                        AppButton(label: "Lihat Hasil") {
+                        if viewModel.isGeneratingFeedback {
+                            ProgressView("Pelanggan sedang menilai kamu...")
+                        } else {
+                            AppButton(label: "Lihat Hasil") {
+                                showHasil = true
+                            }
                         }
                     }
                     .padding(.bottom, 24)
@@ -95,6 +103,24 @@ struct RolePlayScreen: View {
             }
         }
         .onAppear { viewModel.startSession() }   // <-- hires the conductor
+        .sheet(isPresented: $showHasil) {
+            HasilScreen(
+                summary: viewModel.feedbackSummary ?? "Belum ada penilaian untuk sesi ini.",
+                feedback: viewModel.feedbackText ?? ""
+            )
+        }
+        
+        .onChange(of: viewModel.isGeneratingFeedback) { _, generating in
+            guard !generating, !hasSavedResult,
+                  let summary = viewModel.feedbackSummary else { return }
+            hasSavedResult = true
+            modelContext.insert(FeedbackResult(
+                levelNumber: viewModel.scenario.difficulty,
+                scenarioName: viewModel.scenario.name,
+                summary: summary,
+                feedback: viewModel.feedbackText ?? ""
+            ))
+        }
         .overlay(alignment: .bottom) {
             if isError {
                 AppSnackbar(errorMessage: errorText, type: .error, isPresented: $isError)
