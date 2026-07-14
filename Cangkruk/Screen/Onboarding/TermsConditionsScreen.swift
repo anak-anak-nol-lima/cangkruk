@@ -18,10 +18,9 @@ struct TermsConditionsScreen: View {
             VStack(spacing: 0) {
                 ZStack(alignment: .topTrailing) {
                     HStack {
-                        Image("termsConditionsTitle")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(height: 70)
+                        Text("SYARAT & \nKETENTUAN")
+                            .font(.shakyComicBold(size: 35))
+                            .foregroundStyle(Color("Primary"))
 
                         Spacer()
                     }
@@ -79,8 +78,9 @@ struct TermsConditionsScreen: View {
                     .padding(25)
                 }
                 .background(Color("lightBackground"))
-                .clipShape(RoundedRectangle(cornerRadius: 30))
+                .clipShape(RoundedRectangle(cornerRadius: 20))
                 .padding(.top, -105)
+                .padding(.bottom, 115)
                 .padding(.horizontal, 30)
             }
 
@@ -101,13 +101,12 @@ struct TermsConditionsScreen: View {
     private func termsSection(title: String, body: String) -> some View {
         VStack(alignment: .leading, spacing: 8) {
             Text(title)
-                .font(.title3)
-                .bold()
-                .foregroundStyle(.black)
+                .font(.shakyComicBold(size: 20))
+                .foregroundStyle(Color("Secondary"))
 
             Text(body)
                 .font(.body)
-                .foregroundStyle(.black.opacity(0.75))
+                .foregroundStyle(Color("Secondary"))
         }
     }
 }
