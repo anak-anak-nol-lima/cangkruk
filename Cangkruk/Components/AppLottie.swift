@@ -12,11 +12,21 @@ import Lottie
 struct AppLottie: View {
     var animation: String
     
+    private func loadAnimation() async throws -> LottieAnimationSource? {
+        if let dotLottie = try? await DotLottieFile.named(animation) {
+            return dotLottie.animationSource
+        }
+        
+        return LottieAnimation.named(animation)?.animationSource
+    }
+    
     var body: some View {
-        LottieView(animation: .named(animation))
-            .configuration(LottieConfiguration(renderingEngine: .coreAnimation))
-            .playing()
-            .looping()
+        LottieView {
+            try await loadAnimation()
+        }
+        .configuration(LottieConfiguration(renderingEngine: .coreAnimation))
+        .playing()
+        .looping()
     }
 }
 
@@ -31,6 +41,8 @@ struct AppLottie: View {
             AppLottie(animation: "CangkrukWipe")
                 .frame(height: 200)
             AppLottie(animation: "CangkrukHero")
+                .frame(height: 400)
+            AppLottie(animation: "CangkrukMeditate")
                 .frame(height: 400)
         }
     }

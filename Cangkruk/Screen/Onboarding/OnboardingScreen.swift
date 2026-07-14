@@ -31,9 +31,10 @@ struct OnboardingScreen: View {
                 }
                 
                 
-                AppImageButton(imageName: "mulaiButton") {
+                AppButton(label: "Mulai") {
                     router.push(.home)
                 }
+                .padding(.horizontal, 30)
 
             }
             .padding()
