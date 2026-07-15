@@ -175,9 +175,9 @@ struct ManagerView: View {
             }
             .overlay(alignment: .bottom) {
                 // Floating Lottie + Simpan button
-                VStack(spacing: -193) {
+                VStack(spacing: -20) {
                     AppLottie(animation: "CangkrukLay")
-                        .frame(height: 500)
+                        .frame(height: 190)
                         .frame(maxWidth: .infinity, alignment: .center)
                         .allowsHitTesting(false)
                     AppImageButton(imageName: "simpanButton") {
