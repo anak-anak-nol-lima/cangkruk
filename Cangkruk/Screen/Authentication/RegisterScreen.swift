@@ -21,6 +21,10 @@ struct RegisterScreen: View {
     @State private var email: String = ""
     @State private var password: String = ""
 
+    private var isResetMode: Bool {
+        authVM.resetEmail != nil
+    }
+
     var body: some View {
         @Bindable var authVM = authVM
 
@@ -35,7 +39,7 @@ struct RegisterScreen: View {
                     .frame(height: 60)
                     .padding(.top, 60)
 
-                AuthFormCard(email: $email, password: $password)
+                AuthFormCard(email: $email, password: $password, isEmailEditable: !isResetMode)
 
                 Spacer()
             }
@@ -44,7 +48,7 @@ struct RegisterScreen: View {
             VStack {
 
                 VStack {
-                    
+
                     AppLottie(animation: "CangkrukLay")
                         .frame(height: 200)
                         .allowsHitTesting(false)
@@ -52,7 +56,11 @@ struct RegisterScreen: View {
 
                     AppButton(label: "Simpan", isLoading: authVM.isLoading) {
                         Task {
-                            _ = await authVM.register(context: modelContext, email: email, password: password)
+                            if isResetMode {
+                                _ = await authVM.resetPassword(context: modelContext, newPassword: password)
+                            } else {
+                                _ = await authVM.register(context: modelContext, email: email, password: password)
+                            }
                         }
                     }
                     .frame(maxWidth: .infinity, alignment: .center)
@@ -68,9 +76,19 @@ struct RegisterScreen: View {
                 AppSnackbar(errorMessage: authVM.errorMessage ?? "", type: .error, isPresented: $authVM.isError)
             }
         }
+        .onAppear {
+            if let resetEmail = authVM.resetEmail {
+                email = resetEmail
+            }
+        }
         .onChange(of: authVM.successMessage) { _, newValue in
-            if newValue != "" {
+            switch newValue {
+            case "User successfully created":
                 router.replacePath(.home)
+            case "Password reset successfully":
+                router.pop()
+            default:
+                break
             }
         }
     }
