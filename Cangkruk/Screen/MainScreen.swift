@@ -18,7 +18,8 @@ struct MainScreen: View {
     
     var body: some View {
         NavigationStack(path: $router.path) {
-            OnboardingScreen()                .navigationDestination(for: Route.self) { route in
+            OnboardingScreen()
+                .navigationDestination(for: Route.self) { route in
                     switch route {
                     case .home:
                         HomeScreen()
