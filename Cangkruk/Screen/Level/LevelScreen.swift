@@ -79,9 +79,10 @@ struct LevelScreen: View {
             VStack {
                 Spacer()
                 
-                AppImageButton(imageName: "mulaiButton") {
+                AppButton(imageName: "mulaiButton") {
                     router.push(.roleplay)
                 }
+                .padding(.horizontal, 20)
                 .padding(.bottom, 15)
             }
         }
