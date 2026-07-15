@@ -118,7 +118,8 @@ struct RolePlayScreen: View {
                 levelNumber: viewModel.scenario.difficulty,
                 scenarioName: viewModel.scenario.name,
                 summary: summary,
-                feedback: viewModel.feedbackText ?? ""
+                feedback: viewModel.feedbackText ?? "",
+                transcript: viewModel.sessionTranscript ?? ""
             ))
         }
         .overlay(alignment: .bottom) {

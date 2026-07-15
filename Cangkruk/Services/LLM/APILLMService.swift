@@ -7,9 +7,6 @@
 
 import Foundation
 
-// versi "otak di server": percakapan dikirim ke cangkruk.gagas.tech,
-// Gemini yang mikir di sana. Server-nya stateless — riwayat chat
-// disimpan di sini dan dikirim utuh tiap giliran (makanya tanpa DB)
 final class APILLMService: ILLMService {
     private let baseURL = URL(string: "https://cangkruk.gagas.tech")!
 
