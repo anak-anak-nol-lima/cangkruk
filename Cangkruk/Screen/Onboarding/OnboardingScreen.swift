@@ -6,11 +6,20 @@
 //
 
 import SwiftUI
-
+import SwiftData
 
 struct OnboardingScreen: View {
     // MARK: - ViewModel
     @Environment(RouterViewModel.self) private var router
+    @Environment(AuthenticationViewModel.self) private var authVM
+    
+    
+    // MARK: - Storage
+    @Environment(\.modelContext) private var modelContext
+    
+    // MARK: - State
+    @State private var user: User?
+    
     
     var body: some View {
         ZStack {
@@ -32,7 +41,7 @@ struct OnboardingScreen: View {
                 
                 
                 AppButton(label: "Mulai") {
-                    router.push(.home)
+                    router.push(user == nil ? .register : .home)
                 }
                 .padding(.horizontal, 30)
 
@@ -50,10 +59,14 @@ struct OnboardingScreen: View {
                 }
             }
         }
+        .onAppear {
+            user = authVM.getLastUser(context: modelContext)
+        }
     }
 }
 
 #Preview {
     OnboardingScreen()
         .environment(RouterViewModel())
+        .environment(AuthenticationViewModel())
 }

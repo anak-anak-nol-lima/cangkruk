@@ -16,7 +16,6 @@ enum Route {
          login
 }
 
-@MainActor
 @Observable
 class RouterViewModel {
     var path = NavigationPath()

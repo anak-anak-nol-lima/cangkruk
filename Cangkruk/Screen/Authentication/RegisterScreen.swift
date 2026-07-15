@@ -70,7 +70,7 @@ struct RegisterScreen: View {
         }
         .onChange(of: authVM.successMessage) { _, newValue in
             if newValue != "" {
-                router.replacePath(.login)
+                router.replacePath(.home)
             }
         }
     }

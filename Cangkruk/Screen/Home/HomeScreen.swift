@@ -21,9 +21,10 @@ struct HomeScreen: View {
     // MARK: - ViewModel
     @Environment(RouterViewModel.self) private var router
     @Environment(AuthenticationViewModel.self) private var authVM
-    @State private var showManagerView = false
-    @Query private var allFiles: [TrainingFile]
     
+    
+    // MARK: - ViewModel
+    @Query private var allFiles: [TrainingFile]
     @State private var levelInfo: [LevelInfo] = [
         LevelInfo(level: 1, description: "Pengetahuan akan produk", isLock: false),
         LevelInfo(level: 2, description: "Memahami kebutuhan pelanggan", isLock: true),
@@ -64,7 +65,7 @@ struct HomeScreen: View {
                             .padding(.top, 10)
                             .padding(.leading, 8)
                             .onTapGesture {
-                                showManagerView = true
+                                isSOPOpen = true
                             }
                         
                         Image(systemName: "rectangle.portrait.and.arrow.right")
@@ -93,7 +94,6 @@ struct HomeScreen: View {
                         
                         Spacer()
                         
-                        // --- HASIL MERGE LOGIKA TEMANMU MASUK DI SINI ---
                         if authVM.isLoading {
                             ProgressView()
                                 .padding(.top, 10)
@@ -105,11 +105,9 @@ struct HomeScreen: View {
                                 .foregroundStyle(Color("Primary"))
                                 .padding(.top, 10)
                                 .onTapGesture {
-                                    // Logika routing dari temanmu (Bukan sekadar push .register lagi)
-                                    router.push(user == nil ? .register : .login)
+                                    router.push(.login)
                                 }
                         }
-                        // ------------------------------------------------
                     }
                     .padding(10)
                 }
@@ -149,30 +147,19 @@ struct HomeScreen: View {
             .padding(.horizontal)
             
         }
-        .sheet(isPresented: $showManagerView) {
+        .sheet(isPresented: $isSOPOpen) {
             ManagerView()
-                .environment(router)
         }
-        .navigationBarBackButtonHidden()
         .onAppear {
             self.user = authVM.getLastUser(context: modelContext)
-            self.isSOPOpen = router.isManagerUnlocked
-        }
-        // .sheet(isPresented: $isSOPOpen) {
-        .sheet(isPresented: $showManagerView) {
-            ManagerView()
-                .environment(router)
+            self.isSOPOpen = router.isManagerUnlocked && allFiles.isEmpty
         }
         .navigationBarBackButtonHidden()
-        .onAppear {
-            if router.isManagerUnlocked && allFiles.isEmpty {
-                showManagerView = true
-            }
-        }
     }
 }
 
 #Preview {
     HomeScreen()
         .environment(RouterViewModel())
+        .environment(AuthenticationViewModel())
 }
