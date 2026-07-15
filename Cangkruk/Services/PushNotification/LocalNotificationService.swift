@@ -8,55 +8,97 @@
 import Foundation
 import UserNotifications
 
-class LocalNotificationService {
-    static let shared = LocalNotificationService()
-    
-    private init() {}
-    
-    func requestPermission() {
-        let center = UNUserNotificationCenter.current()
-        center.requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
-            if let error = error {
-                print("Error requesting notification permission: \(error.localizedDescription)")
-            } else {
-                print("Notification permission granted: \(granted)")
+
+protocol LocalNotificationServiceProtocol {
+    func requestPermission() async -> Bool
+    func scheduleDailyNotifications() async
+    func sendNotification(notification: ScheduleNotificationInfo) async throws
+    func cancelNotifications()
+    func makeRequest(message: String, sentAt: TimeInterval) -> ScheduleNotificationInfo
+    func makeDailySchedule() -> [ScheduleNotificationInfo]
+}
+
+
+struct ScheduleNotificationInfo: Identifiable {
+    var id = UUID()
+    var name: String
+    var message: String
+    var sentAt: TimeInterval
+}
+
+class LocalNotificationService: LocalNotificationServiceProtocol {
+    func requestPermission() async -> Bool {
+        await withCheckedContinuation { continuation in
+            let center = UNUserNotificationCenter.current()
+            center.requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
+                if let error = error {
+                    print("Error requesting notification permission: \(error.localizedDescription)")
+                }
+                continuation.resume(returning: granted)
             }
         }
     }
     
-    func scheduleDailyNotifications() {
-        let center = UNUserNotificationCenter.current()
-        
+    func makeRequest(message: String, sentAt: TimeInterval) -> ScheduleNotificationInfo {
+        return ScheduleNotificationInfo(
+            name: "Cangkruk",
+            message: message,
+            sentAt: sentAt
+        )
+    }
+    
+    func makeDailySchedule() -> [ScheduleNotificationInfo] {
         let messages = [
             "Kamu belum menyelesaikan modul hari ini🤯 Yuk, luangkan waktu sebentar buat kejar materinya sebelum makin menumpuk!☕️",
             "Progres belajarmu terhenti nih😓 Jangan sampai lupa teknik dasarnya, buka aplikasi dan selesaikan latihanmu sekarang!💪🏻",
             "Kamu sudah 3 hari berturut-turut bolos latihan😢 Buka aplikasi sekarang sebelum akun pelatihanmu otomatis ditandai untuk peninjauan internal lebih lanjut!👀"
         ]
+        var schedules: [ScheduleNotificationInfo] = []
+        for (idx, message) in messages.enumerated() {
+            schedules.append(
+                makeRequest(
+                    message: message,
+                    sentAt: TimeInterval(86400 * (idx + 1))
+                )
+            )
+        }
+        return schedules
+    }
+    
+    
+    // scheduleDailyNotifications will scheduling the notification to run multiple times
+    // will call several function to build request, to send request per day
+    func scheduleDailyNotifications() async {
+        print("All scheduled notifications have been setup.")
         
-        // looping agar notifnya berurutan per hari (tidak random/shuffle)
-        for (index, message) in messages.enumerated() {
-            let content = UNMutableNotificationContent()
-            content.title = "Cangkruk"
-            content.body = message
-            content.sound = .default
-            
-            // untuk atur waktu muncul push notif (1 hari = 86.400 detik)
-            let timeInterval = TimeInterval(86400 * (index + 1))
-            
-            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: timeInterval, repeats: false)
-            
-            // ID untuk per notifnya (karena scheduled jd ID harus beda)
-            let identifier = "daily_reminder_day_\(index + 1)"
-            let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
-            
-            center.add(request) { error in
-                if let error = error {
-                    print("Failed to schedule notification for day \(index + 1): \(error.localizedDescription)")
-                } else {
-                    print("Notification for day \(index + 1) has been scheduled!")
-                }
+        let schedules = makeDailySchedule()
+        for schedule in schedules {
+            do {
+                try await sendNotification(notification: schedule)
+            } catch {
+                print("scheduleDailyNotifications: error happend \(error)")
             }
         }
+    }
+    
+    
+    // sendNotification will sending the notification based on the payload request
+    // will send at sentAt variable that trigger daily
+    func sendNotification(notification: ScheduleNotificationInfo) async throws {
+        let center = UNUserNotificationCenter.current()
+        let content = UNMutableNotificationContent()
+        content.title = notification.name
+        content.body = notification.message
+        content.sound = .default
+        
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: notification.sentAt, repeats: false)
+        let request = UNNotificationRequest(
+            identifier: notification.id.uuidString,
+            content: content,
+            trigger: trigger
+        )
+        
+        try await center.add(request)
     }
     
     func cancelNotifications() {

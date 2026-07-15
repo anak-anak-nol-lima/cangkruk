@@ -18,7 +18,7 @@ struct AuthenticationViewModelTests {
         let config = ModelConfiguration(isStoredInMemoryOnly: true)
         let container = try ModelContainer(for: User.self, configurations: config)
         
-        let username = "johndoe"
+        let email = "johndoe@gmail.com"
         let password = "john123"
         
         let cryptoManager = CryptoManager(key: "YEEM5yWbd6JFbRJjku/1z1OM6cPeArraNy+/HTZAWgo=")
@@ -29,18 +29,18 @@ struct AuthenticationViewModelTests {
         // register first
         _ = await vm.register(
             context: context,
-            username: username,
+            email: email,
             password: password
         )
          
         // try login
         let user = await vm.login(
             context: context,
-            username: username,
+            email: email,
             password: password
         )
         
-        #expect(user?.username == username)
+        #expect(user?.email == email)
         #expect(vm.successMessage == "Login successfully")
     }
     
@@ -50,7 +50,7 @@ struct AuthenticationViewModelTests {
         let config = ModelConfiguration(isStoredInMemoryOnly: true)
         let container = try ModelContainer(for: User.self, configurations: config)
         
-        let username = "johndoe"
+        let email = "johndoe@gmail.com"
         let password = "john123"
         
         let cryptoManager = CryptoManager(key: "YEEM5yWbd6JFbRJjku/1z1OM6cPeArraNy+/HTZAWgo=")
@@ -61,14 +61,14 @@ struct AuthenticationViewModelTests {
         // register first
         _ = await vm.register(
             context: context,
-            username: username,
+            email: email,
             password: password
         )
          
         // try login
         let user = await vm.login(
             context: context,
-            username: username,
+            email: email,
             password: "password"
         )
         
@@ -82,7 +82,7 @@ struct AuthenticationViewModelTests {
         let config = ModelConfiguration(isStoredInMemoryOnly: true)
         let container = try ModelContainer(for: User.self, configurations: config)
         
-        let username = "johndoe"
+        let email = "johndoe@gmail.com"
         let password = "john123"
         
         let cryptoManager = CryptoManager(key: "YEEM5yWbd6JFbRJjku/1z1OM6cPeArraNy+/HTZAWgo=")
@@ -92,11 +92,11 @@ struct AuthenticationViewModelTests {
                 
         let user = await vm.register(
             context: context,
-            username: username,
+            email: email,
             password: password
         )
         
-        #expect(user?.username == username)
+        #expect(user?.email == email)
         #expect(vm.successMessage == "User successfully created")
     }
 }

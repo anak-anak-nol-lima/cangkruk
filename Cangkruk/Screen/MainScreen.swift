@@ -43,6 +43,18 @@ struct MainScreen: View {
                     }
                 }
         }
+        .onChange(of: scenePhase) { _, newPhase in
+            switch newPhase {
+            case .background:
+                Task {
+                    await notificationViewModel.onAppBackgrounded()
+                }
+            case .active:
+                notificationViewModel.onAppForegrounded()
+            default:
+                break
+            }
+        }
         .environment(router)
         .environment(notificationViewModel)
         .environment(authenticationViewModel)
