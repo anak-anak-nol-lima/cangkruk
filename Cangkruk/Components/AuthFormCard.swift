@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct AuthFormCard: View {
-    @Binding var username: String
+    @Binding var email: String
     @Binding var password: String
 
     var body: some View {
@@ -18,7 +18,7 @@ struct AuthFormCard: View {
                     .font(.shakyComicBold(size: 30))
                     .foregroundStyle(Color("Secondary"))
 
-                TextField("", text: $username)
+                TextField("", text: $email)
                     .font(.title3)
                     .foregroundStyle(.black)
 
@@ -49,10 +49,10 @@ struct AuthFormCard: View {
 }
 
 #Preview {
-    @Previewable @State var username = ""
+    @Previewable @State var email = ""
     @Previewable @State var password = ""
 
-    AuthFormCard(username: $username, password: $password)
+    AuthFormCard(email: $email, password: $password)
         .padding()
 }
 
