@@ -17,7 +17,7 @@ struct LoginScreen: View {
     @Environment(AuthenticationViewModel.self) private var authVM
 
     // MARK: - Local State
-    @State private var username: String = ""
+    @State private var email: String = ""
     @State private var password: String = ""
     @State private var showForgotPassword = false
 
@@ -35,7 +35,7 @@ struct LoginScreen: View {
                     .frame(height: 60)
                     .padding(.top, 60)
 
-                AuthFormCard(username: $username, password: $password)
+                AuthFormCard(email: $email, password: $password)
 
                 AppButtonText(label: "Lupa Kata Sandi?") {
                     showForgotPassword = true
@@ -56,7 +56,7 @@ struct LoginScreen: View {
                 
                 AppButton(label: "Masuk", isLoading: authVM.isLoading) {
                     Task {
-                        _ = await authVM.login(context: modelContext, username: username, password: password)
+                        _ = await authVM.login(context: modelContext, email: email, password: password)
                     }
                 }
                 .padding(.horizontal, 30)

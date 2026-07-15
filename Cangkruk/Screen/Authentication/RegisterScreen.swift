@@ -18,7 +18,7 @@ struct RegisterScreen: View {
     @Environment(\.modelContext) private var modelContext
     
     // MARK: - Local State
-    @State private var username: String = ""
+    @State private var email: String = ""
     @State private var password: String = ""
 
     var body: some View {
@@ -35,7 +35,7 @@ struct RegisterScreen: View {
                     .frame(height: 60)
                     .padding(.top, 60)
 
-                AuthFormCard(username: $username, password: $password)
+                AuthFormCard(email: $email, password: $password)
 
                 Spacer()
             }
@@ -52,7 +52,7 @@ struct RegisterScreen: View {
 
                     AppButton(label: "Simpan", isLoading: authVM.isLoading) {
                         Task {
-                            _ = await authVM.register(context: modelContext, username: username, password: password)
+                            _ = await authVM.register(context: modelContext, email: email, password: password)
                         }
                     }
                     .frame(maxWidth: .infinity, alignment: .center)

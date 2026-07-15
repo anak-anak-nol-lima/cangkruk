@@ -42,43 +42,50 @@ class AuthenticationViewModel {
     
     // getUser will find the user inside the swift data based on the query
     // predicate will act as a where clause
-    // will find the username match the specified username
-    func getUser(context: ModelContext, username: String) -> User? {
+    // will find the email match the specified email
+    func getUser(context: ModelContext, email: String) -> User? {
         let predicate = #Predicate<User> { user in
-            user.username == username
+            user.email == email
         }
-        
+
         var descriptor = FetchDescriptor<User>(predicate: predicate)
         descriptor.fetchLimit = 1
-        
+
         do {
             let users = try context.fetch(descriptor)
+            print("[AuthVM] getUser(email: \(email)) matched \(users.count) row(s)")
+
+            let allUsers = (try? context.fetch(FetchDescriptor<User>())) ?? []
+            print("[AuthVM] total users in store: \(allUsers.count), emails = \(allUsers.map(\.email))")
+
             return users.first
         } catch {
+            print("[AuthVM] getUser fetch THREW: \(error)")
             errorMessage = error.localizedDescription
             isError = true
             return nil
         }
     }
     
-    // login will validate to reject if the username or the password empty
-    // will get the user exist or no based on the username
+    // login will validate to reject if the email or the password empty
+    // will get the user exist or no based on the email
     // will verify the password
     // will return the user if all cases fine
-    func login(context: ModelContext, username: String, password: String) async -> User? {
+    func login(context: ModelContext, email: String, password: String) async -> User? {
         errorMessage = ""
+        successMessage = ""
         isLoading = true
         defer { isLoading = false } // run this every function call end
 
         try? await Task.sleep(for: .milliseconds(50)) // sleep for allow the observer to reset the errorMessage
 
-        if username.isEmpty || password.isEmpty {
-            errorMessage = "Username and password cannot be empty"
+        if email.isEmpty || password.isEmpty {
+            errorMessage = "email and password cannot be empty"
             isError = true
             return nil
         }
         
-        guard let user = getUser(context: context, username: username.lowercased()) else {
+        guard let user = getUser(context: context, email: email.lowercased()) else {
             errorMessage = "User not found"
             isError = true
             return nil
@@ -96,27 +103,49 @@ class AuthenticationViewModel {
     }
     
     
-    // register will validate to reject if the username or the password empty
+    // register will validate to reject if the email or the password empty
     // will encrypt the password
     // will return the user if all cases fine
-    func register(context: ModelContext, username: String, password: String) async -> User? {
+    func register(context: ModelContext, email: String, password: String) async -> User? {
         errorMessage = ""
+        successMessage = ""
         isLoading = true
         defer { isLoading = false } // run this every function call end
 
         try? await Task.sleep(for: .milliseconds(50)) // sleep for allow the observer to reset the errorMessage
 
-        if username.isEmpty || password.isEmpty {
-            errorMessage = "Username and password cannot be empty"
+        if email.isEmpty || password.isEmpty {
+            errorMessage = "email and password cannot be empty"
             isError = true
             return nil
         }
-        
+
+        guard isValidEmail(email) else {
+            errorMessage = "Email tidak ditemukan"
+            isError = true
+            return nil
+        }
+
         let encryptedPassword = cryptoManager.encrypt(data: password.lowercased())
-        let user = User(username: username.lowercased(), password: encryptedPassword)
+        let user = User(email: email.lowercased(), password: encryptedPassword)
         context.insert(user)
-        
+
+        do {
+            try context.save()
+        } catch {
+            print("[AuthVM] context.save() THREW: \(error)")
+            errorMessage = "Failed to save user"
+            isError = true
+            return nil
+        }
+
         successMessage = "User successfully created"
         return user
+    }
+
+    // isValidEmail checks that the given string matches a basic user@domain.tld shape
+    private func isValidEmail(_ email: String) -> Bool {
+        let pattern = #"^[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$"#
+        return email.range(of: pattern, options: .regularExpression) != nil
     }
 }
