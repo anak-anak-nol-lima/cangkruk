@@ -16,12 +16,16 @@ final class FeedbackResult {
     var scenarioName: String
     var summary: String
     var feedback: String
+    // log percakapan lengkap sesi ini — belum tampil di UI,
+    // disimpan untuk halaman detail nanti
+    var transcript: String = ""
 
     init(
         levelNumber: Int,
         scenarioName: String,
         summary: String,
         feedback: String,
+        transcript: String = "",
         date: Date = .now
     ) {
         self.id = UUID()
@@ -30,5 +34,6 @@ final class FeedbackResult {
         self.scenarioName = scenarioName
         self.summary = summary
         self.feedback = feedback
+        self.transcript = transcript
     }
 }
