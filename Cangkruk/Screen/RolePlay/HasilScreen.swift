@@ -10,7 +10,18 @@ import SwiftUI
 struct HasilScreen: View {
     let summary: String
     let feedback: String
+    
+    private var shareText: String {
+            """
+            HASIL TES LEVEL 1
 
+            Summary:
+            \(summary)
+
+            Feedback:
+            \(feedback)
+            """
+        }
     
 
     var pageToShare: some View {
@@ -38,15 +49,8 @@ struct HasilScreen: View {
     var body: some View {
         VStack(spacing: 20) {
             pageToShare
-
-            if let uiImage = renderPageToImage() {
-                let photo = SharePhoto(image: Image(uiImage: uiImage))
-                ShareLink(
-                    item: photo,
-                    preview: SharePreview("Hasil Tes Level 1", image: photo.image)
-                ) {
-                    Label("Bagikan Halaman", systemImage: "square.and.arrow.up")
-                }
+            ShareLink(item: shareText) {
+                Label("Bagikan Halaman", systemImage: "square.and.arrow.up")
             }
         }
     }
