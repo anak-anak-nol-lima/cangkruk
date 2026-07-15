@@ -79,7 +79,7 @@ struct LevelScreen: View {
             VStack {
                 Spacer()
                 
-                AppImageButton(imageName: "mulaiButton") { //ujiPengetahuanButton
+                AppImageButton(imageName: "mulaiButton") {
                     router.push(.roleplay)
                 }
                 .padding(.bottom, 15)
@@ -91,16 +91,22 @@ struct LevelScreen: View {
         }
     }
 
+    // format tanggal persis mockup: 10-10-2026
+    private static let hasilDateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd-MM-yyyy"
+        return formatter
+    }()
+
     @ViewBuilder
     private var hasilSection: some View {
         if !results.isEmpty {
-            VStack(alignment: .leading, spacing: 8) {
+            VStack(alignment: .leading, spacing: 10) {
                 Text("HASIL")
                     .font(.shakyComicBold(size: 30))
                     .bold()
                     .foregroundStyle(Color("Secondary"))
 
-                // nomor urut kronologis: hasil paling lama = Summary 1
                 ForEach(Array(results.enumerated()), id: \.element.id) { index, result in
                     Button {
                         selectedResult = result
@@ -108,14 +114,19 @@ struct LevelScreen: View {
                         HStack {
                             Text("Summary \(results.count - index)")
                             Spacer()
-                            Text(result.date.formatted(date: .numeric, time: .omitted))
+                            Text(Self.hasilDateFormatter.string(from: result.date))
                         }
                         .font(.body)
                         .foregroundStyle(.black.opacity(0.75))
-                        .padding(12)
+                        .padding(.horizontal, 14)
+                        .padding(.vertical, 12)
+                        .background(
+                            RoundedRectangle(cornerRadius: 10)
+                                .fill(Color("lightBackground"))
+                        )
                         .overlay(
-                            RoundedRectangle(cornerRadius: 8)
-                                .stroke(.black.opacity(0.2), lineWidth: 1)
+                            RoundedRectangle(cornerRadius: 10)
+                                .stroke(Color("Secondary").opacity(0.45), lineWidth: 1.5)
                         )
                     }
                     .buttonStyle(.plain)
