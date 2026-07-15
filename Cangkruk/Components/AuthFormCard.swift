@@ -14,10 +14,9 @@ struct AuthFormCard: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 32) {
             VStack(alignment: .leading, spacing: 8) {
-                Image("namaPenggunaLabel")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(height: 20)
+                Text("NAMA PENGGUNA")
+                    .font(.shakyComicBold(size: 30))
+                    .foregroundStyle(Color("Secondary"))
 
                 TextField("", text: $username)
                     .font(.title3)
@@ -29,10 +28,9 @@ struct AuthFormCard: View {
             }
 
             VStack(alignment: .leading, spacing: 8) {
-                Image("passwordLabel")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(height: 20)
+                Text("KATA SANDI")
+                    .font(.shakyComicBold(size: 30))
+                    .foregroundStyle(Color("Secondary"))
 
                 SecureField("", text: $password)
                     .font(.title3)
@@ -50,4 +48,11 @@ struct AuthFormCard: View {
     }
 }
 
+#Preview {
+    @Previewable @State var username = ""
+    @Previewable @State var password = ""
+
+    AuthFormCard(username: $username, password: $password)
+        .padding()
+}
 
