@@ -8,7 +8,7 @@ class RolePlayViewModel {
     let textToSpeech = TextToSpeechViewModel()
 
     let scenario: RolePlayScenario
-    private let sessionLength: Duration = .seconds(180)
+    private let sessionLength: Duration = .seconds(30)
 
     var messages: [ChatMessage] = []
 
@@ -18,6 +18,7 @@ class RolePlayViewModel {
     var isGeneratingFeedback = false
     var feedbackSummary: String?
     var feedbackText: String?
+    var sessionTranscript: String?
     var errorMessage: String?
 
     private var timerTask: Task<Void, Never>?
@@ -77,6 +78,7 @@ class RolePlayViewModel {
                 let transcript = messages
                     .map { "\($0.role == .barista ? "Barista" : "Pelanggan"): \($0.text)" }
                     .joined(separator: "\n")
+                sessionTranscript = transcript
                 let raw = try await llm.generateFeedback(transcript: transcript)
                 (feedbackSummary, feedbackText) = Self.parseFeedback(raw)
             } catch {
