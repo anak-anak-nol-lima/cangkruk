@@ -10,6 +10,7 @@ import SwiftUI
 struct AuthFormCard: View {
     @Binding var email: String
     @Binding var password: String
+    var isEmailEditable: Bool = true
 
     var body: some View {
         VStack(alignment: .leading, spacing: 32) {
@@ -21,6 +22,8 @@ struct AuthFormCard: View {
                 TextField("", text: $email)
                     .font(.title3)
                     .foregroundStyle(.black)
+                    .disabled(!isEmailEditable)
+                    .opacity(isEmailEditable ? 1 : 0.6)
 
                 Rectangle()
                     .fill(Color("Primary"))

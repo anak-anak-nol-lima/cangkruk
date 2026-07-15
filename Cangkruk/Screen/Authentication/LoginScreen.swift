@@ -71,14 +71,16 @@ struct LoginScreen: View {
             }
         }
         .onChange(of: authVM.successMessage) { _, newValue in
-            if newValue != "" {
+            if newValue == "Login successfully" {
                 router.isManagerUnlocked = true
                 router.pop()
             }
         }
         .overlay {
             ForgotPasswordAlert(isPresented: $showForgotPassword) { email in
-                // TODO: hook up password reset flow
+                if authVM.verifyEmailForReset(context: modelContext, email: email) {
+                    router.push(.register)
+                }
             }
         }
     }
