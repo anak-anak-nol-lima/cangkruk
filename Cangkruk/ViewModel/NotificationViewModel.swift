@@ -9,17 +9,34 @@ import SwiftUI
 
 @Observable
 class NotificationViewModel {
-    var isGameActive = true
+    var notificationService: LocalNotificationServiceProtocol
     
-    init() {
-        LocalNotificationService.shared.requestPermission()
+    init(notificationService: LocalNotificationServiceProtocol = LocalNotificationService()) {
+        self.notificationService = notificationService
+        
+        Task {
+            await requestNotificationPermission()
+        }
     }
     
-    func onAppBackgrounded() {
-        LocalNotificationService.shared.scheduleDailyNotifications()
+    func requestNotificationPermission() async -> Bool {
+        let permission = await notificationService.requestPermission()
+        return permission
+    }
+    
+    func sendNotification(notification: ScheduleNotificationInfo) async {
+        do {
+            try await notificationService.sendNotification(notification: notification)
+        } catch {
+            print("sendNotification error: \(error) ")
+        }
+    }
+
+    func onAppBackgrounded() async {
+        await notificationService.scheduleDailyNotifications()
     }
     
     func onAppForegrounded() {
-        LocalNotificationService.shared.cancelNotifications()
+        notificationService.cancelNotifications()
     }
 }
