@@ -14,7 +14,7 @@ struct AuthFormCard: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 32) {
             VStack(alignment: .leading, spacing: 8) {
-                Text("NAMA PENGGUNA")
+                Text("EMAIL")
                     .font(.shakyComicBold(size: 30))
                     .foregroundStyle(Color("Secondary"))
 

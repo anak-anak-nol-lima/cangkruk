@@ -19,6 +19,7 @@ struct LoginScreen: View {
     // MARK: - Local State
     @State private var username: String = ""
     @State private var password: String = ""
+    @State private var showForgotPassword = false
 
     var body: some View {
         @Bindable var authVM = authVM
@@ -35,7 +36,13 @@ struct LoginScreen: View {
                     .padding(.top, 60)
 
                 AuthFormCard(username: $username, password: $password)
-            
+
+                AppButtonText(label: "Lupa Kata Sandi?") {
+                    showForgotPassword = true
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.horizontal, 35)
+
                 Spacer()
             }
             .padding(24)
@@ -67,6 +74,11 @@ struct LoginScreen: View {
             if newValue != "" {
                 router.isManagerUnlocked = true
                 router.pop()
+            }
+        }
+        .overlay {
+            ForgotPasswordAlert(isPresented: $showForgotPassword) { email in
+                // TODO: hook up password reset flow
             }
         }
     }

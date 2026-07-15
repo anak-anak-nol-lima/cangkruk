@@ -81,17 +81,17 @@ struct AppAlert: View {
     }
 }
 
-//#Preview {
-//    AppAlert(
-//        isPresented: .constant(true),
-//        message: "APAKAH ANDA YAKIN INGIN MEMBATALKAN PERUBAHAN?",
-//        primaryButtonTitle: "KEMBALI",
-//        secondaryButtonTitle: "HAPUS",
-//        primaryAction: {
-//            print("Tombol Utama Ditekan")
-//        },
-//        secondaryAction: {
-//            print("Tombol Kedua Ditekan")
-//        }
-//    )
-//}
+#Preview {
+    AppAlert(
+        isPresented: .constant(true),
+        message: "APAKAH ANDA YAKIN INGIN MEMBATALKAN PERUBAHAN?",
+        primaryButtonTitle: "KEMBALI",
+        secondaryButtonTitle: "HAPUS",
+        primaryAction: {
+            print("Tombol Utama Ditekan")
+        },
+        secondaryAction: {
+            print("Tombol Kedua Ditekan")
+        }
+    )
+}
