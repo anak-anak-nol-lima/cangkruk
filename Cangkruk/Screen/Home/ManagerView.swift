@@ -180,7 +180,7 @@ struct ManagerView: View {
                         .frame(height: 190)
                         .frame(maxWidth: .infinity, alignment: .center)
                         .allowsHitTesting(false)
-                    AppImageButton(imageName: "simpanButton") {
+                    AppButton(label: "SIMPAN") {
                         for file in filesToAdd {
                             modelContext.insert(file)
                         }
