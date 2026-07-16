@@ -102,7 +102,11 @@ struct RolePlayScreen: View {
                 }
             }
         }
-        .onAppear { viewModel.startSession() }   // <-- hires the conductor
+        .onAppear {
+            Task {
+                await viewModel.startSession()
+            }
+        }   // <-- hires the conductor
         .sheet(isPresented: $showHasil) {
             HasilScreen(
                 summary: viewModel.feedbackSummary ?? "Belum ada penilaian untuk sesi ini.",
