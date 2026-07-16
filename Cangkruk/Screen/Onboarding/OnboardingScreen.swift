@@ -37,6 +37,7 @@ struct OnboardingScreen: View {
                         .frame(maxWidth: .infinity)
                         .frame(height: 100)
                         .offset(y: -210)
+                        .accessibilityLabel("cangkruk")
                 }
                 
                 
