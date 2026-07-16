@@ -24,6 +24,7 @@ struct AuthFormCard: View {
                     .foregroundStyle(.black)
                     .disabled(!isEmailEditable)
                     .opacity(isEmailEditable ? 1 : 0.6)
+                    .accessibilityLabel("tempat mengisi email")
 
                 Rectangle()
                     .fill(Color("Primary"))
@@ -38,6 +39,7 @@ struct AuthFormCard: View {
                 SecureField("", text: $password)
                     .font(.title3)
                     .foregroundStyle(.black)
+                    .accessibilityLabel("tempat mengisi kata sandi")
 
                 Rectangle()
                     .fill(Color("Primary"))

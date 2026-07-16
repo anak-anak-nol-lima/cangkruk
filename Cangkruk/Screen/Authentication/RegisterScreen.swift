@@ -38,6 +38,7 @@ struct RegisterScreen: View {
                     .scaledToFit()
                     .frame(height: 60)
                     .padding(.top, 60)
+                    .accessibilityLabel("halaman daftar")
 
                 AuthFormCard(email: $email, password: $password, isEmailEditable: !isResetMode)
 
