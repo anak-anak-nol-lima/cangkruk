@@ -7,13 +7,34 @@
 
 import Foundation
 
-final class APILLMService: ILLMService {
-    private let baseURL = URL(string: "https://cangkruk.gagas.tech")!
+struct ReplyRequest: Codable {
+    var systemPrompt: String
+    var messages: [ChatMessage]
+    
+    
+    enum CodingKeys: String, CodingKey {
+        case systemPrompt = "system_prompt"
+        case messages
+    }
+}
 
+struct ReplyResponse: Decodable {
+    let reply: String
+}
+
+struct FeedbackRequest: Codable {
+    var transcript: String
+}
+
+final class APILLMService: ILLMService {
+    private var networkManager: NetworkManagerProtocol
     private var systemPrompt: String?
     private var history: [ChatMessage] = []
+    
+    init(networkManager: NetworkManagerProtocol) {
+        self.networkManager = networkManager
+    }
 
-    private struct ReplyResponse: Decodable { let reply: String }
     private struct FeedbackResponse: Decodable {
         let summary: String
         let feedback: String
@@ -26,49 +47,52 @@ final class APILLMService: ILLMService {
 
     func send(_ baristaText: String) async throws -> String {
         guard let systemPrompt else { throw LLMError.noActiveSession }
-
-        history.append(ChatMessage(role: .barista, text: baristaText))
-        let body: [String: Any] = [
-            "system_prompt": systemPrompt,
-            "messages": history.map {
-                ["role": $0.role == .barista ? "barista" : "customer", "text": $0.text]
-            },
-        ]
-
-        let data = try await post(path: "/roleplay/reply", body: body)
-        let reply = try JSONDecoder().decode(ReplyResponse.self, from: data).reply
-            .trimmingCharacters(in: .whitespacesAndNewlines)
-        history.append(ChatMessage(role: .customer, text: reply))
-        return reply
+        do {
+            history.append(
+                ChatMessage(
+                    role: .barista,
+                    text: baristaText
+                )
+            )
+            let req = ReplyRequest(
+                systemPrompt: systemPrompt,
+                messages: history
+            )
+            let body = try JSONEncoder().encode(req)
+            guard let data = try await networkManager.post(path: "/roleplay/reply", req: body) else {
+                return ""
+            }
+            let reply = try JSONDecoder().decode(ReplyResponse.self, from: data).reply
+                .trimmingCharacters(in: .whitespacesAndNewlines)
+            history.append(
+                ChatMessage(
+                    role: .customer,
+                    text: reply
+                )
+            )
+            return reply
+        } catch {
+            throw error
+        }
     }
 
     func generateFeedback(transcript: String) async throws -> String {
-        let data = try await post(path: "/roleplay/feedback", body: ["transcript": transcript])
-        let parsed = try JSONDecoder().decode(FeedbackResponse.self, from: data)
-        // dikemas ulang ke format marker supaya parser di ViewModel tetap jalan
-        return "SUMMARY: \(parsed.summary)\nFEEDBACK: \(parsed.feedback)"
+        do {
+            let req = FeedbackRequest(transcript: transcript)
+            let body = try JSONEncoder().encode(req)
+            guard let data = try await networkManager.post(path: "/roleplay/feedback", req: body) else {
+                return ""
+            }
+            let parsed = try JSONDecoder().decode(FeedbackResponse.self, from: data)
+            // dikemas ulang ke format marker supaya parser di ViewModel tetap jalan
+            return "SUMMARY: \(parsed.summary)\nFEEDBACK: \(parsed.feedback)"
+        } catch {
+            throw error
+        }
     }
 
     func endsession() {
         systemPrompt = nil
         history = []
-    }
-
-    private func post(path: String, body: [String: Any]) async throws -> Data {
-        var request = URLRequest(url: baseURL.appending(path: path))
-        request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.httpBody = try JSONSerialization.data(withJSONObject: body)
-        request.timeoutInterval = 60
-
-        let (data, response) = try await URLSession.shared.data(for: request)
-        guard let http = response as? HTTPURLResponse else {
-            throw LLMError.serverError("respons bukan HTTP")
-        }
-        guard http.statusCode == 200 else {
-            let detail = String(data: data, encoding: .utf8) ?? ""
-            throw LLMError.serverError("HTTP \(http.statusCode) \(detail.prefix(120))")
-        }
-        return data
     }
 }

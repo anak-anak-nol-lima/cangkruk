@@ -17,7 +17,7 @@ class SpeechToTextViewModel {
     var currentText = ""
     var finalText = ""
     var result: [String] = []
-    var onFinalTranscript: ((String) -> Void)?
+    var onFinalTranscript: ((String) async -> Void)?
     
     init(
         audioEngineManager: AudioEngineProtocol = AudioEngineManager(),
@@ -76,9 +76,10 @@ class SpeechToTextViewModel {
                         // final will save the
                         self.finalText += value
                         self.result.append(self.finalText)
-                        self.onFinalTranscript?(self.finalText)
+                        let finalTranscript = self.finalText
                         self.finalText = ""
                         self.currentText = ""
+                        Task { await self.onFinalTranscript?(finalTranscript) }
                     } else {
                         // if not final just render the text somewhere
                         self.currentText = value

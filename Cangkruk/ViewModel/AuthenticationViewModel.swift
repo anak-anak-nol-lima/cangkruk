@@ -56,14 +56,10 @@ class AuthenticationViewModel {
 
         do {
             let users = try context.fetch(descriptor)
-            print("[AuthVM] getUser(email: \(email)) matched \(users.count) row(s)")
-
             let allUsers = (try? context.fetch(FetchDescriptor<User>())) ?? []
-            print("[AuthVM] total users in store: \(allUsers.count), emails = \(allUsers.map(\.email))")
 
             return users.first
         } catch {
-            print("[AuthVM] getUser fetch THREW: \(error)")
             errorMessage = error.localizedDescription
             isError = true
             return nil
@@ -132,16 +128,6 @@ class AuthenticationViewModel {
         let encryptedPassword = cryptoManager.encrypt(data: password.lowercased())
         let user = User(email: email.lowercased(), password: encryptedPassword)
         context.insert(user)
-
-        do {
-            try context.save()
-        } catch {
-            print("[AuthVM] context.save() THREW: \(error)")
-            errorMessage = "Failed to save user"
-            isError = true
-            return nil
-        }
-
         successMessage = "User successfully created"
         return user
     }
@@ -201,7 +187,6 @@ class AuthenticationViewModel {
         do {
             try context.save()
         } catch {
-            print("[AuthVM] resetPassword context.save() THREW: \(error)")
             errorMessage = "Failed to save new password"
             isError = true
             return nil

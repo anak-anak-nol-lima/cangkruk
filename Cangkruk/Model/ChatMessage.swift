@@ -8,16 +8,14 @@
 import Foundation
 
 
-enum ChatRole{
+enum ChatRole: String, Codable {
     case barista
     case customer
 }
 
-struct ChatMessage: Identifiable, Equatable{
-    let id = UUID()
+struct ChatMessage: Codable, Identifiable, Equatable {
+    var id = UUID()
     let role: ChatRole
     let text: String
 }
-
-
 
