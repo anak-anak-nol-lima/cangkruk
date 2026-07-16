@@ -34,6 +34,7 @@ struct LoginScreen: View {
                     .scaledToFit()
                     .frame(height: 60)
                     .padding(.top, 60)
+                    .accessibilityLabel("halaman masuk")
 
                 AuthFormCard(email: $email, password: $password)
 
