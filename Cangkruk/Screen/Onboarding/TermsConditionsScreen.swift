@@ -21,6 +21,7 @@ struct TermsConditionsScreen: View {
                         Text("SYARAT & \nKETENTUAN")
                             .font(.shakyComicBold(size: 35))
                             .foregroundStyle(Color("Primary"))
+                            .accessibilityLabel("syarat dan ketentuan")
 
                         Spacer()
                     }
