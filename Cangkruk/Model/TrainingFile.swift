@@ -21,13 +21,15 @@ final class TrainingFile {
     var section: String
     var storedFileName: String
     var extractedText: String?
+    var summarizedText: String? // untuk save hasil output
 
     init(
         name: String,
         date: Date = .now,
         section: TrainingFileSection,
         storedFileName: String,
-        extractedText: String? = nil
+        extractedText: String? = nil,
+        summarizedText: String? = nil
     ) {
         self.id = UUID()
         self.name = name
@@ -35,5 +37,6 @@ final class TrainingFile {
         self.section = section.rawValue
         self.storedFileName = storedFileName
         self.extractedText = extractedText
+        self.summarizedText = summarizedText
     }
 }
