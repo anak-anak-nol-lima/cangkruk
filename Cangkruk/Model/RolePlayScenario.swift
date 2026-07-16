@@ -6,8 +6,6 @@ struct RolePlayScenario: Identifiable {
     let persona: String
     let difficulty: Int
     
-    
-
     func systemPrompt(menuContext: String) -> String {
         """
         Kamu berperan sebagai PELANGGAN di sebuah kafe, BUKAN asisten AI.
