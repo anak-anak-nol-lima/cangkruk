@@ -13,10 +13,10 @@ struct RegisterScreen: View {
     // MARK: - ViewModel
     @Environment(RouterViewModel.self) private var router
     @Environment(AuthenticationViewModel.self) private var authVM
-    
+
     // MARK: - Storage
     @Environment(\.modelContext) private var modelContext
-    
+
     // MARK: - Local State
     @State private var email: String = ""
     @State private var password: String = ""
@@ -45,6 +45,10 @@ struct RegisterScreen: View {
                 Spacer()
             }
             .padding(24)
+            // Cap scaling here so the form card can't grow tall enough to collide with
+            // the Lottie+"Simpan" block below, which is fixed via .padding(.top, 250)
+            // and doesn't resize based on this VStack's actual height.
+            .dynamicTypeSize(...DynamicTypeSize.accessibility2)
 
             VStack {
 
