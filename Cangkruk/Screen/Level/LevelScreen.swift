@@ -9,6 +9,7 @@ import SwiftUI
 import SwiftData
 
 struct LevelScreen: View {
+    let levelNumber: Int 
 
     // MARK: - State
     @State private var isRolePlaying: Bool = false
@@ -83,7 +84,7 @@ struct LevelScreen: View {
                 Spacer()
                 
                 AppButton(label: "Mulai") {
-                    router.push(.roleplay)
+                    router.push(.roleplay(levelNumber))
                 }
                 .padding(.horizontal, 30)
                 .padding(.bottom, 15)
@@ -171,7 +172,8 @@ struct LevelScreen: View {
 }
 
 #Preview {
-    LevelScreen()
+    LevelScreen(levelNumber: 1)
         .environment(RouterViewModel())
         .modelContainer(for: FeedbackResult.self, inMemory: true)
+    
 }

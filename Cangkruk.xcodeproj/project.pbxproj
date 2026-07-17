@@ -427,6 +427,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Cangkruk/Info.plist;
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Izinkan akses mikrofon untuk merekam catatan suara Anda.";
 				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Aplikasi ini menggunakan pengenalan suara untuk mengubah ucapan Anda menjadi teks.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -463,6 +464,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Cangkruk/Info.plist;
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Izinkan akses mikrofon untuk merekam catatan suara Anda.";
 				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Aplikasi ini menggunakan pengenalan suara untuk mengubah ucapan Anda menjadi teks.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
