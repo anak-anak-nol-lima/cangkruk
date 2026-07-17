@@ -77,7 +77,9 @@ struct RolePlayScreen: View{
                         ForEach(viewModel.messages) { message in
                             ChatBubbleView(message: message)
                                 .onTapGesture {
-                                    viewModel.textToSpeech.speak(message.text)
+                                    Task {
+                                        await viewModel.textToSpeech.speak(message.text)
+                                    }
                                 }
                         }
                         if viewModel.isThinking {
