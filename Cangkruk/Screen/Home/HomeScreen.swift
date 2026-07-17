@@ -22,9 +22,9 @@ struct HomeScreen: View {
     @Environment(RouterViewModel.self) private var router
     @Environment(AuthenticationViewModel.self) private var authVM
     
-    
-    // MARK: - ViewModel
+    // MARK: - Storage Query
     @Query private var allFiles: [TrainingFile]
+    
     @State private var levelInfo: [LevelInfo] = [
         LevelInfo(level: 1, description: "Pengetahuan akan produk", isLock: false),
         LevelInfo(level: 2, description: "Memahami kebutuhan pelanggan", isLock: true),
@@ -37,82 +37,72 @@ struct HomeScreen: View {
     var body: some View {
         @Bindable var router = router
         
-        ZStack {
+        ZStack(alignment: .top) {
             Color("Background")
                 .ignoresSafeArea()
             
-            VStack(alignment: .leading, spacing: 0) {
-                
+            VStack {
                 if router.isManagerUnlocked {
-                    HStack {
+                    ZStack {
                         Image("tantanganTitle")
                             .resizable()
                             .scaledToFit()
                             .frame(height: 50)
                             .padding(.vertical, 12)
+                            .accessibilityLabel(Text("Halaman Manager"))
                         
-                        Spacer()
-                        
-                        Image(systemName: "book.badge.plus")
-                            .font(.system(size: 18, weight: .semibold))
-                            .foregroundStyle(Color("lightBackground"))
-                            .offset(x: -1, y: 2)
-                            .frame(width: 40, height: 40)
-                            .background(
-                                Circle()
-                                    .fill(Color("Primary"))
-                            )
-                            .padding(.top, 10)
-                            .padding(.leading, 8)
-                            .onTapGesture {
-                                isSOPOpen = true
-                            }
-                        
-                        Image(systemName: "rectangle.portrait.and.arrow.right")
-                            .font(.system(size: 18, weight: .semibold))
-                            .foregroundStyle(Color("lightBackground"))
-                            .offset(x: 2, y: 1)
-                            .frame(width: 40, height: 40)
-                            .background(
-                                Circle()
-                                    .fill(Color("Primary"))
-                            )
-                            .padding(.top, 10)
-                            .padding(.leading, 8)
-                            .onTapGesture {
-                                router.isManagerUnlocked = false
-                            }
-                    }
-                    .padding(10)
-                } else {
-                    HStack {
-                        Image("tantanganTitle")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(height: 50)
-                            .padding(.vertical, 12)
-                        
-                        Spacer()
-                        
-                        if authVM.isLoading {
-                            ProgressView()
-                                .padding(.top, 10)
-                        } else {
-                            Image(systemName: "lock.circle.fill")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(height: 40)
-                                .foregroundStyle(Color("Primary"))
-                                .padding(.top, 10)
+                        HStack {
+                            Spacer()
+                            
+                            Image(systemName: "book.badge.plus")
+                                .font(.system(size: 18, weight: .semibold))
+                                .foregroundStyle(Color("lightBackground"))
+                                .offset(x: -1, y: 2)
+                                .frame(width: 40, height: 40)
+                                .background(
+                                    Circle()
+                                        .fill(Color("Primary"))
+                                )
                                 .onTapGesture {
-                                    router.push(.login)
+                                    isSOPOpen = true
                                 }
+                                .accessibilityLabel(Text("Unggah File SOP dan Menu"))
                         }
                     }
-                    .padding(10)
+                    .padding(.horizontal, 24) //padding untuk button di top leading
+                    .padding(.top, 10)
+                } else {
+                    ZStack {
+                        Image("tantanganTitle")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(height: 50)
+                            .padding(.vertical, 12)
+                            .accessibilityLabel(Text("Halaman Tantangan Barista"))
+                        
+                        HStack {
+                            Spacer()
+                            
+                            if authVM.isLoading {
+                                ProgressView()
+                            } else {
+                                Image(systemName: "lock.circle.fill")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(height: 40)
+                                    .foregroundStyle(Color("Primary"))
+                                    .onTapGesture {
+                                        router.push(.login)
+                                    }
+                                    .accessibilityLabel(Text("Masuk sebagai Manager"))
+                            }
+                        }
+                    }
+                    .padding(.horizontal, 24) //padding untuk button di top leading
+                    .padding(.top, 10)
                 }
                 
-                VStack(spacing: 10) {
+                VStack(spacing: 12) {
                     ForEach(levelInfo.indices, id: \.self) { idx in
                         let level = levelInfo[idx]
                         
@@ -128,24 +118,23 @@ struct HomeScreen: View {
                         }
                     }
                 }
-                .padding(.top, 10)
+                .padding()
                 
-                HStack(alignment: .center, spacing: -20) {
-                    Image("luwak 1")
-                        .resizable()
-                        .scaledToFit()
-                        .scaleEffect(x: -1, y: 1)
-                    
-                    Image("luwak 1")
-                        .resizable()
-                        .scaledToFit()
-                        .offset(y: 20)
+                Spacer()
+                
+                if router.isManagerUnlocked {
+                    AppButton(
+                        label: "Keluar",
+                        isLoading: authVM.isLoading,
+                        action: {
+                            authVM.logout()
+                            router.isManagerUnlocked = false
+                        }
+                    )
+                    .padding()
                 }
-                .frame(maxWidth: .infinity, alignment: .center)
             }
             .frame(maxWidth: .infinity, alignment: .center)
-            .padding(.horizontal)
-            
         }
         .sheet(isPresented: $isSOPOpen) {
             ManagerView()
@@ -163,3 +152,15 @@ struct HomeScreen: View {
         .environment(RouterViewModel())
         .environment(AuthenticationViewModel())
 }
+
+// Preview untuk Manager Page
+//#Preview {
+//    let mockRouter = RouterViewModel()
+//    let _ = {
+//        mockRouter.isManagerUnlocked = true
+//    }()
+//    
+//    HomeScreen()
+//        .environment(mockRouter)
+//        .environment(AuthenticationViewModel())
+//}
