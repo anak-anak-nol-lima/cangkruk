@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-enum Route {
-    case level,
-         roleplay,
+enum Route: Hashable {
+    case level (Int),
+         roleplay(Int),
          home,
          termsConditions,
          register,

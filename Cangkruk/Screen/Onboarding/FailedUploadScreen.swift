@@ -20,7 +20,7 @@ struct FailedUploadScreen: View {
                 Text("Mau coba lagi?").font(.shakyComicBold(size: 23)).foregroundStyle(Color("Primary"))
                 Image("CangkrukNo")
                 AppButton(label: "REKAM ULANG"){
-                    router.push(.roleplay)
+                    
                 }
                 .padding(.vertical,10)
                 .padding(.horizontal, 70)

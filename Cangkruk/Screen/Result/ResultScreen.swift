@@ -98,7 +98,7 @@ struct ResultScreen: View {
             
             VStack {
                 AppButton(label: "Kembali") {
-                    router.push(.level)
+                    router.pop()
                 }
                 .padding(.horizontal, 20)
             }
