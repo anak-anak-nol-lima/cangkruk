@@ -39,6 +39,7 @@ struct RolePlayScreen: View{
         isError = true
     }
     
+    
 
     var body: some View {
         ZStack {
