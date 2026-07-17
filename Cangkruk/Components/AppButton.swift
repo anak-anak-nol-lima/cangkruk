@@ -26,7 +26,7 @@ struct AppButton: View {
                     Text(label)
                         .foregroundStyle(.white)
                         .bold()
-                        .font(.shakyComicBold(size: 31))
+                        .font(.shakyComicBold(size: 31, relativeTo: .title3))
                         .textCase(.uppercase)
                 }
                 

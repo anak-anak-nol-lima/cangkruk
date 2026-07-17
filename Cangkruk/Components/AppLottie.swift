@@ -10,6 +10,11 @@ import Lottie
 
 
 struct AppLottie: View {
+    
+    // MARK: - Accesibility Built-in
+    @Environment(\.accessibilityReduceMotion) var accessibilityReduceMotion
+    
+    
     var animation: String
     
     private func loadAnimation() async throws -> LottieAnimationSource? {
@@ -25,8 +30,9 @@ struct AppLottie: View {
             try await loadAnimation()
         }
         .configuration(LottieConfiguration(renderingEngine: .coreAnimation))
-        .playing()
-        .looping()
+        .playbackMode(
+            accessibilityReduceMotion ? .paused(at: .progress(1)) : .playing(.fromProgress(0, toProgress: 1, loopMode: .loop))
+        )
     }
 }
 
