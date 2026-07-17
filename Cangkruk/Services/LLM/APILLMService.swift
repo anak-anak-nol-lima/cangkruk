@@ -7,25 +7,6 @@
 
 import Foundation
 
-struct ReplyRequest: Codable {
-    var systemPrompt: String
-    var messages: [ChatMessage]
-    
-    
-    enum CodingKeys: String, CodingKey {
-        case systemPrompt = "system_prompt"
-        case messages
-    }
-}
-
-struct ReplyResponse: Decodable {
-    let reply: String
-}
-
-struct FeedbackRequest: Codable {
-    var transcript: String
-}
-
 final class APILLMService: ILLMService {
     private var networkManager: NetworkManagerProtocol
     private var systemPrompt: String?

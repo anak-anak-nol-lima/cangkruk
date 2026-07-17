@@ -17,16 +17,13 @@ class TextToSpeechViewModel {
     }
     
     
-    func speak(_ text: String) {
+    func speak(_ text: String) async {
         errorMessage = ""
         
-        Task {
-            do {
-                try await Task.sleep(for: .milliseconds(50))
-                try textToSpeech.speak(text)
-            } catch {
-                errorMessage = error.localizedDescription
-            }
+        do {
+            try textToSpeech.speak(text)
+        } catch {
+            errorMessage = error.localizedDescription
         }
     }
 }
