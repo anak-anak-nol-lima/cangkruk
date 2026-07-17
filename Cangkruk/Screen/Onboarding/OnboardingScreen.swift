@@ -28,7 +28,7 @@ struct OnboardingScreen: View {
             
             VStack {
                 ZStack {
-                    AppLottie(animation: "CangkrukHero")
+                    AppLottie(animation: "CangkrukHero", placeholder: "CangkrukHero", placeholderHeight: 350)
                         .frame(height: 350)
                     
                     Image("cangkrukHero")
