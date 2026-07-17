@@ -110,7 +110,7 @@ struct RolePlayScreen: View{
             }
         }   // <-- hires the conductor
         .sheet(isPresented: $showHasil) {
-            HasilScreen(
+            ResultScreen(
                 summary: viewModel.feedbackSummary ?? "Belum ada penilaian untuk sesi ini.",
                 feedback: viewModel.feedbackText ?? ""
             )
