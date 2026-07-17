@@ -16,18 +16,33 @@ struct AppLottie: View {
     
     
     var animation: String
+    var placeholder: String? = nil
+    var placeholderHeight: CGFloat? = 300
     
     private func loadAnimation() async throws -> LottieAnimationSource? {
-        if let dotLottie = try? await DotLottieFile.named(animation) {
-            return dotLottie.animationSource
-        }
+        let name = animation
         
-        return LottieAnimation.named(animation)?.animationSource
+        return await Task.detached(priority: .userInitiated) {
+            if let dotLottie = try? await DotLottieFile.named(animation) {
+                return dotLottie.animationSource
+            }
+            
+            return LottieAnimation.named(name)?.animationSource
+        }.value
     }
     
     var body: some View {
         LottieView {
             try await loadAnimation()
+        } placeholder: {
+            if let placeholder {
+                Image(placeholder)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(height: placeholderHeight)
+            } else {
+                ProgressView()
+            }
         }
         .configuration(LottieConfiguration(renderingEngine: .coreAnimation))
         .playbackMode(
