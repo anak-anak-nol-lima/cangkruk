@@ -6,7 +6,8 @@
 import SwiftUI
 import SwiftData
 
-struct RolePlayScreen: View {
+
+struct RolePlayScreen: View{
     @Binding var isPresented: Bool
     @Environment(\.modelContext) private var modelContext
 
@@ -31,15 +32,16 @@ struct RolePlayScreen: View {
 
     var body: some View {
         ZStack {
+            Color("Background").ignoresSafeArea(.all)
             VStack {
-                // top bar
                 HStack {
-                    Text(viewModel.scenario.name)
-                        .font(.headline)
+                    Text("LEVEL")
+                        .font(.shakyComicBold(size: 43)).foregroundStyle(Color("Secondary"))
                     Spacer()
                     Image(systemName: "xmark")
                         .frame(width: 50, height: 50)
-                        .background(.white)
+                        .foregroundStyle(.white)
+                        .background(Color("Primary"))
                         .clipShape(Circle())
                         .shadow(color: .black.opacity(0.1), radius: 10)
                         .onTapGesture {
@@ -75,7 +77,7 @@ struct RolePlayScreen: View {
                     Text("Sedang mendengarkan...")
                         .font(.caption).bold().foregroundStyle(.red)
                     Text(viewModel.speechToText.currentText)
-                        .font(.caption).bold()
+                        .font(.shakyComicBold(size: 19)).bold()
                 }
 
                 if viewModel.isPreparing {
@@ -143,14 +145,12 @@ struct ChatBubbleView: View {
     var body: some View {
         HStack {
             if message.role == .barista { Spacer(minLength: 48) }
-
-            Text(message.text)
-                .font(.body)
-                .foregroundStyle(message.role == .barista ? .white : .primary)
-                .padding(12)
-                .background(message.role == .barista ? Color.black.opacity(0.7) : Color(.systemGray5))
-                .clipShape(RoundedRectangle(cornerRadius: 16))
-
+                Text(message.text)
+                    .font(.body)
+                    .foregroundStyle(message.role == .barista ? .white : .primary)
+                    .padding(12)
+                    .background(message.role == .barista ? Color.black.opacity(0.7) : Color(.systemGray5))
+                    .clipShape(RoundedRectangle(cornerRadius: 16))
             if message.role == .customer { Spacer(minLength: 48) }
         }
     }
