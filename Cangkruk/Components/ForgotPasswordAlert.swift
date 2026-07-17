@@ -34,8 +34,10 @@ struct ForgotPasswordAlert: View {
                         .frame(maxWidth: .infinity, alignment: .center)
                         .foregroundStyle(Color("Secondary"))
 
-                    if step == 1 {
-                        inputField(label: "EMAIL", text: $email)
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("EMAIL")
+                            .font(.shakyComicBold(size: 22, relativeTo: .subheadline))
+                            .foregroundStyle(Color("Secondary"))
 
                         if !errorText.isEmpty {
                             Text(errorText)
@@ -54,10 +56,17 @@ struct ForgotPasswordAlert: View {
                     } else {
                         inputField(label: "KATA SANDI BARU", text: $newPassword, isSecure: true)
 
-                        actionButton("KONFIRMASI") {
-                            onConfirm(newPassword)
-                            close()
-                        }
+                    Button {
+                        onSubmit(email)
+                        isPresented = false
+                    } label: {
+                        Text("CEK EMAIL")
+                            .font(.shakyComicBold(size: 20, relativeTo: .headline))
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 12)
+                            .background(Color("Primary"))
+                            .foregroundStyle(.white)
+                            .clipShape(RoundedRectangle(cornerRadius: 8))
                     }
                 }
                 .padding(24)
