@@ -9,8 +9,8 @@ import SwiftUI
 import SwiftData
 
 struct LevelScreen: View {
-    let levelNumber: Int
-    
+    let levelNumber:Int 
+
     // MARK: - State
     @State private var isRolePlaying: Bool = false
     @Environment(RouterViewModel.self) private var router
