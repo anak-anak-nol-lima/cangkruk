@@ -113,6 +113,7 @@ struct ManagerView: View {
                                     .frame(height: 30)
                                     .foregroundStyle(Color("Primary"))
                                     .padding(.bottom, 10)
+                                    .accessibilityLabel(Text("Unggah File SOP"))
                             }
                         }
                         
@@ -151,6 +152,7 @@ struct ManagerView: View {
                                     .frame(height: 30)
                                     .foregroundStyle(Color("Primary"))
                                     .padding(.bottom, 10)
+                                    .accessibilityLabel(Text("Unggah File Menu"))
                             }
                         }
                         
