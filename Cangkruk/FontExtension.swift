@@ -8,7 +8,7 @@
 import SwiftUI
 
 extension Font {
-    static func shakyComicBold(size: CGFloat) -> Font {
-        return .custom("ShakyHandSomeComic-Bold", size: size)
+    static func shakyComicBold(size: CGFloat, relativeTo textStyle: Font.TextStyle = .title) -> Font {
+        return .custom("ShakyHandSomeComic-Bold", size: size, relativeTo: textStyle)
     }
 }
