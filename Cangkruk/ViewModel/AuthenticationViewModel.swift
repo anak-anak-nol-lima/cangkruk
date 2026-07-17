@@ -196,4 +196,12 @@ class AuthenticationViewModel {
         resetEmail = nil
         return user
     }
+    
+    func logout() {
+        errorMessage = nil
+        successMessage = nil
+        resetEmail = nil
+        isLoading = false
+        isError = false
+    }
 }

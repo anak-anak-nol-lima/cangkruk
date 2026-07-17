@@ -42,7 +42,7 @@ struct AppLevel: View {
                 
                 Text(description)
                     .foregroundStyle(Color("Secondary"))
-                    .font(.system(size: 12))
+                    .font(.caption)
                     .multilineTextAlignment(.leading)
                     .fixedSize(horizontal: false, vertical: true)
             }
@@ -79,7 +79,7 @@ struct AppLevel: View {
                 
                 Text(description)
                     .foregroundStyle(Color("Secondary"))
-                    .font(.system(size: 12))
+                    .font(.caption)
                     .multilineTextAlignment(.leading)
                     .fixedSize(horizontal: false, vertical: true)
             }
@@ -116,7 +116,7 @@ struct AppLevel: View {
                 
                 Text(description)
                     .foregroundStyle(Color("Yellow"))
-                    .font(.system(size: 12))
+                    .font(.caption)
                     .multilineTextAlignment(.leading)
                     .fixedSize(horizontal: false, vertical: true)
             }
@@ -152,7 +152,7 @@ struct AppLevel: View {
                 
                 Text(description)
                     .foregroundStyle(Color("Yellow"))
-                    .font(.system(size: 12))
+                    .font(.caption)
                     .multilineTextAlignment(.leading)
                     .fixedSize(horizontal: false, vertical: true)
             }

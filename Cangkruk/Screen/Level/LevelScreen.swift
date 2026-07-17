@@ -25,56 +25,59 @@ struct LevelScreen: View {
                 .ignoresSafeArea()
             
             VStack(spacing: 0) {
-                ZStack(alignment: .topTrailing) {
-                    HStack {
-                        Text("LEVEL 1")
-                            .font(.shakyComicBold(size: 50))
-                            .bold()
-                            .foregroundStyle(Color("Secondary"))
-                        
-                        Spacer()
-                        
-                        Button {
-                            router.pop()
-                        } label: {
-                            Image(systemName: "arrow.uturn.left.circle.fill")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(height: 45)
-                                .foregroundStyle(Color("Primary"))
-                                .padding(.bottom, 10)
-                        }
-                        .buttonStyle(.plain)
+                HStack {
+                    Button {
+                        router.pop()
+                    } label: {
+                        Image(systemName: "chevron.backward.circle.fill")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(height: 45)
+                            .foregroundStyle(Color("Primary"))
+                            .padding(.bottom, 10)
                     }
+                    .buttonStyle(.plain)
                     
-                    AppLottie(animation: "CangkrukWipe")
-                        .frame(width: 185)
-                        .offset(x: -30, y: -35)
+                    Text("LEVEL 1")
+                        .font(.shakyComicBold(size: 50))
+                        .bold()
+                        .foregroundStyle(Color("Secondary"))
+                        .padding(.horizontal, 10)
+                    
+                    Spacer()
                 }
-                .padding(.horizontal, 30)
+                .overlay(alignment: .topTrailing) {
+                    AppLottie(animation: "CangkrukWipe")
+                        .frame(width: 350)
+                        .scaleEffect(2.0)
+                        .offset(x: 90, y: 50)
+                        .allowsHitTesting(false)
+                }
                 .padding(.top, 20)
                 .zIndex(1)
                 
-                ScrollView {
-                    VStack(alignment: .leading, spacing: 24) {
-                        moduleSection(
-                            title: "PRODUK MENU",
-                            content: "Langkah pertama sebagai barista adalah mengenal produk yang dijual. Secara umum, menu dibagi menjadi beberapa kategori:\n\nKopi berbasis espresso Espresso, Americano, Cappuccino, Latte, dan variasinya. Semua berawal dari espresso sebagai basis rasa; yang membedakan adalah takaran air dan susunya.\n\nManual brew kopi seduh manual seperti V60, Tubruk, dan Cold Brew. Fokusnya menonjolkan karakter dan notes dari biji kopi.\n\nMinuman non-kopi cokelat, matcha, dan teh, untuk pelanggan yang tidak minum kopi.\n\nYang perlu kamu kuasai di tahap ini: nama produk, bahan utamanya, dan bedanya minuman milk-based vs non-milk."
-                        )
-                        moduleSection(
-                            title: "SOP",
-                            content: "SOP adalah panduan langkah kerja yang wajib diikuti agar kualitas dan pelayanan tetap konsisten di setiap shift, siapa pun baristanya.\n\nSebelum buka bersihkan area bar, cek & kalibrasi mesin, siapkan bahan (susu, sirup, biji kopi).\n\nSaat melayani sapa pelanggan dengan ramah, konfirmasi pesanan, dan buat sesuai resep baku.\n\nSebelum menyajikan untuk manual brew, cicipi dulu hasilnya sebelum diberikan ke pelanggan.\n\nSetelah shift catat stok, bersihkan alat, dan lakukan handover ke shift berikutnya.\n\nIntinya: SOP memastikan setiap cangkir punya rasa dan kualitas yang sama."
-                        )
+                ScrollView(.vertical, showsIndicators: false) {
+                    VStack(alignment: .leading, spacing: 28) {
+                        VStack(alignment: .leading, spacing: 24) {
+                            moduleSection(
+                                title: "PRODUK MENU",
+                                content: "Langkah pertama sebagai barista adalah mengenal produk yang dijual. Secara umum, menu dibagi menjadi beberapa kategori:\n\nKopi berbasis espresso Espresso, Americano, Cappuccino, Latte, dan variasinya. Semua berawal dari espresso sebagai basis rasa; yang membedakan adalah takaran air dan susunya.\n\nManual brew kopi seduh manual seperti V60, Tubruk, dan Cold Brew. Fokusnya menonjolkan karakter dan notes dari biji kopi.\n\nMinuman non-kopi cokelat, matcha, dan teh, untuk pelanggan yang tidak minum kopi.\n\nYang perlu kamu kuasai di tahap ini: nama produk, bahan utamanya, dan bedanya minuman milk-based vs non-milk."
+                            )
+                            moduleSection(
+                                title: "SOP",
+                                content: "SOP adalah panduan langkah kerja yang wajib diikuti agar kualitas dan pelayanan tetap konsisten di setiap shift, siapa pun baristanya.\n\nSebelum buka bersihkan area bar, cek & kalibrasi mesin, siapkan bahan (susu, sirup, biji kopi).\n\nSaat melayani sapa pelanggan dengan ramah, konfirmasi pesanan, dan buat sesuai resep baku.\n\nSebelum menyajikan untuk manual brew, cicipi dulu hasilnya sebelum diberikan ke pelanggan.\n\nSetelah shift catat stok, bersihkan alat, dan lakukan handover ke shift berikutnya.\n\nIntinya: SOP memastikan setiap cangkir punya rasa dan kualitas yang sama."
+                            )
+                        }
+                        .padding(25)
+                        .background(Color("lightBackground"))
+                        .clipShape(RoundedRectangle(cornerRadius: 20))
+                        
                         hasilSection
-                    }
-                    .padding(25)
+                        
+                        Spacer(minLength: 100) // spacer agar tidak tertutup button mulai
+                    }.padding(.top, 20)
                 }
-                .background(Color("lightBackground"))
-                .clipShape(RoundedRectangle(cornerRadius: 20))
-                .padding(.top, -130)
-                .padding(.bottom, 75)
-                .padding(.horizontal, 30)
-            }
+            }.padding(.horizontal, 30)
             
             VStack {
                 Spacer()
@@ -82,7 +85,7 @@ struct LevelScreen: View {
                 AppButton(label: "Mulai") {
                     router.push(.roleplay)
                 }
-                .padding(.horizontal, 20)
+                .padding(.horizontal, 30)
                 .padding(.bottom, 15)
             }
         }
@@ -101,39 +104,54 @@ struct LevelScreen: View {
 
     @ViewBuilder
     private var hasilSection: some View {
-        if !results.isEmpty {
-            VStack(alignment: .leading, spacing: 10) {
-                Text("HASIL")
-                    .font(.shakyComicBold(size: 30))
-                    .bold()
-                    .foregroundStyle(Color("Secondary"))
-
-                ForEach(Array(results.enumerated()), id: \.element.id) { index, result in
-                    Button {
-                        selectedResult = result
-                    } label: {
-                        HStack {
-                            Text("Summary \(results.count - index)")
-                            Spacer()
-                            Text(Self.hasilDateFormatter.string(from: result.date))
-                        }
+        VStack(alignment: .leading, spacing: 12) {
+            Text("HASIL")
+                .font(.shakyComicBold(size: 30))
+                .bold()
+                .foregroundStyle(Color("Secondary"))
+            
+            if results.isEmpty {
+                HStack {
+                    Spacer()
+                    Text("Kamu belum melakukan tes")
                         .font(.body)
-                        .foregroundStyle(.black.opacity(0.75))
-                        .padding(.horizontal, 14)
-                        .padding(.vertical, 12)
-                        .background(
-                            RoundedRectangle(cornerRadius: 10)
-                                .fill(Color("lightBackground"))
-                        )
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 10)
-                                .stroke(Color("Secondary").opacity(0.45), lineWidth: 1.5)
-                        )
+                        .foregroundStyle(.black.opacity(0.5))
+                        .padding(.vertical, 24)
+                    Spacer()
+                }
+            } else {
+                VStack(spacing: 12) {
+                    ForEach(Array(results.enumerated()), id: \.element.id) { index, result in
+                        Button {
+                            selectedResult = result
+                        } label: {
+                            HStack {
+                                Text("Summary \(results.count - index)")
+                                    .font(.system(size: 16, weight: .medium))
+                                Spacer()
+                                Text(Self.hasilDateFormatter.string(from: result.date))
+                                    .font(.subheadline)
+                            }
+                            .foregroundStyle(.black.opacity(0.75))
+                            .padding(.horizontal, 16)
+                            .padding(.vertical, 14)
+                            .background(
+                                RoundedRectangle(cornerRadius: 12)
+                                    .fill(Color("Background"))
+                            )
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 12)
+                                    .stroke(Color("Secondary").opacity(0.25), lineWidth: 1.5)
+                            )
+                        }
+                        .buttonStyle(.plain)
                     }
-                    .buttonStyle(.plain)
                 }
             }
         }
+        .padding(20)
+        .background(Color("lightBackground"))
+        .clipShape(RoundedRectangle(cornerRadius: 20))
     }
 
     @ViewBuilder
@@ -147,6 +165,7 @@ struct LevelScreen: View {
             Text(content)
                 .font(.body)
                 .foregroundStyle(.black.opacity(0.75))
+                .lineSpacing(4)
         }
     }
 }
