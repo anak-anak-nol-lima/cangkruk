@@ -15,7 +15,7 @@ class RolePlayViewModel {
     let textToSpeech = TextToSpeechViewModel()
 
     let scenario: RolePlayScenario
-    private let sessionLength: Duration = .seconds(60 * 3)
+    private let sessionLength: Duration = .seconds(60 * 5)
 
     var messages: [ChatMessage] = []
 
