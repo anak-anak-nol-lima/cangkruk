@@ -33,7 +33,7 @@ struct AppButton: View {
             }
             .padding()
             .frame(maxWidth: .infinity)
-            .frame(height: 60)
+            .frame(minHeight: 60)
             .background(isLoading ? .gray : Color("Primary"))
             .clipShape(RoundedRectangle(cornerRadius: 12))
         }
