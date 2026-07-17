@@ -15,8 +15,10 @@ class RolePlayViewModel {
     let textToSpeech = TextToSpeechViewModel()
 
     let scenario: RolePlayScenario
-    private let sessionLength: Duration = .seconds(60 * 5)
+    private let sessionLength: Duration = .seconds(10)
+    private var sessionSeconds: Int { Int(sessionLength.components.seconds) }
 
+    var remainingSeconds: Int = 0
     var messages: [ChatMessage] = []
 
     var isPreparing = true
@@ -63,9 +65,13 @@ class RolePlayViewModel {
     }
 
     private func startTimer() {
+        remainingSeconds = sessionSeconds
         timerTask = Task {
-            try? await Task.sleep(for: sessionLength)
-            guard !Task.isCancelled else { return }
+            while remainingSeconds > 0 {
+                try? await Task.sleep(for: .seconds(1))
+                guard !Task.isCancelled else { return }
+                remainingSeconds -= 1
+            }
             await finishSession()
         }
     }
