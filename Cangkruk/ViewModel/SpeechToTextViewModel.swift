@@ -4,8 +4,9 @@
 //
 //  Created by Bee Wijaya on 09/07/26.
 //
-
+    
 import SwiftUI
+import AVFoundation
 
 @Observable
 class SpeechToTextViewModel {
@@ -18,6 +19,12 @@ class SpeechToTextViewModel {
     var finalText = ""
     var result: [String] = []
     var onFinalTranscript: ((String) async -> Void)?
+    var micLevels: [CGFloat] = []
+    
+    var recordingSeconds: Int = 0
+    private var recordingTimer: Task<Void, Never>?
+    
+    
     
     init(
         audioEngineManager: AudioEngineProtocol = AudioEngineManager(),
@@ -90,6 +97,13 @@ class SpeechToTextViewModel {
             try audioEngineManager.startAudioEngine { [weak self] buffer in
                 guard let self = self else { return }
                 self.transcriptionManager.processAudioBuffer(buffer)
+                let level = Self.level(from: buffer)
+                DispatchQueue.main.async{
+                    self.micLevels.append(level)
+                    if self.micLevels.count>40{
+                        self.micLevels.removeFirst()
+                    }
+                }
             }
             
             isPlaying = true
@@ -105,5 +119,21 @@ class SpeechToTextViewModel {
         audioEngineManager.stopAudioEngine()
         transcriptionManager.stopTranscribe()
         isPlaying = false
+    }
+    nonisolated private static func level (from buffer: AVAudioPCMBuffer) -> CGFloat {
+        guard let data = buffer.floatChannelData?[0] else {
+            return 0
+        }
+        let n = Int (buffer.frameLength)
+        guard n > 0 else {return 0 }
+        var sum: Float = 0
+        for i in 0 ..< n {
+            sum += data [i] * data[i]
+        }
+        let rms = sqrt(sum/Float (n))
+        let db = 20*log10 (max (rms, 0.0001))
+        let normalized = (db+50)/40
+        return CGFloat(min(max(normalized,0.05),1))
+        
     }
 }

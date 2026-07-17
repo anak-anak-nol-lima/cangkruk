@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct HasilScreen: View {
+    
+    @Environment(RouterViewModel.self) private var router
     let summary: String
     let feedback: String
     
@@ -24,42 +26,54 @@ struct HasilScreen: View {
         }
     
 
-    var pageToShare: some View {
-        VStack(spacing: 20) {
-            Text("HASIL TES LEVEL 1")
-                .font(.title2).bold()
-
-            VStack(alignment: .leading, spacing: 12) {
-                Text("Summary:").bold()
-                Text(summary)
-                Text("Feedback:").bold()
-                Text(feedback)
-            }
-            .padding(24)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .background(Color(red: 0.98, green: 0.95, blue: 0.89))
-            .clipShape(RoundedRectangle(cornerRadius: 20))
-            .padding(.horizontal)
-        }
-        .padding(.vertical, 24)
-        .frame(width: 350)
-        .background(Color.white)
-    }
-
     var body: some View {
-        VStack(spacing: 20) {
-            pageToShare
-            ShareLink(item: shareText) {
-                Label("Bagikan Halaman", systemImage: "square.and.arrow.up")
-            }
-        }
-    }
+        
+        ZStack{
+            VStack{
+                HStack{
+                    Text("HASIL TES").font(.shakyComicBold(size: 40)).foregroundStyle(Color("Secondary")).padding( 20)
+                    Spacer()
+                    ShareLink(item: shareText) {
+                        Image (systemName: "square.and.arrow.up")
+                            .frame (width: 30,height: 40)
+                            .background(Color("Primary"))
+                            .foregroundStyle(Color(.black))
+                            .frame (width: 30,height: 40)
+                            .clipShape(Circle())
 
-    @MainActor
-    func renderPageToImage() -> UIImage? {
-        let renderer = ImageRenderer(content: pageToShare)
-        renderer.scale = 3.0
-        return renderer.uiImage
+                            .padding(20)
+                            
+                    }
+                    
+                }
+                Spacer()
+                Image("CangkrukMeditating").resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 100)
+                    .zIndex(2)
+                    .offset(y:60)
+                ScrollView{
+                    VStack(alignment: .leading, spacing:24){
+                        Text("Sumarry:").font(.shakyComicBold(size: 25)).bold()
+                        Text(summary).font(.system(size: 16))
+                        Text("Feedback").font(.shakyComicBold(size: 25)).bold()
+                        Text(feedback).font(.system(size: 16))
+                        
+                    }
+                    
+                    .padding(20)
+                }.background(Color("lightBackground"))
+                    .clipShape(RoundedRectangle(cornerRadius: 20))
+                    .padding(20)
+                AppButton(label:"KEMBALI"){
+                    router.push(.level)
+                }.padding(.horizontal, 20)
+                
+            }
+            
+           
+        }.frame(maxWidth: .infinity, maxHeight: .infinity).background(Color("Background"))
     }
 }
 
@@ -74,5 +88,6 @@ struct SharePhoto: Transferable {
     HasilScreen(
         summary: "Kamu sudah menunjukkan keramahan yang baik saat menyapa.",
         feedback: "Tadi kamu langsung bilang \"oke\" tanpa mengulang pesanan. Coba ulangi: \"Jadi, satu Latte dan satu Americano, ya?\""
-    )
+    ).environment(RouterViewModel())
+    
 }
