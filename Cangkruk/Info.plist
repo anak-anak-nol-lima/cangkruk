@@ -4,6 +4,10 @@
 <dict>
 	<key>CRYPTO_SECRET_KEY</key>
 	<string>$(CRYPTO_SECRET_KEY)</string>
+	<key>SECRET_PASSWORD</key>
+	<string>$(SECRET_PASSWORD)</string>
+	<key>SECRET_USERNAME</key>
+	<string>$(SECRET_USERNAME)</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>ShakyHandSomeComic_bold.otf</string>

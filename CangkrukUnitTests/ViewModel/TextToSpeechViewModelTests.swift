@@ -17,8 +17,7 @@ struct TextToSpeechViewModelTests {
         let fakeTextToSpeech = FakeTextToSpeech()
         let vm = TextToSpeechViewModel(textToSpeech: fakeTextToSpeech)
         
-        vm.speak("hello world")
-        try? await Task.sleep(for: .milliseconds(200))
+        await vm.speak("hello world")
         
         #expect(fakeTextToSpeech.speakCalled == 1)
         #expect(vm.errorMessage == "")
@@ -31,8 +30,7 @@ struct TextToSpeechViewModelTests {
         let vm = TextToSpeechViewModel(textToSpeech: fakeTextToSpeech)
         
         fakeTextToSpeech.speakError = FakeError("error when calling")
-        vm.speak("error woi")
-        try? await Task.sleep(for: .milliseconds(200))
+        await vm.speak("error woi")
         
         #expect(fakeTextToSpeech.speakCalled == 1)
         #expect(vm.errorMessage?.isEmpty == false)

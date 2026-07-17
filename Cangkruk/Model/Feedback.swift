@@ -1,5 +1,5 @@
 //
-//  FeedbackResult.swift
+//  Feedback.swift
 //  Cangkruk
 //
 //  Created by Joren Alexander Toding on 14/07/26.
@@ -7,6 +7,11 @@
 
 import Foundation
 import SwiftData
+
+
+struct FeedbackRequest: Codable {
+    var transcript: String
+}
 
 @Model
 final class FeedbackResult {

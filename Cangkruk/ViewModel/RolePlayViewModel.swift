@@ -15,7 +15,7 @@ class RolePlayViewModel {
     let textToSpeech = TextToSpeechViewModel()
 
     let scenario: RolePlayScenario
-    private let sessionLength: Duration = .seconds(10)
+    private let sessionLength: Duration = .seconds(60 * 5)
     private var sessionSeconds: Int { Int(sessionLength.components.seconds) }
 
     var remainingSeconds: Int = 0
@@ -136,7 +136,7 @@ class RolePlayViewModel {
             let reply = try await llm.send(trimmed)
             guard !isSessionOver else { return }
             messages.append(ChatMessage(role: .customer, text: reply))
-            textToSpeech.speak(reply)
+            await textToSpeech.speak(reply)
         } catch {
             errorMessage = "Pelanggan tidak merespons: \(error.localizedDescription)"
         }
