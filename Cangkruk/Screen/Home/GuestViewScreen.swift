@@ -32,7 +32,7 @@ struct GuestViewScreen: View {
                         levelInfo[idx].isLock.toggle()
                     } onClick: {
                         // navigation to next screen
-                        router.push(.level)
+                        router.push(.level(level.level))
                     }
                 }
                 

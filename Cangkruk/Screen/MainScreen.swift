@@ -29,17 +29,21 @@ struct MainScreen: View {
                         RegisterScreen()
                     case .login:
                         LoginScreen()
-                    case .level:
-                        LevelScreen()
-                    case .roleplay:
-                        RolePlayScreen(isPresented: Binding(
-                            get: { true },
-                            set: { isPresented in
-                                if !isPresented {
-                                    router.pop()
+                    case .level(let number):
+                        LevelScreen(levelNumber: number)
+                    case .roleplay (let number):
+                        RolePlayScreen(
+                            isPresented: Binding(
+                                get: { true },
+                                set: { isPresented in
+                                    if !isPresented {
+                                        router.pop()
+                                    }
                                 }
-                            }
-                        ))
+                            ),
+                           scenario: RolePlayScenario.all.first { $0.difficulty == number }
+                           ?? RolePlayScenario.all[0]
+                        )
                     }
                 }
         }

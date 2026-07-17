@@ -114,7 +114,7 @@ struct HomeScreen: View {
                         ) {
                             levelInfo[idx].isLock.toggle()
                         } onClick: {
-                            router.push(.level)
+                            router.push(.level(level.level))
                         }
                     }
                 }
