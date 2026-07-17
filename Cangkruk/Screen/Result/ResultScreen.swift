@@ -33,84 +33,70 @@ struct ResultScreen: View {
     
     
     var body: some View {
-        ZStack{
-            VStack {
-                HStack {
-                    Text("Hasil Tes")
-                        .font(.shakyComicBold(size: 40, relativeTo: .title3))
-                        .foregroundStyle(Color("Secondary"))
-                        .padding()
-                    
-                    Spacer()
-                    ShareLink(item: shareText) {
-                        Image(systemName: "square.and.arrow.up")
-                            .padding(10)
-                            .font(.title2)
-                            .background(Color("Primary"))
-                            .foregroundStyle(Color("Background"))
-                            .clipShape(Circle())
-                            .padding()
-                            .accessibilityLabel("Share Hasil Tes")
-                    }
-                    .disabled(isShare)
-                    .simultaneousGesture(
-                        TapGesture().onEnded {
-                            isShare = true
-                            
-                            Task {
-                                try? await Task.sleep(for: .seconds(2))
-                                isShare = false
-                            }
-                        }
-                    )
-                }
-                
-                Spacer()
-            }
-            
-            VStack {
-                ScrollView {
-                    VStack(alignment: .leading){
-                        VStack(alignment: .leading, spacing: 8) {
-                            Text("Summary:")
-                                .font(.shakyComicBold(size: 25, relativeTo: .body))
-                                .bold()
-                            Text(summary)
-                                .font(.default)
-                        }
-                        .padding(.bottom, 32)
-                        
-                        
-                        VStack(alignment: .leading, spacing: 8) {
-                            Text("Feedback")
-                                .font(.shakyComicBold(size: 25, relativeTo: .body)).bold()
-                            Text(feedback)
-                                .font(.default)
-                        }
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
+        VStack {
+            HStack {
+                Text("Hasil Tes")
+                    .font(.shakyComicBold(size: 40, relativeTo: .body))
+                    .foregroundStyle(Color("Secondary"))
                     .padding()
+                
+                Spacer()
+                ShareLink(item: shareText) {
+                    Image(systemName: "square.and.arrow.up")
+                        .padding(10)
+                        .font(.title2)
+                        .background(Color("Primary"))
+                        .foregroundStyle(Color("Background"))
+                        .clipShape(Circle())
+                        .padding()
+                        .accessibilityLabel("Share Hasil Tes")
                 }
-                .background(Color("lightBackground"))
-                .clipShape(
-                    RoundedRectangle(cornerRadius: 20)
+                .disabled(isShare)
+                .simultaneousGesture(
+                    TapGesture().onEnded {
+                        isShare = true
+                        
+                        Task {
+                            try? await Task.sleep(for: .seconds(2))
+                            isShare = false
+                        }
+                    }
                 )
-                .padding()
-                .padding(.bottom, 100)
-                .padding(.top, 200)
-
-            }
-            .overlay(alignment: .top) {
-                AppLottie(animation: "CangkrukMeditate")
-                    .frame(width: 200, height: 200)
-                    .zIndex(1)
-                    .accessibilityLabel("Foto Cangkruk Meditasi")
-                    .offset(y: 50)
             }
             
+            AppLottie(animation: "CangkrukMeditate", placeholder: "CangkrukMeditate", placeholderHeight: 210)
+                .frame(height: 250)
+                .padding(.bottom, -40)
+                .zIndex(1)
+            
+            ScrollView {
+                VStack(alignment: .leading) {
+                    VStack(alignment: .leading) {
+                        Text("Summary")
+                            .font(.shakyComicBold(size: 25, relativeTo: .callout))
+                        
+                        Text(summary)
+                            .font(.default)
+                    }
+                    .padding(.bottom, 32)
+                    
+                    VStack(alignment: .leading) {
+                        Text("Feedback")
+                            .font(.shakyComicBold(size: 25, relativeTo: .callout))
+                        
+                        Text(feedback)
+                            .font(.default)
+                    }
+                }
+                .padding()
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+            .background(.white)
+            .clipShape(RoundedRectangle(cornerRadius: 12))
+            .padding()
+            .offset(y: -20)
+            
             VStack {
-                Spacer()
-                
                 AppButton(label: "Kembali") {
                     router.push(.level)
                 }
