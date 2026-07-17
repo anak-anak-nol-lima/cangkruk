@@ -33,6 +33,10 @@ struct TermsConditionsScreen: View {
                 .padding(.horizontal, 30)
                 .padding(.top, 20)
                 .zIndex(1)
+                // Cap scaling here so the title can't outgrow the fixed-size mascot next to it
+                // and destabilize the -105/115 offsets below. The scrollable body text isn't
+                // capped, so it still gets full Dynamic Type benefit.
+                .dynamicTypeSize(...DynamicTypeSize.accessibility2)
 
                 ScrollView {
                     VStack(alignment: .leading, spacing: 24) {
@@ -102,7 +106,7 @@ struct TermsConditionsScreen: View {
     private func termsSection(title: String, body: String) -> some View {
         VStack(alignment: .leading, spacing: 8) {
             Text(title)
-                .font(.shakyComicBold(size: 20))
+                .font(.shakyComicBold(size: 20, relativeTo: .subheadline))
                 .foregroundStyle(Color("Secondary"))
 
             Text(body)
