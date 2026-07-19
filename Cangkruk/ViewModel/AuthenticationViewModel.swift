@@ -56,8 +56,6 @@ class AuthenticationViewModel {
 
         do {
             let users = try context.fetch(descriptor)
-            let allUsers = (try? context.fetch(FetchDescriptor<User>())) ?? []
-
             return users.first
         } catch {
             errorMessage = error.localizedDescription

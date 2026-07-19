@@ -30,4 +30,5 @@ protocol ILLMService {
     func send (_ baristaText:String) async throws -> String
     func generateFeedback (transcript: String) async throws -> String
     func endsession ()
+    func generateLevelMaterials(systemPrompt: String) async throws -> [LevelMaterialResponse]?
 }
