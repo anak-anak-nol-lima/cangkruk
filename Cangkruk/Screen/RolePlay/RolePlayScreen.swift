@@ -166,13 +166,8 @@ struct RolePlayScreen: View{
                 feedback: viewModel.feedbackText ?? ""
             )
         }
-        .alert("Apakah anda akan mengakhiri tes ini?", isPresented: $showQuitAlert) {
-            Button("Kembali", role: .cancel) { }
-            Button("Ya", role: .destructive) {
-                viewModel.endSession()
-                isPresented = false
-            }
-        }
+        
+        
         
         .onChange(of: viewModel.isGeneratingFeedback) { _, generating in
             guard !generating, !hasSavedResult,
@@ -190,44 +185,27 @@ struct RolePlayScreen: View{
             if isError {
                 AppSnackbar(errorMessage: errorText, type: .error, isPresented: $isError)
             }
+            
         }
         .navigationBarBackButtonHidden()
         .onChange(of: viewModel.errorMessage) { _, new in showError(new) }
         .onChange(of: viewModel.speechToText.errorMessage) { _, new in showError(new) }
         .onChange(of: viewModel.textToSpeech.errorMessage) { _, new in showError(new) }
-    }
-}
-private func avatar (_ name: String) ->
-    some View{
-        Image (name)
-            .resizable()
-            .scaledToFill()
-            .frame(width:60, height: 60)
-            .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
-
-    }
-
-struct ChatBubbleView: View {
-    let message: ChatMessage
-
-    var body: some View {
-        HStack (alignment: .top, spacing: 8){
-            if message.role == .customer{
-                avatar("Customer")
-            }
-            if message.role == .barista{
-                Spacer(minLength: 48)
-            }
-            Text(message.text).font(.system(size: 15))
-            if message.role == .customer{
-                Spacer(minLength: 48)
-            }
-            if message.role == .barista{
-               avatar("Baristapng")
-            }
+        .overlay {
+            AppAlert(
+                isPresented: $showQuitAlert,
+                message: "APAKAH ANDA AKAN MENGAKHIRI TES INI ?",
+                primaryButtonTitle: "YA",
+                primaryAction: {
+                    viewModel.endSession()
+                    isPresented = false
+                }
+            )
         }
     }
+    
 }
+
 
 
 #Preview {

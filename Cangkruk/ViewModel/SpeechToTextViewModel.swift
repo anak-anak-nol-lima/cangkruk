@@ -105,7 +105,14 @@ class SpeechToTextViewModel {
                     }
                 }
             }
-            
+            recordingSeconds = 0
+            micLevels = []
+            recordingTimer = Task{
+                while !Task.isCancelled{
+                    try? await Task.sleep(for: .seconds(1))
+                    recordingSeconds += 1
+                }
+            }
             isPlaying = true
         } catch {
             errorMessage = error.localizedDescription
@@ -116,6 +123,8 @@ class SpeechToTextViewModel {
     
     // stopPlaying will stopping the audio & speech functionality
     func stopPlaying() {
+        recordingTimer?.cancel()
+        recordingTimer = nil
         audioEngineManager.stopAudioEngine()
         transcriptionManager.stopTranscribe()
         isPlaying = false

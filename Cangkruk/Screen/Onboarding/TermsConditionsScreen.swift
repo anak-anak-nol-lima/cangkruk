@@ -30,7 +30,7 @@ struct TermsConditionsScreen: View {
                         .frame(width: 200, height: 200)
                         .offset(x: 10, y: -5)
                 }
-                .padding(.horizontal, 30)
+                .screenPadding()
                 .padding(.top, 20)
                 .zIndex(1)
                 // Cap scaling here so the title can't outgrow the fixed-size mascot next to it
@@ -86,7 +86,7 @@ struct TermsConditionsScreen: View {
                 .clipShape(RoundedRectangle(cornerRadius: 20))
                 .padding(.top, -105)
                 .padding(.bottom, 115)
-                .padding(.horizontal, 30)
+                .screenPadding()
             }
 
             VStack {
@@ -96,7 +96,7 @@ struct TermsConditionsScreen: View {
                     router.pop()
                 }
                 .padding(.bottom, 24)
-                .padding(.horizontal, 30)
+                .screenPadding()
             }
         }
         .navigationBarBackButtonHidden()

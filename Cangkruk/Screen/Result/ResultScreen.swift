@@ -10,6 +10,8 @@ import SwiftUI
 struct ResultScreen: View {
     // MARK: - ViewModel
     @Environment(RouterViewModel.self) private var router
+    @Environment(\.dismiss) private var dismiss
+
     
     // MARK: - State
     @State private var isShare: Bool = false
@@ -98,9 +100,9 @@ struct ResultScreen: View {
             
             VStack {
                 AppButton(label: "Kembali") {
-                    router.pop()
+                    dismiss()
                 }
-                .padding(.horizontal, 20)
+                .screenPadding()
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
