@@ -18,6 +18,9 @@ struct LevelScreen: View {
     // hasil latihan tersimpan, terbaru di atas — @Query bikin list ini
     // refresh sendiri tiap ada FeedbackResult baru masuk SwiftData
     @Query(sort: \FeedbackResult.date, order: .reverse) private var results: [FeedbackResult]
+    private var levelResults: [FeedbackResult] {
+        results.filter { $0.levelNumber == levelNumber }
+    }
     @State private var selectedResult: FeedbackResult?
     
     @Query
@@ -27,6 +30,8 @@ struct LevelScreen: View {
             material.level == levelNumber
         }
     }
+    
+    
     
     var body: some View {
         ZStack {
@@ -88,7 +93,7 @@ struct LevelScreen: View {
                         Spacer(minLength: 100) // spacer agar tidak tertutup button mulai
                     }.padding(.top, 20)
                 }
-            }.padding(.horizontal, 30)
+            }.screenPadding()
             
             VStack {
                 Spacer()
@@ -96,7 +101,7 @@ struct LevelScreen: View {
                 AppButton(label: "Mulai") {
                     router.push(.roleplay(levelNumber))
                 }
-                .padding(.horizontal, 30)
+                .screenPadding()
                 .padding(.bottom, 15)
             }
         }
@@ -121,7 +126,7 @@ struct LevelScreen: View {
                 .bold()
                 .foregroundStyle(Color("Secondary"))
             
-            if results.isEmpty {
+            if levelResults.isEmpty {
                 HStack {
                     Spacer()
                     Text("Kamu belum melakukan tes")
@@ -132,12 +137,12 @@ struct LevelScreen: View {
                 }
             } else {
                 VStack(spacing: 12) {
-                    ForEach(Array(results.enumerated()), id: \.element.id) { index, result in
+                    ForEach(Array(levelResults.enumerated()), id: \.element.id) { index, result in
                         Button {
                             selectedResult = result
                         } label: {
                             HStack {
-                                Text("Summary \(results.count - index)")
+                                Text("Summary \(levelResults.count - index)")
                                     .font(.system(size: 16, weight: .medium))
                                 Spacer()
                                 Text(Self.hasilDateFormatter.string(from: result.date))
