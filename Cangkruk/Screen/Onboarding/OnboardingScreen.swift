@@ -44,7 +44,7 @@ struct OnboardingScreen: View {
                 AppButton(label: "Mulai") {
                     router.push(user == nil ? .register : .home)
                 }
-                .padding(.horizontal, 30)
+                .screenPadding()
 
             }
             .padding()

@@ -25,6 +25,10 @@ struct RolePlayScenario: Identifiable {
 
         MENU KAFE:
         \(menuContext)
+        
+        Berikan TEPAT SATU balasan langsung. JANGAN PERNAH menulis pilihan \
+        jawaban, alternatif, label seperti "Option 1", atau penjelasan di luar peran.
+
         """
     }
 

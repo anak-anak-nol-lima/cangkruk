@@ -229,7 +229,7 @@ struct ManagerView: View {
                     .frame(maxWidth: .infinity, alignment: .center)
                 }
                 .frame(maxWidth: .infinity)
-                .padding(.horizontal, 20)
+                .screenPadding()
                 .padding(.bottom, 15)
             }
             

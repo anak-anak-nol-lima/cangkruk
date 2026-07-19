@@ -18,10 +18,15 @@ enum Route: Hashable {
 
 @Observable
 class RouterViewModel {
+   
     var path = NavigationPath()
 
     // Set to true once register + login succeed; HomeScreen observes this to reveal ManagerView.
-    var isManagerUnlocked = false
+    var isManagerUnlocked = UserDefaults.standard.bool(forKey: "isManagerUnlocked"){
+        didSet{
+            UserDefaults.standard.set(isManagerUnlocked, forKey: "isManagerUnlocked")
+        }
+    }
 
     func push(_ p: Route) {
         // pushing the path of next navigation page
