@@ -9,16 +9,24 @@ import SwiftUI
 import SwiftData
 
 struct LevelScreen: View {
-    let levelNumber: Int 
-
+    let levelNumber: Int
+    
     // MARK: - State
     @State private var isRolePlaying: Bool = false
     @Environment(RouterViewModel.self) private var router
-
+    
     // hasil latihan tersimpan, terbaru di atas — @Query bikin list ini
     // refresh sendiri tiap ada FeedbackResult baru masuk SwiftData
     @Query(sort: \FeedbackResult.date, order: .reverse) private var results: [FeedbackResult]
     @State private var selectedResult: FeedbackResult?
+    
+    @Query
+    private var materials: [LevelMaterial]
+    private var levelMaterials: [LevelMaterial]? {
+        materials.filter { material in
+            material.level == levelNumber
+        }
+    }
     
     var body: some View {
         ZStack {
@@ -39,7 +47,7 @@ struct LevelScreen: View {
                     }
                     .buttonStyle(.plain)
                     
-                    Text("LEVEL 1")
+                    Text("LEVEL \(levelNumber)")
                         .font(.shakyComicBold(size: 50))
                         .bold()
                         .foregroundStyle(Color("Secondary"))
@@ -60,14 +68,16 @@ struct LevelScreen: View {
                 ScrollView(.vertical, showsIndicators: false) {
                     VStack(alignment: .leading, spacing: 28) {
                         VStack(alignment: .leading, spacing: 24) {
-                            moduleSection(
-                                title: "PRODUK MENU",
-                                content: "Langkah pertama sebagai barista adalah mengenal produk yang dijual. Secara umum, menu dibagi menjadi beberapa kategori:\n\nKopi berbasis espresso Espresso, Americano, Cappuccino, Latte, dan variasinya. Semua berawal dari espresso sebagai basis rasa; yang membedakan adalah takaran air dan susunya.\n\nManual brew kopi seduh manual seperti V60, Tubruk, dan Cold Brew. Fokusnya menonjolkan karakter dan notes dari biji kopi.\n\nMinuman non-kopi cokelat, matcha, dan teh, untuk pelanggan yang tidak minum kopi.\n\nYang perlu kamu kuasai di tahap ini: nama produk, bahan utamanya, dan bedanya minuman milk-based vs non-milk."
-                            )
-                            moduleSection(
-                                title: "SOP",
-                                content: "SOP adalah panduan langkah kerja yang wajib diikuti agar kualitas dan pelayanan tetap konsisten di setiap shift, siapa pun baristanya.\n\nSebelum buka bersihkan area bar, cek & kalibrasi mesin, siapkan bahan (susu, sirup, biji kopi).\n\nSaat melayani sapa pelanggan dengan ramah, konfirmasi pesanan, dan buat sesuai resep baku.\n\nSebelum menyajikan untuk manual brew, cicipi dulu hasilnya sebelum diberikan ke pelanggan.\n\nSetelah shift catat stok, bersihkan alat, dan lakukan handover ke shift berikutnya.\n\nIntinya: SOP memastikan setiap cangkir punya rasa dan kualitas yang sama."
-                            )
+                            
+                            if let levelMaterials {
+                                ForEach(levelMaterials) { material in
+                                    let cleaned = material.body.replacingOccurrences(of: "\\n", with: "\n")
+                                    moduleSection(
+                                        title: material.title,
+                                        content: cleaned
+                                    )
+                                }
+                            }
                         }
                         .padding(25)
                         .background(Color("lightBackground"))
@@ -95,14 +105,14 @@ struct LevelScreen: View {
             ResultScreen(summary: result.summary, feedback: result.feedback)
         }
     }
-
+    
     // format tanggal persis mockup: 10-10-2026
     private static let hasilDateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "dd-MM-yyyy"
         return formatter
     }()
-
+    
     @ViewBuilder
     private var hasilSection: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -154,7 +164,7 @@ struct LevelScreen: View {
         .background(Color("lightBackground"))
         .clipShape(RoundedRectangle(cornerRadius: 20))
     }
-
+    
     @ViewBuilder
     private func moduleSection(title: String, content: String) -> some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -163,10 +173,25 @@ struct LevelScreen: View {
                 .bold()
                 .foregroundStyle(Color("Secondary"))
             
-            Text(content)
-                .font(.body)
-                .foregroundStyle(.black.opacity(0.75))
-                .lineSpacing(4)
+            if let attributedString = try? AttributedString(
+                markdown: content,
+                options: AttributedString.MarkdownParsingOptions(
+                    interpretedSyntax: .inlineOnlyPreservingWhitespace
+                )
+            ) {
+                // rendering the markdown
+                Text(attributedString)
+                    .font(.body)
+                    .foregroundStyle(.black.opacity(0.75))
+                    .lineSpacing(4)
+            } else {
+                // fallback render content
+                Text(content)
+                    .font(.body)
+                    .foregroundStyle(.black.opacity(0.75))
+                    .lineSpacing(4)
+                
+            }
         }
     }
 }
