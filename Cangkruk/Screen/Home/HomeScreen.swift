@@ -24,7 +24,7 @@ struct HomeScreen: View {
     
     // MARK: - Storage Query
     @Query private var allFiles: [TrainingFile]
-    
+    @Query private var materials: [LevelMaterial]
     @State private var levelInfo: [LevelInfo] = [
         LevelInfo(level: 1, description: "Pengetahuan akan produk", isLock: false),
         LevelInfo(level: 2, description: "Memahami kebutuhan pelanggan", isLock: true),
@@ -69,7 +69,7 @@ struct HomeScreen: View {
                                 .accessibilityLabel(Text("Unggah File SOP dan Menu"))
                         }
                     }
-                    .padding(.horizontal, 24) //padding untuk button di top leading
+                    .screenPadding() //padding untuk button di top leading
                     .padding(.top, 10)
                 } else {
                     ZStack {
@@ -98,23 +98,38 @@ struct HomeScreen: View {
                             }
                         }
                     }
-                    .padding(.horizontal, 24) //padding untuk button di top leading
+                    .screenPadding() //padding untuk button di top leading
                     .padding(.top, 10)
                 }
                 
                 VStack(spacing: 12) {
-                    ForEach(levelInfo.indices, id: \.self) { idx in
-                        let level = levelInfo[idx]
-                        
-                        AppLevel(
-                            level: level.level,
-                            description: level.description,
-                            isLock: level.isLock,
-                            isManager: router.isManagerUnlocked
-                        ) {
-                            levelInfo[idx].isLock.toggle()
-                        } onClick: {
-                            router.push(.level(level.level))
+                    if materials.isEmpty{
+                        VStack(spacing: 12) {
+                                AppLottie(animation: "CangkrukMeditate")
+                                    .frame(height: 180)
+                                Text("Belum ada materi.\nMinta manajermu upload SOP & menu dulu ya!")
+                                    .font(.shakyComicBold(size: 18))
+                                    .multilineTextAlignment(.center)
+                                    .foregroundStyle(Color("Secondary"))
+                            }
+                            .padding(.top, 40)
+                    } else {
+                        ForEach(levelInfo.indices, id: \.self) { idx in
+                            let level = levelInfo[idx]
+                            
+                            AppLevel(
+                                level: level.level,
+                                description: level.description,
+                                isLock: level.isLock,
+                                isManager: router.isManagerUnlocked
+                            ) {
+                                levelInfo[idx].isLock.toggle()
+                                let unlocked = levelInfo.filter {
+                                    !$0.isLock}.map(\.level)
+                                UserDefaults.standard.set(unlocked,forKey: "unlockedLevels")
+                            } onClick: {
+                                router.push(.level(level.level))
+                            }
                         }
                     }
                 }
@@ -140,6 +155,8 @@ struct HomeScreen: View {
             ManagerView()
         }
         .onAppear {
+            let unlocked = UserDefaults.standard.array(forKey: "unlockedLevels") as? [Int] ?? [1]
+            for i in levelInfo.indices { levelInfo[i].isLock = !unlocked.contains(levelInfo[i].level) }
             self.user = authVM.getLastUser(context: modelContext)
             self.isSOPOpen = router.isManagerUnlocked && allFiles.isEmpty
         }

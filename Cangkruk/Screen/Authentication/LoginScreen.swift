@@ -53,14 +53,14 @@ struct LoginScreen: View {
                     .frame(height: 250)
                     .allowsHitTesting(false)
                     .offset(x: 45, y: 125)
-                    .zIndex(1)
+                    
                 
                 AppButton(label: "Masuk", isLoading: authVM.isLoading) {
                     Task {
                         _ = await authVM.login(context: modelContext, email: email, password: password)
                     }
                 }
-                .padding(.horizontal, 30)
+                .screenPadding()
                 .padding(.top, 40)
             }
            
@@ -78,11 +78,17 @@ struct LoginScreen: View {
             }
         }
         .overlay {
-            ForgotPasswordAlert(isPresented: $showForgotPassword) { email in
-                if authVM.verifyEmailForReset(context: modelContext, email: email) {
-                    router.push(.register)
+            ForgotPasswordAlert(
+                isPresented: $showForgotPassword,
+                onCheckEmail: { email in
+                    authVM.verifyEmailForReset(context: modelContext, email: email)
+                },
+                onConfirm: { newPassword in
+                    Task {
+                        _ = await authVM.resetPassword(context: modelContext, newPassword: newPassword)
+                    }
                 }
-            }
+            )
         }
     }
 }
