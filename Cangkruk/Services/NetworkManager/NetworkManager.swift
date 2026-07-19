@@ -97,7 +97,7 @@ class NetworkManager: NetworkManagerProtocol {
             guard let httpResponse = response as? HTTPURLResponse else {
                 throw NetworkError.invalidResponse
             }
-                    
+                        
             guard (200...299).contains(httpResponse.statusCode) else {
                 throw NetworkError.httpError(
                     code: httpResponse.statusCode, body: String(data: data, encoding: .utf8)

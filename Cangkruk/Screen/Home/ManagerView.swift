@@ -15,6 +15,10 @@ struct ManagerView: View {
     @Environment(RouterViewModel.self) private var router
     @State private var showCancelAlert = false
     
+    // MARK: - ViewModel
+    @Environment(LearningMaterialViewModel.self) private var learningMaterialVM
+
+    
     @Query(
         filter: #Predicate<TrainingFile> { $0.section == "sop" },
         sort: \TrainingFile.date,
@@ -62,7 +66,42 @@ struct ManagerView: View {
     @State private var showDeleteAlert = false
     @State private var fileToConfirmDelete: TrainingFile? = nil
     
+    // Loading
+    @State private var isLoading: Bool = false
+    
+    
+    // MARK: - Internal function
+    private func saveAndDismiss() async {
+        isLoading = true
+        
+        do {
+            for file in filesToAdd {
+                modelContext.insert(file)
+            }
+            
+            for file in filesToDelete {
+                FileStorageManager.delete(storedFileName: file.storedFileName)
+                modelContext.delete(file)
+            }
+            
+            filesToAdd.removeAll()
+            filesToDelete.removeAll()
+            
+            // call the model to generate prompt
+            let materials = try learningMaterialVM.extractingText(context: modelContext)
+            let res = try await learningMaterialVM.startGenerateMaterials(materials: materials)
+            try learningMaterialVM.saveMaterials(context: modelContext, materials: res)
+            
+            isLoading = false
+            dismiss()
+        } catch {
+            isLoading = false
+            print("saveAndDismiss Error: \(error)")
+        }
+    }
+    
     var body: some View {
+        @Bindable var learningMaterialVM = learningMaterialVM
         ZStack {
             ZStack(alignment: .top) {
                 Color("Background")
@@ -182,19 +221,10 @@ struct ManagerView: View {
                         .frame(height: 190)
                         .frame(maxWidth: .infinity, alignment: .center)
                         .allowsHitTesting(false)
-                    AppButton(label: "SIMPAN") {
-                        for file in filesToAdd {
-                            modelContext.insert(file)
+                    AppButton(label: "SIMPAN", isLoading: isLoading) {
+                        Task {
+                            await saveAndDismiss()
                         }
-                        
-                        for file in filesToDelete {
-                            FileStorageManager.delete(storedFileName: file.storedFileName)
-                            modelContext.delete(file)
-                        }
-                        
-                        filesToAdd.removeAll()
-                        filesToDelete.removeAll()
-                        dismiss()
                     }
                     .frame(maxWidth: .infinity, alignment: .center)
                 }
@@ -253,6 +283,11 @@ struct ManagerView: View {
                         .background(Color.white)
                         .clipShape(RoundedRectangle(cornerRadius: 12))
                 }
+            }
+        }
+        .overlay(alignment: .bottom) {
+            if learningMaterialVM.isError {
+                AppSnackbar(errorMessage: learningMaterialVM.errorMessage ?? "", type: .error, isPresented: $learningMaterialVM.isError)
             }
         }
         // Inisialisasi onAppear dari branch kamu

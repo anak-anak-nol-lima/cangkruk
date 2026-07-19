@@ -37,19 +37,8 @@ struct PromptEngine {
         ATURAN FORMAT OUTPUT:
         Anda WAJIB memberikan jawaban dalam format JSON yang valid agar bisa dibaca oleh aplikasi. 
         Jangan berikan teks tambahan di luar JSON.
+        Sesuaikan dengan return dari NETWORK
 
-        Gunakan struktur JSON berikut:
-        {
-          "title": "Judul Materi",
-          "sections": [
-            {
-              "heading": "Nama Bagian",
-              "bulletPoints": ["Poin 1", "Poin 2"]
-            }
-          ],
-          "rawMarkdown": "Teks lengkap dalam format Markdown"
-        }
-        
         DOKUMEN MENTAH UNTUK DIRANGKUM:
         \"\"\"
         \(rawText)
