@@ -71,6 +71,21 @@ final class APILLMService: ILLMService {
             throw error
         }
     }
+    
+    func generateLevelMaterials(systemPrompt: String) async throws -> [LevelMaterialResponse]? {
+        do {
+            let req = LevelMaterialRequest(systemPrompt: systemPrompt)
+            let body = try JSONEncoder().encode(req)
+            guard let data = try await networkManager.post(path: "/learning/materials", req: body) else {
+                return nil
+            }
+            let parsed = try JSONDecoder().decode([LevelMaterialResponse].self, from: data)
+            // dikemas ulang ke format marker supaya parser di ViewModel tetap jalan
+            return parsed
+        } catch {
+            throw error
+        }
+    }
 
     func endsession() {
         systemPrompt = nil
