@@ -82,10 +82,10 @@ class RolePlayViewModel {
         speechToText.stopPlaying()
         isSessionOver = true
 
-        guard !messages.isEmpty else {
-            llm.endsession()
-            return
-        }
+//        guard !messages.isEmpty else {
+//            llm.endsession()
+//            return
+//        }
 
         isGeneratingFeedback = true
         do {
@@ -134,10 +134,6 @@ class RolePlayViewModel {
         isThinking = true
         do {
             let reply = try await llm.send(trimmed)
-            guard !reply.isEmpty else { errorMessage = "Pelanggan tidak merespons, coba sekali lagi."
-                isThinking = false
-                return
-            }
             guard !isSessionOver else { return }
             messages.append(ChatMessage(role: .customer, text: reply))
             await textToSpeech.speak(reply)
