@@ -44,24 +44,29 @@ struct HomeScreen: View {
             VStack {
                 if router.isManagerUnlocked {
                     ZStack {
-                        Image("tantanganTitle")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(height: 50)
-                            .padding(.vertical, 12)
-                            .accessibilityLabel(Text("Halaman Manager"))
+//                        Image("tantanganTitle")
+//                            .resizable()
+//                            .scaledToFit()
+//                            .frame(height: 50)
+//                            .padding(.vertical, 12)
+//                            .accessibilityLabel(Text("Halaman Manager"))
+                        Text("TANTANGAN")
+                            .font(.shakyComicBold(size: 43))
+                            .foregroundStyle(Color("Primary"))
+                            .padding(.vertical,12)
+                            .accessibilityLabel("Halaman Manager")
                         
                         HStack {
                             Spacer()
                             
                             Image(systemName: "book.badge.plus")
                                 .font(.system(size: 18, weight: .semibold))
-                                .foregroundStyle(Color("lightBackground"))
+                                .foregroundStyle(Color("Background"))
                                 .offset(x: -1, y: 2)
                                 .frame(width: 40, height: 40)
                                 .background(
                                     Circle()
-                                        .fill(Color("Primary"))
+                                        .fill(Color("Secondary"))
                                 )
                                 .onTapGesture {
                                     isSOPOpen = true
@@ -73,11 +78,16 @@ struct HomeScreen: View {
                     .padding(.top, 10)
                 } else {
                     ZStack {
-                        Image("tantanganTitle")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(height: 50)
-                            .padding(.vertical, 12)
+//                        Image("tantanganTitle")
+//                            .resizable()
+//                            .scaledToFit()
+//                            .frame(height: 50)
+//                            .padding(.vertical, 12)
+//                            .accessibilityLabel(Text("Halaman Tantangan Barista"))
+                        Text("TANTANGAN")
+                            .font(.shakyComicBold(size: 43))
+                            .foregroundStyle(Color("Primary"))
+                            .padding(.vertical,12)
                             .accessibilityLabel(Text("Halaman Tantangan Barista"))
                         
                         HStack {
@@ -90,7 +100,7 @@ struct HomeScreen: View {
                                     .resizable()
                                     .scaledToFit()
                                     .frame(height: 40)
-                                    .foregroundStyle(Color("Primary"))
+                                    .foregroundStyle(Color("Secondary"))
                                     .onTapGesture {
                                         router.push(.login)
                                     }

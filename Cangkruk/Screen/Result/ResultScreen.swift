@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ResultScreen: View {
+    
     // MARK: - ViewModel
     @Environment(RouterViewModel.self) private var router
     @Environment(\.dismiss) private var dismiss
@@ -15,7 +16,7 @@ struct ResultScreen: View {
     
     // MARK: - State
     @State private var isShare: Bool = false
-    
+    let isLevelScreen: Bool
     
     // MARK: - Property
     let summary: String
@@ -37,11 +38,24 @@ struct ResultScreen: View {
     var body: some View {
         VStack {
             HStack {
-                Text("Hasil Tes")
-                    .font(.shakyComicBold(size: 40, relativeTo: .body))
+                Image(systemName: "xmark.circle.fill")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(height: 50)
                     .foregroundStyle(Color("Secondary"))
+                    .padding(.bottom, 10)
+                    .padding(.leading,10)
+                    .onTapGesture {
+                        if !isLevelScreen{
+                            router.pop()
+                        }
+                        dismiss()
+                    }
+                Spacer()
+                Text("HASIL TES")
+                    .font(.shakyComicBold(size: 43, relativeTo: .body))
+                    .foregroundStyle(Color("Primary"))
                     .padding()
-                
                 Spacer()
                 ShareLink(item: shareText) {
                     Image(systemName: "square.and.arrow.up")
@@ -98,12 +112,7 @@ struct ResultScreen: View {
             .padding()
             .offset(y: -20)
             
-            VStack {
-                AppButton(label: "Kembali") {
-                    dismiss()
-                }
-                .screenPadding()
-            }
+            
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color("Background"))
@@ -117,10 +126,12 @@ struct SharePhoto: Transferable {
     }
 }
 
-#Preview {
-    ResultScreen(
-        summary: "Kamu sudah menunjukkan keramahan yang baik saat menyapa.",
-        feedback: "Tadi kamu langsung bilang \"oke\" tanpa mengulang pesanan. Coba ulangi: \"Jadi, satu Latte dan satu Americano, ya?\""
-    )
-    .environment(RouterViewModel())
-}
+
+
+//#Preview {
+//    ResultScreen(
+//        summary: "Kamu sudah menunjukkan keramahan yang baik saat menyapa.",
+//        feedback: "Tadi kamu langsung bilang \"oke\" tanpa mengulang pesanan. Coba ulangi: \"Jadi, satu Latte dan satu Americano, ya?\""
+//    )
+//    .environment(RouterViewModel())
+//}

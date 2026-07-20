@@ -42,7 +42,7 @@ struct AppLevel: View {
                 
                 Text(description)
                     .foregroundStyle(Color("Secondary"))
-                    .font(.caption)
+                    .font(.subheadline)
                     .multilineTextAlignment(.leading)
                     .fixedSize(horizontal: false, vertical: true)
             }
@@ -79,9 +79,10 @@ struct AppLevel: View {
                 
                 Text(description)
                     .foregroundStyle(Color("Secondary"))
-                    .font(.caption)
+                    .font(.subheadline)
                     .multilineTextAlignment(.leading)
                     .fixedSize(horizontal: false, vertical: true)
+               
             }
             .padding(5)
             .padding(.trailing, 70)
@@ -116,7 +117,7 @@ struct AppLevel: View {
                 
                 Text(description)
                     .foregroundStyle(Color("Yellow"))
-                    .font(.caption)
+                    .font(.subheadline)
                     .multilineTextAlignment(.leading)
                     .fixedSize(horizontal: false, vertical: true)
             }
@@ -152,7 +153,7 @@ struct AppLevel: View {
                 
                 Text(description)
                     .foregroundStyle(Color("Yellow"))
-                    .font(.caption)
+                    .font(.subheadline)
                     .multilineTextAlignment(.leading)
                     .fixedSize(horizontal: false, vertical: true)
             }
@@ -170,11 +171,9 @@ struct AppLevel: View {
                 .scaledToFit()
                 .frame(height: 130)
                 .offset(x: 25)
-                .opacity(0.5)
         }
         .clipShape(RoundedRectangle(cornerRadius: 12))
         .padding(.bottom, 5)
-        .opacity(0.5)
         .onTapGesture {
             toggleLock()
         }
@@ -185,8 +184,8 @@ struct AppLevel: View {
     AppLevel(
         level: 4,
         description: "Membangun hubungan baik dengan pelanggan",
-        isLock: false,
-        isManager: false,
+        isLock: true,
+        isManager: true,
         toggleLock: {},
         onClick: {}
     )

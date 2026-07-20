@@ -110,9 +110,9 @@ struct ManagerView: View {
                 VStack(spacing: 16) {
                     HStack {
                         Text("UNGGAH FILE")
-                            .font(.shakyComicBold(size: 45))
-                            .bold()
-                            .foregroundStyle(Color("Primary"))
+                            .font(.shakyComicBold(size: 43))
+//                            .bold()
+                            .foregroundStyle(Color("Secondary"))
                         
                         Spacer()
                         
@@ -127,7 +127,7 @@ struct ManagerView: View {
                                 .resizable()
                                 .scaledToFit()
                                 .frame(height: 40)
-                                .foregroundStyle(Color("Primary"))
+                                .foregroundStyle(Color("Secondary"))
                                 .padding(.bottom, 10)
                         }
                     }
@@ -303,7 +303,7 @@ struct ManagerView: View {
     private func fileCard(file: TrainingFile) -> some View {
         HStack(spacing: 8) {
             Text(file.name)
-                .font(.system(size: 12))
+                .font(.subheadline)
                 .foregroundStyle(Color("Secondary"))
                 .lineLimit(1)
                 .truncationMode(.tail)
@@ -311,7 +311,7 @@ struct ManagerView: View {
             Spacer(minLength: 10)
             
             Text(Self.dateFormatter.string(from: file.date))
-                .font(.caption)
+                .font(.subheadline)
                 .foregroundStyle(Color("Secondary"))
             
             Button {
