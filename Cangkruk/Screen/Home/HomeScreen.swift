@@ -102,51 +102,51 @@ struct HomeScreen: View {
                     .padding(.top, 10)
                 }
                 
-                VStack(spacing: 12) {
-                    if materials.isEmpty{
-                        VStack(spacing: 12) {
-                                AppLottie(animation: "CangkrukMeditate")
-                                    .frame(height: 180)
-                                Text("Belum ada materi.\nMinta manajermu upload SOP & menu dulu ya!")
-                                    .font(.shakyComicBold(size: 18))
-                                    .multilineTextAlignment(.center)
-                                    .foregroundStyle(Color("Secondary"))
-                            }
-                            .padding(.top, 40)
-                    } else {
-                        ForEach(levelInfo.indices, id: \.self) { idx in
-                            let level = levelInfo[idx]
-                            
-                            AppLevel(
-                                level: level.level,
-                                description: level.description,
-                                isLock: level.isLock,
-                                isManager: router.isManagerUnlocked
-                            ) {
-                                levelInfo[idx].isLock.toggle()
-                                let unlocked = levelInfo.filter {
-                                    !$0.isLock}.map(\.level)
-                                UserDefaults.standard.set(unlocked,forKey: "unlockedLevels")
-                            } onClick: {
-                                router.push(.level(level.level))
+                ScrollView {
+                    VStack(spacing: 12) {
+                        if materials.isEmpty{
+                            VStack(spacing: 12) {
+                                    AppLottie(animation: "CangkrukMeditate")
+                                        .frame(height: 180)
+                                    Text("Belum ada materi.\nMinta managermu upload SOP & menu dulu ya!")
+                                        .font(.shakyComicBold(size: 18))
+                                        .multilineTextAlignment(.center)
+                                        .foregroundStyle(Color("Secondary"))
+                                }
+                                .padding(.top, 150)
+                        } else {
+                            ForEach(levelInfo.indices, id: \.self) { idx in
+                                let level = levelInfo[idx]
+
+                                AppLevel(
+                                    level: level.level,
+                                    description: level.description,
+                                    isLock: level.isLock,
+                                    isManager: router.isManagerUnlocked
+                                ) {
+                                    levelInfo[idx].isLock.toggle()
+                                    let unlocked = levelInfo.filter {
+                                        !$0.isLock}.map(\.level)
+                                    UserDefaults.standard.set(unlocked,forKey: "unlockedLevels")
+                                } onClick: {
+                                    router.push(.level(level.level))
+                                }
                             }
                         }
                     }
-                }
-                .padding()
-                
-                Spacer()
-                
-                if router.isManagerUnlocked {
-                    AppButton(
-                        label: "Keluar",
-                        isLoading: authVM.isLoading,
-                        action: {
-                            authVM.logout()
-                            router.isManagerUnlocked = false
-                        }
-                    )
                     .padding()
+
+                    if router.isManagerUnlocked {
+                        AppButton(
+                            label: "Keluar",
+                            isLoading: authVM.isLoading,
+                            action: {
+                                authVM.logout()
+                                router.isManagerUnlocked = false
+                            }
+                        )
+                        .padding()
+                    }
                 }
             }
             .frame(maxWidth: .infinity, alignment: .center)
