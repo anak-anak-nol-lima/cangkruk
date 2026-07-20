@@ -8,8 +8,12 @@ import SwiftData
 
 
 struct RolePlayScreen: View{
+    
+    @Binding var isLevelScreen: Bool
+   
     // MARK: - Binding
     @Binding var isPresented: Bool
+    
 
     
     // MARK: - Storage
@@ -31,6 +35,7 @@ struct RolePlayScreen: View{
     ) {
         self._isPresented = isPresented
         self._viewModel = State(initialValue: RolePlayViewModel(scenario: scenario))
+        self._isLevelScreen = .constant(false)
     }
 
     private func showError(_ message: String?) {
@@ -42,31 +47,30 @@ struct RolePlayScreen: View{
     
 
     var body: some View {
+      
         ZStack {
             Color("Background").ignoresSafeArea(.all)
             VStack {
                 ZStack {
                     
-                    Text("LEVEL \(viewModel.scenario.difficulty)")
-                        .font(.shakyComicBold(size: 40))
+                    Text(String(format: "%02d:%02d",
+                                viewModel.remainingSeconds / 60,
+                                viewModel.remainingSeconds % 60))
+                    .font(.system(size:15))
                         .foregroundStyle(Color("Secondary"))
 
                     HStack {
-                        Image(systemName: "chevron.left")
-                            .font(.system(size: 20, weight: .bold))
-                            .foregroundStyle(.white)
-                            .frame(width: 50, height: 50)
-                            .background(Color("Primary"))
-                            .clipShape(Circle())
-                            .onTapGesture { showQuitAlert = true }
-
+                        Text("LEVEL \(viewModel.scenario.difficulty)")
+                            .font(.shakyComicBold(size: 43))
+                            .foregroundStyle(Color("Primary"))
                         Spacer()
-
-                        Text(String(format: "%02d:%02d",
-                                    viewModel.remainingSeconds / 60,
-                                    viewModel.remainingSeconds % 60))
-                            .font(.shakyComicBold(size: 26))
+                        Image(systemName: "xmark.circle.fill")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(height: 50)
                             .foregroundStyle(Color("Secondary"))
+                            .padding(.bottom, 10)
+                            .onTapGesture { showQuitAlert = true }
                     }
                 }
                 .padding(.horizontal, 24)
@@ -140,6 +144,7 @@ struct RolePlayScreen: View{
                             ProgressView("Pelanggan sedang menilai kamu...")
                         } else {
                             AppButton(label: "Lihat Hasil") {
+                                isLevelScreen = false
                                 showLoading = true
                             }
                             .padding(.horizontal, 12)
@@ -162,6 +167,7 @@ struct RolePlayScreen: View{
         }
         .sheet(isPresented: $showHasil) {
             ResultScreen(
+                isLevelScreen: false,
                 summary: viewModel.feedbackSummary ?? "Belum ada penilaian untuk sesi ini.",
                 feedback: viewModel.feedbackText ?? ""
             )
