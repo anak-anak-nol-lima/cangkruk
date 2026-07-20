@@ -10,14 +10,38 @@ import SwiftData
 
 struct LevelScreen: View {
 
+    // MARK: - Input
+    let level: Int
+
     // MARK: - State
-    @State private var isRolePlaying: Bool = false
     @Environment(RouterViewModel.self) private var router
+
+    // Materi pelatihan terfilter per level (Level 1 = resep/menu, Level 2 = sop)
+    @Query private var trainingFiles: [TrainingFile]
 
     // hasil latihan tersimpan, terbaru di atas — @Query bikin list ini
     // refresh sendiri tiap ada FeedbackResult baru masuk SwiftData
     @Query(sort: \FeedbackResult.date, order: .reverse) private var results: [FeedbackResult]
     @State private var selectedResult: FeedbackResult?
+
+    init(level: Int) {
+        self.level = level
+        let sectionKey = Self.sectionKey(for: level)
+        _trainingFiles = Query(
+            filter: #Predicate<TrainingFile> { $0.section == sectionKey },
+            sort: \TrainingFile.date,
+            order: .reverse
+        )
+    }
+
+    /// Level 1 → Pengetahuan Menu (`resep`); Level 2 → SOP (`sop`).
+    private static func sectionKey(for level: Int) -> String {
+        switch level {
+        case 1: return TrainingFileSection.resep.rawValue
+        case 2: return TrainingFileSection.sop.rawValue
+        default: return TrainingFileSection.resep.rawValue
+        }
+    }
     
     var body: some View {
         ZStack {
@@ -38,7 +62,7 @@ struct LevelScreen: View {
                     }
                     .buttonStyle(.plain)
                     
-                    Text("LEVEL 1")
+                    Text("LEVEL \(level)")
                         .font(.shakyComicBold(size: 50))
                         .bold()
                         .foregroundStyle(Color("Secondary"))
@@ -59,14 +83,19 @@ struct LevelScreen: View {
                 ScrollView(.vertical, showsIndicators: false) {
                     VStack(alignment: .leading, spacing: 28) {
                         VStack(alignment: .leading, spacing: 24) {
-                            moduleSection(
-                                title: "PRODUK MENU",
-                                content: "Langkah pertama sebagai barista adalah mengenal produk yang dijual. Secara umum, menu dibagi menjadi beberapa kategori:\n\nKopi berbasis espresso Espresso, Americano, Cappuccino, Latte, dan variasinya. Semua berawal dari espresso sebagai basis rasa; yang membedakan adalah takaran air dan susunya.\n\nManual brew kopi seduh manual seperti V60, Tubruk, dan Cold Brew. Fokusnya menonjolkan karakter dan notes dari biji kopi.\n\nMinuman non-kopi cokelat, matcha, dan teh, untuk pelanggan yang tidak minum kopi.\n\nYang perlu kamu kuasai di tahap ini: nama produk, bahan utamanya, dan bedanya minuman milk-based vs non-milk."
-                            )
-                            moduleSection(
-                                title: "SOP",
-                                content: "SOP adalah panduan langkah kerja yang wajib diikuti agar kualitas dan pelayanan tetap konsisten di setiap shift, siapa pun baristanya.\n\nSebelum buka bersihkan area bar, cek & kalibrasi mesin, siapkan bahan (susu, sirup, biji kopi).\n\nSaat melayani sapa pelanggan dengan ramah, konfirmasi pesanan, dan buat sesuai resep baku.\n\nSebelum menyajikan untuk manual brew, cicipi dulu hasilnya sebelum diberikan ke pelanggan.\n\nSetelah shift catat stok, bersihkan alat, dan lakukan handover ke shift berikutnya.\n\nIntinya: SOP memastikan setiap cangkir punya rasa dan kualitas yang sama."
-                            )
+                            if trainingFiles.isEmpty {
+                                moduleSection(
+                                    title: defaultModuleTitle,
+                                    content: "Belum ada materi untuk level ini. Minta manajer mengunggah file terlebih dahulu."
+                                )
+                            } else {
+                                ForEach(trainingFiles) { file in
+                                    moduleSection(
+                                        title: moduleTitle(for: file),
+                                        content: moduleContent(for: file)
+                                    )
+                                }
+                            }
                         }
                         .padding(25)
                         .background(Color("lightBackground"))
@@ -93,6 +122,48 @@ struct LevelScreen: View {
         .sheet(item: $selectedResult) { result in
             HasilScreen(summary: result.summary, feedback: result.feedback)
         }
+    }
+
+    private var defaultModuleTitle: String {
+        level == 2 ? "SOP" : "PRODUK MENU"
+    }
+
+    private func moduleTitle(for file: TrainingFile) -> String {
+        if let material = decodedMaterial(from: file) {
+            return material.title
+        }
+        return file.name
+    }
+
+    /// Hasil AI siap pakai; jika belum matang, placeholder (atau fallback OCR).
+    private func moduleContent(for file: TrainingFile) -> String {
+        if let material = decodedMaterial(from: file) {
+            return material.rawMarkdown
+        }
+
+        if let summarized = file.summarizedText?
+            .trimmingCharacters(in: .whitespacesAndNewlines),
+           !summarized.isEmpty {
+            return summarized
+        }
+
+        if let extracted = file.extractedText?
+            .trimmingCharacters(in: .whitespacesAndNewlines),
+           !extracted.isEmpty {
+            return "Sedang diproses oleh sistem…"
+        }
+
+        return "Materi belum tersedia."
+    }
+
+    private func decodedMaterial(from file: TrainingFile) -> TrainingMaterialResponse? {
+        guard let summarized = file.summarizedText?
+            .trimmingCharacters(in: .whitespacesAndNewlines),
+              !summarized.isEmpty,
+              let data = summarized.data(using: .utf8) else {
+            return nil
+        }
+        return try? JSONDecoder().decode(TrainingMaterialResponse.self, from: data)
     }
 
     // format tanggal persis mockup: 10-10-2026
@@ -171,7 +242,7 @@ struct LevelScreen: View {
 }
 
 #Preview {
-    LevelScreen()
+    LevelScreen(level: 1)
         .environment(RouterViewModel())
-        .modelContainer(for: FeedbackResult.self, inMemory: true)
+        .modelContainer(for: [FeedbackResult.self, TrainingFile.self], inMemory: true)
 }

@@ -78,7 +78,7 @@ struct HasilScreen: View {
                 }
                 
                 AppButton(label: "Kembali") {
-                    router.push(.level)
+                    router.push(.level(1))
                 }
                 .padding(.horizontal, 20)
             }

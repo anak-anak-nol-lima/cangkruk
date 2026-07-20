@@ -7,13 +7,13 @@
 
 import SwiftUI
 
-enum Route {
-    case level,
-         roleplay,
-         home,
-         termsConditions,
-         register,
-         login
+enum Route: Hashable {
+    case level(Int)
+    case roleplay
+    case home
+    case termsConditions
+    case register
+    case login
 }
 
 @Observable

@@ -29,8 +29,8 @@ struct MainScreen: View {
                         RegisterScreen()
                     case .login:
                         LoginScreen()
-                    case .level:
-                        LevelScreen()
+                    case .level(let level):
+                        LevelScreen(level: level)
                     case .roleplay:
                         RolePlayScreen(isPresented: Binding(
                             get: { true },

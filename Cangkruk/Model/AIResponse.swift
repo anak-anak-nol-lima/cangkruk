@@ -6,18 +6,29 @@
 //
 
 import Foundation
+import FoundationModels
 
+@Generable
 struct TrainingMaterialResponse: Codable {
-    let title: String
-    let sections: [TrainingSection]
-    
-    let rawMarkdown: String
+    @Guide(description: "Learning material title for a new barista")
+    var title: String
+
+    @Guide(description: "Material sections with headings and bullet points")
+    var sections: [TrainingSection]
+
+    @Guide(description: "Full learning material text in Markdown format")
+    var rawMarkdown: String
 }
 
+@Generable
 struct TrainingSection: Codable, Identifiable {
     var id: UUID { UUID() }
-    let heading: String
-    let bulletPoints: [String]
+
+    @Guide(description: "Section heading, for example SOP or a menu category")
+    var heading: String
+
+    @Guide(description: "Actionable learning bullet points that are easy to memorize")
+    var bulletPoints: [String]
 }
 
 struct RolePlayFeedbackResponse: Codable {
