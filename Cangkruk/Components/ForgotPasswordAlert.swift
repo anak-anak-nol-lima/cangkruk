@@ -34,39 +34,32 @@ struct ForgotPasswordAlert: View {
                         .frame(maxWidth: .infinity, alignment: .center)
                         .foregroundStyle(Color("Secondary"))
 
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text("EMAIL")
-                            .font(.shakyComicBold(size: 22, relativeTo: .subheadline))
-                            .foregroundStyle(Color("Secondary"))
+                    if step == 1 {
+                        VStack(alignment: .leading, spacing: 8) {
+                            inputField(label: "EMAIL", text: $email)
 
-                        if !errorText.isEmpty {
-                            Text(errorText)
-                                .font(.caption)
-                                .foregroundStyle(.red)
-                        }
+                            if !errorText.isEmpty {
+                                Text(errorText)
+                                    .font(.caption)
+                                    .foregroundStyle(.red)
+                            }
 
-                        actionButton("CEK EMAIL") {
-                            if onCheckEmail(email) {
-                                errorText = ""
-                                step = 2
-                            } else {
-                                errorText = "Email tidak ditemukan"
+                            actionButton("CEK EMAIL") {
+                                if onCheckEmail(email) {
+                                    errorText = ""
+                                    step = 2
+                                } else {
+                                    errorText = "Email tidak ditemukan"
+                                }
                             }
                         }
                     } else {
                         inputField(label: "KATA SANDI BARU", text: $newPassword, isSecure: true)
 
-                    Button {
-                        onSubmit(email)
-                        isPresented = false
-                    } label: {
-                        Text("CEK EMAIL")
-                            .font(.shakyComicBold(size: 20, relativeTo: .headline))
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 12)
-                            .background(Color("Primary"))
-                            .foregroundStyle(.white)
-                            .clipShape(RoundedRectangle(cornerRadius: 8))
+                        actionButton("SIMPAN") {
+                            onConfirm(newPassword)
+                            close()
+                        }
                     }
                 }
                 .padding(24)
