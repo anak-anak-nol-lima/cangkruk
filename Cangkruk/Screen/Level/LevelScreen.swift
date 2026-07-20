@@ -8,8 +8,9 @@
 import SwiftUI
 import SwiftData
 
+
 struct LevelScreen: View {
-    let levelNumber:Int 
+    let levelNumber:Int
 
     // MARK: - State
     @State private var isRolePlaying: Bool = false
@@ -19,7 +20,7 @@ struct LevelScreen: View {
     // refresh sendiri tiap ada FeedbackResult baru masuk SwiftData
     @Query(sort: \FeedbackResult.date, order: .reverse) private var results: [FeedbackResult]
     private var levelResults: [FeedbackResult] {
-        results.filter { $0.levelNumber == levelNumber }
+        Array(results.filter { $0.levelNumber == levelNumber }.prefix(5))
     }
     @State private var selectedResult: FeedbackResult?
     
@@ -47,7 +48,7 @@ struct LevelScreen: View {
                             .resizable()
                             .scaledToFit()
                             .frame(height: 45)
-                            .foregroundStyle(Color("Primary"))
+                            .foregroundStyle(Color("Secondary"))
                             .padding(.bottom, 10)
                     }
                     .buttonStyle(.plain)
@@ -55,7 +56,7 @@ struct LevelScreen: View {
                     Text("LEVEL \(levelNumber)")
                         .font(.shakyComicBold(size: 50))
                         .bold()
-                        .foregroundStyle(Color("Secondary"))
+                        .foregroundStyle(Color("Primary"))
                         .padding(.horizontal, 10)
                     
                     Spacer()
@@ -107,7 +108,7 @@ struct LevelScreen: View {
         }
         .navigationBarBackButtonHidden()
         .sheet(item: $selectedResult) { result in
-            ResultScreen(summary: result.summary, feedback: result.feedback)
+            ResultScreen(isLevelScreen: true, summary: result.summary, feedback: result.feedback)
         }
     }
     
@@ -187,6 +188,7 @@ struct LevelScreen: View {
                 // rendering the markdown
                 Text(attributedString)
                     .font(.body)
+                    .font(.system(size: 15))
                     .foregroundStyle(.black.opacity(0.75))
                     .lineSpacing(4)
             } else {
@@ -200,6 +202,7 @@ struct LevelScreen: View {
         }
     }
 }
+@Observable class isinLevelScreen { var isinLevelScreen:Bool = true }
 
 #Preview {
     LevelScreen(levelNumber: 1)
