@@ -13,6 +13,7 @@ struct MainScreen: View {
     @State private var notificationViewModel = NotificationViewModel()
     @State private var authenticationViewModel = AuthenticationViewModel()
     @State private var learningMaterialViewModel = LearningMaterialViewModel()
+    
 
     // MARK: - Environment
     @Environment(\.scenePhase) var scenePhase
