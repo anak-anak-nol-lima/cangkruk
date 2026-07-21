@@ -1,0 +1,14 @@
+Cangkruk - Barista Training App (UAT Build)
+
+APA YANG BARU:
+- Aplikasi kini mendukung junior barista untuk berlatih pengetahuan lewat materi pembelajaran yang sudah dipersonalisasi sesuai cafe/coffee shop masing-masing
+- Fitur roleplay untuk melatih komunikasi barista dengan pelanggan, mencakup berbagai studi kasus/skenario
+
+YANG PERLU DIUJI:
+- Fokus utama: fitur roleplay: coba berbagai studi kasus yang tersedia dan berikan feedback terkait respons AI, alur percakapan, dan relevansi skenario dengan situasi asli di coffee shop
+- Cek apakah materi pembelajaran yang ditampilkan sudah sesuai dan personalized dengan cafe/coffee shop kamu
+- Perhatikan kejelasan instruksi dan kemudahan navigasi antar fitur (materi ↔ roleplay)
+
+CATATAN:
+- Build ini masih tahap UAT, mohon laporkan bug atau feedback jika ditemukan lewat email: liwangivone@gmail.com 
+- Fitur roleplay AI masih dalam pengembangan, respons mungkin belum sempurna, feedback kamu sangat membantu penyempurnaan sebelum rilis final
