@@ -34,6 +34,15 @@ struct HomeScreen: View {
     @State private var user: User?
     @State private var isSOPOpen: Bool = false
     
+    func getTilteByLevel(_ level: Int) -> String {
+        let m = materials.first { l in
+            l.level == level
+        }
+        
+        return m?.title ?? ""
+    }
+    
+    
     var body: some View {
         @Bindable var router = router
         
@@ -127,10 +136,11 @@ struct HomeScreen: View {
                         } else {
                             ForEach(levelInfo.indices, id: \.self) { idx in
                                 let level = levelInfo[idx]
+                                let title = getTilteByLevel(idx+1)
 
                                 AppLevel(
                                     level: level.level,
-                                    description: level.description,
+                                    description: title,
                                     isLock: level.isLock,
                                     isManager: router.isManagerUnlocked
                                 ) {
