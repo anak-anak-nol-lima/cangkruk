@@ -9,9 +9,14 @@ import SwiftUI
 
 struct ForgotPasswordAlert: View {
     @Binding var isPresented: Bool
-    @State private var email: String = ""
 
-    var onSubmit: (String) -> Void
+    @State private var step = 1
+    @State private var email: String = ""
+    @State private var newPassword: String = ""
+    @State private var errorText: String = ""
+
+    var onCheckEmail: (String) -> Bool
+    var onConfirm: (String) -> Void
 
     var body: some View {
         ZStack {
@@ -19,7 +24,7 @@ struct ForgotPasswordAlert: View {
                 Color.black.opacity(0.4)
                     .ignoresSafeArea()
                     .onTapGesture {
-                        isPresented = false
+                        close()
                     }
                     .zIndex(1)
 
@@ -29,33 +34,32 @@ struct ForgotPasswordAlert: View {
                         .frame(maxWidth: .infinity, alignment: .center)
                         .foregroundStyle(Color("Secondary"))
 
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text("EMAIL")
-                            .font(.shakyComicBold(size: 22))
-                            .foregroundStyle(Color("Secondary"))
+                    if step == 1 {
+                        VStack(alignment: .leading, spacing: 8) {
+                            inputField(label: "EMAIL", text: $email)
 
-                        TextField("", text: $email)
-                            .font(.title3)
-                            .foregroundStyle(.black)
-                            .keyboardType(.emailAddress)
-                            .textInputAutocapitalization(.never)
+                            if !errorText.isEmpty {
+                                Text(errorText)
+                                    .font(.caption)
+                                    .foregroundStyle(.red)
+                            }
 
-                        Rectangle()
-                            .fill(Color("Primary"))
-                            .frame(height: 1.5)
-                    }
+                            actionButton("CEK EMAIL") {
+                                if onCheckEmail(email) {
+                                    errorText = ""
+                                    step = 2
+                                } else {
+                                    errorText = "Email tidak ditemukan"
+                                }
+                            }
+                        }
+                    } else {
+                        inputField(label: "KATA SANDI BARU", text: $newPassword, isSecure: true)
 
-                    Button {
-                        onSubmit(email)
-                        isPresented = false
-                    } label: {
-                        Text("CEK EMAIL")
-                            .font(.shakyComicBold(size: 20))
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 12)
-                            .background(Color("Primary"))
-                            .foregroundStyle(.white)
-                            .clipShape(RoundedRectangle(cornerRadius: 8))
+                        actionButton("SIMPAN") {
+                            onConfirm(newPassword)
+                            close()
+                        }
                     }
                 }
                 .padding(24)
@@ -68,12 +72,59 @@ struct ForgotPasswordAlert: View {
         }
         .animation(.spring(response: 0.3, dampingFraction: 0.7), value: isPresented)
     }
+
+    private func close() {
+        isPresented = false
+        step = 1
+        email = ""
+        newPassword = ""
+        errorText = ""
+    }
+
+    @ViewBuilder
+    private func inputField(label: String, text: Binding<String>, isSecure: Bool = false) -> some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text(label)
+                .font(.shakyComicBold(size: 22))
+                .foregroundStyle(Color("Secondary"))
+
+            if isSecure {
+                SecureField("", text: text)
+                    .font(.title3)
+                    .foregroundStyle(.black)
+            } else {
+                TextField("", text: text)
+                    .font(.title3)
+                    .foregroundStyle(.black)
+                    .keyboardType(.emailAddress)
+                    .textInputAutocapitalization(.never)
+            }
+
+            Rectangle()
+                .fill(Color("Primary"))
+                .frame(height: 1.5)
+        }
+    }
+
+    private func actionButton(_ title: String, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            Text(title)
+                .font(.shakyComicBold(size: 20))
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 12)
+                .background(Color("Primary"))
+                .foregroundStyle(.white)
+                .clipShape(RoundedRectangle(cornerRadius: 8))
+        }
+    }
 }
 
 #Preview {
     @Previewable @State var isPresented = true
 
-    ForgotPasswordAlert(isPresented: $isPresented) { email in
-        print("Cek email: \(email)")
-    }
+    ForgotPasswordAlert(
+        isPresented: $isPresented,
+        onCheckEmail: { email in email == "tes@cangkruk.com" },
+        onConfirm: { newPassword in print("Sandi baru: \(newPassword)") }
+    )
 }

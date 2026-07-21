@@ -16,7 +16,7 @@ struct AuthFormCard: View {
         VStack(alignment: .leading, spacing: 32) {
             VStack(alignment: .leading, spacing: 8) {
                 Text("EMAIL")
-                    .font(.shakyComicBold(size: 30))
+                    .font(.shakyComicBold(size: 30, relativeTo: .subheadline))
                     .foregroundStyle(Color("Secondary"))
 
                 TextField("", text: $email)
@@ -33,7 +33,7 @@ struct AuthFormCard: View {
 
             VStack(alignment: .leading, spacing: 8) {
                 Text("KATA SANDI")
-                    .font(.shakyComicBold(size: 30))
+                    .font(.shakyComicBold(size: 30, relativeTo: .subheadline))
                     .foregroundStyle(Color("Secondary"))
 
                 SecureField("", text: $password)

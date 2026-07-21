@@ -23,7 +23,7 @@ struct LoginScreen: View {
 
     var body: some View {
         @Bindable var authVM = authVM
-        
+
         ZStack {
             Color("Background")
                 .ignoresSafeArea()
@@ -47,6 +47,12 @@ struct LoginScreen: View {
                 Spacer()
             }
             .padding(24)
+            // Cap scaling here so this VStack (title + form + "Lupa Kata Sandi?") can't
+            // grow tall enough to collide with the Lottie+"Masuk" block below, which is
+            // fixed via .offset/.padding and doesn't resize based on this VStack's height.
+            // Capped at xxxLarge (not accessibility2) because the collision with "Lupa Kata
+            // Sandi?" already starts at accessibility1, not later.
+            .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 
             VStack {
                 AppLottie(animation: "CangkrukClimb")
@@ -54,16 +60,17 @@ struct LoginScreen: View {
                     .allowsHitTesting(false)
                     .offset(x: 45, y: 125)
                     .zIndex(1)
+                    
                 
                 AppButton(label: "Masuk", isLoading: authVM.isLoading) {
                     Task {
                         _ = await authVM.login(context: modelContext, email: email, password: password)
                     }
                 }
-                .padding(.horizontal, 30)
+                .screenPadding()
                 .padding(.top, 40)
             }
-           
+
         }
         .ignoresSafeArea(.keyboard, edges: .bottom)
         .overlay(alignment: .bottom) {
@@ -78,11 +85,17 @@ struct LoginScreen: View {
             }
         }
         .overlay {
-            ForgotPasswordAlert(isPresented: $showForgotPassword) { email in
-                if authVM.verifyEmailForReset(context: modelContext, email: email) {
-                    router.push(.register)
+            ForgotPasswordAlert(
+                isPresented: $showForgotPassword,
+                onCheckEmail: { email in
+                    authVM.verifyEmailForReset(context: modelContext, email: email)
+                },
+                onConfirm: { newPassword in
+                    Task {
+                        _ = await authVM.resetPassword(context: modelContext, newPassword: newPassword)
+                    }
                 }
-            }
+            )
         }
     }
 }

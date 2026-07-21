@@ -7,7 +7,7 @@
 
 import AVFoundation
 
-class StubVoice: AVSpeechSynthesisVoice {
+class StubVoice: AVSpeechSynthesisVoice, @unchecked Sendable {
     // StubVoice will create a STUB object that inherit from the AVSpeechSynthesisVoice
     // the goal is to make this to be an object we can use for TESTING
     

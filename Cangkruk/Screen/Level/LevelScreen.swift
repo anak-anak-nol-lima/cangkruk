@@ -8,9 +8,10 @@
 import SwiftUI
 import SwiftData
 
+
 struct LevelScreen: View {
-    let levelNumber: Int
-    
+    let levelNumber:Int
+
     // MARK: - State
     @State private var isRolePlaying: Bool = false
     @Environment(RouterViewModel.self) private var router
@@ -18,6 +19,9 @@ struct LevelScreen: View {
     // hasil latihan tersimpan, terbaru di atas — @Query bikin list ini
     // refresh sendiri tiap ada FeedbackResult baru masuk SwiftData
     @Query(sort: \FeedbackResult.date, order: .reverse) private var results: [FeedbackResult]
+    private var levelResults: [FeedbackResult] {
+        Array(results.filter { $0.levelNumber == levelNumber }.prefix(5))
+    }
     @State private var selectedResult: FeedbackResult?
     
     @Query
@@ -27,6 +31,8 @@ struct LevelScreen: View {
             material.level == levelNumber
         }
     }
+    
+    
     
     var body: some View {
         ZStack {
@@ -42,7 +48,7 @@ struct LevelScreen: View {
                             .resizable()
                             .scaledToFit()
                             .frame(height: 45)
-                            .foregroundStyle(Color("Primary"))
+                            .foregroundStyle(Color("Secondary"))
                             .padding(.bottom, 10)
                     }
                     .buttonStyle(.plain)
@@ -50,7 +56,7 @@ struct LevelScreen: View {
                     Text("LEVEL \(levelNumber)")
                         .font(.shakyComicBold(size: 50))
                         .bold()
-                        .foregroundStyle(Color("Secondary"))
+                        .foregroundStyle(Color("Primary"))
                         .padding(.horizontal, 10)
                     
                     Spacer()
@@ -88,7 +94,7 @@ struct LevelScreen: View {
                         Spacer(minLength: 100) // spacer agar tidak tertutup button mulai
                     }.padding(.top, 20)
                 }
-            }.padding(.horizontal, 30)
+            }.screenPadding()
             
             VStack {
                 Spacer()
@@ -96,13 +102,13 @@ struct LevelScreen: View {
                 AppButton(label: "Mulai") {
                     router.push(.roleplay(levelNumber))
                 }
-                .padding(.horizontal, 30)
+                .screenPadding()
                 .padding(.bottom, 15)
             }
         }
         .navigationBarBackButtonHidden()
         .sheet(item: $selectedResult) { result in
-            ResultScreen(summary: result.summary, feedback: result.feedback)
+            ResultScreen(isLevelScreen: true, summary: result.summary, feedback: result.feedback)
         }
     }
     
@@ -121,7 +127,7 @@ struct LevelScreen: View {
                 .bold()
                 .foregroundStyle(Color("Secondary"))
             
-            if results.isEmpty {
+            if levelResults.isEmpty {
                 HStack {
                     Spacer()
                     Text("Kamu belum melakukan tes")
@@ -132,12 +138,12 @@ struct LevelScreen: View {
                 }
             } else {
                 VStack(spacing: 12) {
-                    ForEach(Array(results.enumerated()), id: \.element.id) { index, result in
+                    ForEach(Array(levelResults.enumerated()), id: \.element.id) { index, result in
                         Button {
                             selectedResult = result
                         } label: {
                             HStack {
-                                Text("Summary \(results.count - index)")
+                                Text("Summary \(levelResults.count - index)")
                                     .font(.system(size: 16, weight: .medium))
                                 Spacer()
                                 Text(Self.hasilDateFormatter.string(from: result.date))
@@ -182,6 +188,7 @@ struct LevelScreen: View {
                 // rendering the markdown
                 Text(attributedString)
                     .font(.body)
+                    .font(.system(size: 15))
                     .foregroundStyle(.black.opacity(0.75))
                     .lineSpacing(4)
             } else {
@@ -195,6 +202,7 @@ struct LevelScreen: View {
         }
     }
 }
+@Observable class isinLevelScreen { var isinLevelScreen:Bool = true }
 
 #Preview {
     LevelScreen(levelNumber: 1)

@@ -8,8 +8,12 @@ import SwiftData
 
 
 struct RolePlayScreen: View{
+    
+    @Binding var isLevelScreen: Bool
+   
     // MARK: - Binding
     @Binding var isPresented: Bool
+    
 
     
     // MARK: - Storage
@@ -31,6 +35,7 @@ struct RolePlayScreen: View{
     ) {
         self._isPresented = isPresented
         self._viewModel = State(initialValue: RolePlayViewModel(scenario: scenario))
+        self._isLevelScreen = .constant(false)
     }
 
     private func showError(_ message: String?) {
@@ -39,33 +44,33 @@ struct RolePlayScreen: View{
         isError = true
     }
     
+    
 
     var body: some View {
+      
         ZStack {
             Color("Background").ignoresSafeArea(.all)
             VStack {
                 ZStack {
                     
-                    Text("LEVEL \(viewModel.scenario.difficulty)")
-                        .font(.shakyComicBold(size: 40))
+                    Text(String(format: "%02d:%02d",
+                                viewModel.remainingSeconds / 60,
+                                viewModel.remainingSeconds % 60))
+                    .font(.system(size:15))
                         .foregroundStyle(Color("Secondary"))
 
                     HStack {
-                        Image(systemName: "chevron.left")
-                            .font(.system(size: 20, weight: .bold))
-                            .foregroundStyle(.white)
-                            .frame(width: 50, height: 50)
-                            .background(Color("Primary"))
-                            .clipShape(Circle())
-                            .onTapGesture { showQuitAlert = true }
-
+                        Text("LEVEL \(viewModel.scenario.difficulty)")
+                            .font(.shakyComicBold(size: 43))
+                            .foregroundStyle(Color("Primary"))
                         Spacer()
-
-                        Text(String(format: "%02d:%02d",
-                                    viewModel.remainingSeconds / 60,
-                                    viewModel.remainingSeconds % 60))
-                            .font(.shakyComicBold(size: 26))
+                        Image(systemName: "xmark.circle.fill")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(height: 50)
                             .foregroundStyle(Color("Secondary"))
+                            .padding(.bottom, 10)
+                            .onTapGesture { showQuitAlert = true }
                     }
                 }
                 .padding(.horizontal, 24)
@@ -139,6 +144,7 @@ struct RolePlayScreen: View{
                             ProgressView("Pelanggan sedang menilai kamu...")
                         } else {
                             AppButton(label: "Lihat Hasil") {
+                                isLevelScreen = false
                                 showLoading = true
                             }
                             .padding(.horizontal, 12)
@@ -161,17 +167,13 @@ struct RolePlayScreen: View{
         }
         .sheet(isPresented: $showHasil) {
             ResultScreen(
+                isLevelScreen: false,
                 summary: viewModel.feedbackSummary ?? "Belum ada penilaian untuk sesi ini.",
                 feedback: viewModel.feedbackText ?? ""
             )
         }
-        .alert("Apakah anda akan mengakhiri tes ini?", isPresented: $showQuitAlert) {
-            Button("Kembali", role: .cancel) { }
-            Button("Ya", role: .destructive) {
-                viewModel.endSession()
-                isPresented = false
-            }
-        }
+        
+        
         
         .onChange(of: viewModel.isGeneratingFeedback) { _, generating in
             guard !generating, !hasSavedResult,
@@ -189,44 +191,27 @@ struct RolePlayScreen: View{
             if isError {
                 AppSnackbar(errorMessage: errorText, type: .error, isPresented: $isError)
             }
+            
         }
         .navigationBarBackButtonHidden()
         .onChange(of: viewModel.errorMessage) { _, new in showError(new) }
         .onChange(of: viewModel.speechToText.errorMessage) { _, new in showError(new) }
         .onChange(of: viewModel.textToSpeech.errorMessage) { _, new in showError(new) }
-    }
-}
-private func avatar (_ name: String) ->
-    some View{
-        Image (name)
-            .resizable()
-            .scaledToFill()
-            .frame(width:60, height: 60)
-            .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
-
-    }
-
-struct ChatBubbleView: View {
-    let message: ChatMessage
-
-    var body: some View {
-        HStack (alignment: .top, spacing: 8){
-            if message.role == .customer{
-                avatar("Customer")
-            }
-            if message.role == .barista{
-                Spacer(minLength: 48)
-            }
-            Text(message.text).font(.system(size: 15))
-            if message.role == .customer{
-                Spacer(minLength: 48)
-            }
-            if message.role == .barista{
-               avatar("Baristapng")
-            }
+        .overlay {
+            AppAlert(
+                isPresented: $showQuitAlert,
+                message: "APAKAH ANDA AKAN MENGAKHIRI TES INI ?",
+                primaryButtonTitle: "YA",
+                primaryAction: {
+                    viewModel.endSession()
+                    isPresented = false
+                }
+            )
         }
     }
+    
 }
+
 
 
 #Preview {
