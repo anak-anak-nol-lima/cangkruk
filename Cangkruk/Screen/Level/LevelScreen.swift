@@ -91,9 +91,9 @@ struct LevelScreen: View {
                         
                         hasilSection
                         
-                        Spacer(minLength: 100) // spacer agar tidak tertutup button mulai
-                    }.padding(.top, 20)
+                    } .padding(.top, 20)
                 }
+                .padding(.bottom, 100) // agar ScrollView tidak overlapping dengan button 'Mulai'
             }.screenPadding()
             
             VStack {
