@@ -17,7 +17,8 @@ struct ManagerView: View {
     
     // MARK: - ViewModel
     @Environment(LearningMaterialViewModel.self) private var learningMaterialVM
-
+    @Query private var LevelMaterials: [LevelMaterial]
+    @Query private var TrainingFiles: [TrainingFile]
     
     @Query(
         filter: #Predicate<TrainingFile> { $0.section == "sop" },
@@ -121,6 +122,7 @@ struct ManagerView: View {
                                 dismiss()
                             } else {
                                 showCancelAlert = true
+                                isLoading = true
                             }
                         } label: {
                             Image(systemName: "xmark.circle.fill")
@@ -222,8 +224,17 @@ struct ManagerView: View {
                         .frame(maxWidth: .infinity, alignment: .center)
                         .allowsHitTesting(false)
                     AppButton(label: "SIMPAN", isLoading: isLoading) {
+                        isLoading = true
                         Task {
-                            await saveAndDismiss()
+                            if filesToAdd.isEmpty && filesToDelete.isEmpty {
+                                dismiss ()
+                                return
+                            }
+                            if localSopFiles.isEmpty && localResepFiles.isEmpty {
+                                await deleteAll()
+                            }else{
+                                await saveAndDismiss()
+                            }
                         }
                     }
                     .frame(maxWidth: .infinity, alignment: .center)
@@ -313,7 +324,6 @@ struct ManagerView: View {
             Text(Self.dateFormatter.string(from: file.date))
                 .font(.subheadline)
                 .foregroundStyle(Color("Secondary"))
-            
             Button {
                 fileToConfirmDelete = file
                 showDeleteAlert = true
@@ -400,7 +410,23 @@ struct ManagerView: View {
             localResepFiles.removeAll { $0.id == file.id }
         }
     }
+    private func deleteAll() async {
+        isLoading = true
+        for file in TrainingFiles {
+                FileStorageManager.delete(storedFileName: file.storedFileName)
+            }
+            try? modelContext.delete(model: TrainingFile.self)
+            try? modelContext.delete(model: LevelMaterial.self)
+
+            filesToAdd.removeAll()
+            filesToDelete.removeAll()
+
+            isLoading = false
+            dismiss()
+        }
 }
+
+
 
 #Preview {
     ManagerView()
