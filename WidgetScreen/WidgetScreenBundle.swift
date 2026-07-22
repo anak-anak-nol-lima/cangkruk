@@ -12,6 +12,5 @@ import SwiftUI
 struct WidgetScreenBundle: WidgetBundle {
     var body: some Widget {
         WidgetScreen()
-        WidgetScreenControl()
     }
 }

@@ -11,27 +11,24 @@ import SwiftUI
 /// mengatur jadwal update widget
 struct Provider: AppIntentTimelineProvider {
     func placeholder(in context: Context) -> SimpleEntry {
-        // Placeholder (misal saat masih loading)
         SimpleEntry(date: Date(), configuration: ConfigurationAppIntent(), hasCompletedTraining: false)
     }
 
     func snapshot(for configuration: ConfigurationAppIntent, in context: Context) async -> SimpleEntry {
-        // Snapshot cepat di galeri widget
         SimpleEntry(date: Date(), configuration: configuration, hasCompletedTraining: true)
     }
     
     func timeline(for configuration: ConfigurationAppIntent, in context: Context) async -> Timeline<SimpleEntry> {
         var entries: [SimpleEntry] = []
-
-        // Disini nanti kamu bisa mengambil data asli dari SwiftData / UserDefaults
-        // Untuk contoh ini, kita set manual ke `false` (belum latihan)
+        
         let isTrained = false
         
         let entry = SimpleEntry(date: Date(), configuration: configuration, hasCompletedTraining: isTrained)
         entries.append(entry)
-
-        // Minta iOS update data widget setiap 1 jam kemudian
-        let nextUpdate = Calendar.current.date(byAdding: .hour, value: 1, to: Date())!
+        
+        let startOfToday = Calendar.current.startOfDay(for: Date())
+        let nextUpdate = Calendar.current.date(byAdding: .day, value: 1, to: startOfToday)!
+        
         return Timeline(entries: entries, policy: .after(nextUpdate))
     }
 }
@@ -55,6 +52,7 @@ struct WidgetScreenEntryView : View {
                         Text("MANTAP...\nNANTI\nLATIHAN LAGI\nYAK !")
                             .font(.shakyComicBold(size: 20))
                             .foregroundStyle(Color("Orange"))
+                            .accessibilityLabel(Text("Mantap, nanti latihan lagi, yak!"))
                         Spacer()
                     }
                     Spacer()
@@ -68,6 +66,7 @@ struct WidgetScreenEntryView : View {
                         .frame(maxWidth: .infinity)
                         .frame(height: 100)
                         .offset(y: 36)
+                        .accessibilityHidden(true)
                 }
             } else {
                 VStack {
@@ -75,6 +74,7 @@ struct WidgetScreenEntryView : View {
                         Text("AYO\nWAKTUNYA\nLATIHAN")
                             .font(.shakyComicBold(size: 20))
                             .foregroundStyle(Color("LightBeige"))
+                            .accessibilityLabel(Text("Ayo, waktunya latihan"))
                         Spacer()
                     }
                     Spacer()
@@ -89,6 +89,7 @@ struct WidgetScreenEntryView : View {
                         .frame(height: 110)
                         .offset(x: -25, y: 30)
                         .scaleEffect(x: -1, y: 1)
+                        .accessibilityHidden(true)
                 }
             }
         }
