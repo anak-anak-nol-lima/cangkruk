@@ -385,7 +385,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.Joren.swift.Cangkruk.WidgetScreen;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bee.swift.Cangkruk.WidgetScreen;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -415,7 +415,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.Joren.swift.Cangkruk.WidgetScreen;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bee.swift.Cangkruk.WidgetScreen;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -437,7 +437,7 @@
 				DEVELOPMENT_TEAM = P9RHX8FDH9;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.Joren.swift.CangkrukUnitTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bee.swift.CangkrukUnitTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
@@ -460,7 +460,7 @@
 				DEVELOPMENT_TEAM = P9RHX8FDH9;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.Joren.swift.CangkrukUnitTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bee.swift.CangkrukUnitTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
@@ -620,7 +620,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.Joren.swift.Cangkruk;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bee.swift.Cangkruk;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
@@ -657,7 +657,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.Joren.swift.Cangkruk;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bee.swift.Cangkruk;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
