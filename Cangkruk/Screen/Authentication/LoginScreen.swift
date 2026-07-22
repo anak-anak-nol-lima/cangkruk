@@ -12,7 +12,7 @@ struct LoginScreen: View {
     // MARK: - Storage
     @Environment(\.modelContext) private var modelContext
 
-    // MARK: - ViewModel
+    // MARK: - ViewModel    
     @Environment(RouterViewModel.self) private var router
     @Environment(AuthenticationViewModel.self) private var authVM
 
