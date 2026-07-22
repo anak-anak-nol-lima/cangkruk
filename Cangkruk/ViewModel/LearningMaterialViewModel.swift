@@ -44,6 +44,7 @@ class LearningMaterialViewModel {
         
         let learnMaterials = try context.fetch(fetchDescriptor)
         return learnMaterials.map { $0.extractedText ?? "" }
+        
     }
     
     // extractingText will generate the initial prompt + the training material
