@@ -143,6 +143,7 @@ struct RolePlayScreen: View{
                     
                     Text(viewModel.speechToText.currentText)     // transkrip live tetap berguna
                         .font(.shakyComicBold(size: 19)).bold()
+                        .foregroundStyle(Color("Secondary"))
                 }
                 
                 if viewModel.isPreparing {
@@ -182,7 +183,9 @@ struct RolePlayScreen: View{
                     .opacity(viewModel.isThinking ? 0.4 : 1)
                 } else {
                     VStack(spacing: 8) {
-                        Text("Sesi selesai!").font(.headline)
+                        Text("Sesi selesai!")
+                            .font(.headline)
+                            .foregroundStyle(Color("Secondary"))
                         if viewModel.isGeneratingFeedback {
                             ProgressView("Pelanggan sedang menilai kamu...")
                         } else {
