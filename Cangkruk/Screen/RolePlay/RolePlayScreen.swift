@@ -11,7 +11,7 @@ struct RolePlayScreen: View{
     // MARK: - Binding
     @Binding var isPresented: Bool
     @Binding var isLevelScreen: Bool
-
+    
     // MARK: - Storage
     @Environment(\.modelContext) private var modelContext
     
@@ -25,6 +25,7 @@ struct RolePlayScreen: View{
     @State private var hasSavedResult = false
     @State private var showLoading = false
     @State private var sessionStarted = false
+    @AppStorage("stepPopOver") private var stepPopOver = 0
     
     init(
         isPresented: Binding<Bool>,
@@ -35,7 +36,7 @@ struct RolePlayScreen: View{
         self._isLevelScreen = .constant(false)
     }
     
-
+    
     // MARK: - Internal function
     private func showError(_ message: String?) {
         guard let message, !message.isEmpty else { return }
@@ -43,11 +44,21 @@ struct RolePlayScreen: View{
         isError = true
     }
     
-    
     var body: some View {
-        
         ZStack {
             Color("Background").ignoresSafeArea(.all)
+            
+            VStack {}
+                .popover(isPresented: .constant(stepPopOver == 0)) {
+                    appTip(
+                        title: "Selamat datang di Mode Role Play",
+                        message: "Gunakan fitur ini untuk berinteraksi dengan robot sebagai pelanggan"
+                    ) {
+                        // go to next pop-over
+                        stepPopOver += 1
+                    }
+                }
+            
             VStack {
                 ZStack {
                     HStack {
@@ -61,6 +72,15 @@ struct RolePlayScreen: View{
                                     viewModel.remainingSeconds % 60))
                         .font(.system(size:15))
                         .foregroundStyle(Color("Secondary"))
+                        .popover(isPresented: .constant(stepPopOver == 2)) {
+                            appTip(
+                                title: "Percakapan selama 5 menit",
+                                message: "Waktu akan berakhir dalam 5 menit setelah percakapan dimulai"
+                            ) {
+                                // go to next pop-over
+                                stepPopOver += 1
+                            }
+                        }
                         
                         Spacer()
                         
@@ -71,6 +91,15 @@ struct RolePlayScreen: View{
                             .foregroundStyle(Color("Secondary"))
                             .padding(.bottom, 10)
                             .onTapGesture { showQuitAlert = true }
+                            .popover(isPresented: .constant(stepPopOver == 3)) {
+                                appTip(
+                                    title: "Akhiri percakapan untuk penilaian",
+                                    message: "Anda bisa mengakhiri percakapan jika dirasa sudah cukup"
+                                ) {
+                                    // go to next pop-over
+                                    stepPopOver += 1
+                                }
+                            }
                     }
                 }
                 .padding(.horizontal, 24)
@@ -137,6 +166,15 @@ struct RolePlayScreen: View{
                                 } else {
                                     viewModel.speechToText.stopPlaying()
                                 }
+                            }
+                        }
+                        .popover(isPresented: .constant(stepPopOver == 1)) {
+                            appTip(
+                                title: "Tahan tombol merah untuk bicara",
+                                message: "Untuk memulai percakapan bisa tekan dan tahan tombol berikut"
+                            ) {
+                                // go to next pop-over
+                                stepPopOver += 1
                             }
                         }
                     }
