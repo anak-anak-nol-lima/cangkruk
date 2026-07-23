@@ -10,17 +10,18 @@ import SwiftUI
 
 @Observable
 class RolePlayViewModel {
+    // MARK: - Constant
     private let llm: ILLMService
     let speechToText = SpeechToTextViewModel()
     let textToSpeech = TextToSpeechViewModel()
-
     let scenario: RolePlayScenario
     private let sessionLength: Duration = .seconds(60 * 5)
-    private var sessionSeconds: Int { Int(sessionLength.components.seconds) }
 
+    
+    // MARK: - Variable
+    private var sessionSeconds: Int { Int(sessionLength.components.seconds) }
     var remainingSeconds: Int = 0
     var messages: [ChatMessage] = []
-
     var isPreparing = true
     var isThinking = false
     var isSessionOver = false
@@ -29,25 +30,28 @@ class RolePlayViewModel {
     var feedbackText: String?
     var sessionTranscript: String?
     var errorMessage: String?
-
     private var timerTask: Task<Void, Never>?
-
-    // satu baris ini yang menentukan otaknya di mana:
-    // APILLMService() = server (app ramping, butuh internet)
-    // MLXLLMService() = on-device (offline, app bawa model 3.5GB)
+    
+    
     init(
         scenario: RolePlayScenario,
         llm: ILLMService = APILLMService(
             networkManager: NetworkManager(host: "https://cangkruk.gagas.tech")
         )) {
-        self.scenario = scenario
-        self.llm = llm
-
-        speechToText.onFinalTranscript = { [weak self] transcript in
-            await self?.handleBaristaSpeech(transcript)
+            // when first initialize the viewmodel
+            // it will init the Network for rest call to the API
+            // it initialize the scenario from the caller too, for the randomize case
+            
+            self.scenario = scenario
+            self.llm = llm
+            
+            
+            // onFinalTranscript will
+            speechToText.onFinalTranscript = { [weak self] transcript in
+                await self?.handleBaristaSpeech(transcript)
+            }
         }
-    }
-
+    
     func startSession() async {
         do {
             let menu = """
@@ -57,15 +61,14 @@ class RolePlayViewModel {
                 """
             try await llm.startsession(systemPrompt: scenario.systemPrompt(menuContext: menu))
             isPreparing = false
-            startTimer()
+            remainingSeconds = sessionSeconds
         } catch {
             isPreparing = false
             errorMessage = "Gagal memuat model: \(error.localizedDescription)"
         }
     }
-
-    private func startTimer() {
-        remainingSeconds = sessionSeconds
+    
+    func startTimer() {
         timerTask = Task {
             while remainingSeconds > 0 {
                 try? await Task.sleep(for: .seconds(1))
@@ -75,18 +78,18 @@ class RolePlayViewModel {
             await finishSession()
         }
     }
-
+    
     // dipanggil saat timer habis: sesi berakhir NORMAL, jadi minta penilaian.
     // beda dengan endSession() yang dipanggil tombol X (keluar paksa, tanpa nilai)
     func finishSession() async {
         speechToText.stopPlaying()
         isSessionOver = true
-
-//        guard !messages.isEmpty else {
-//            llm.endsession()
-//            return
-//        }
-
+        
+        //        guard !messages.isEmpty else {
+        //            llm.endsession()
+        //            return
+        //        }
+        
         isGeneratingFeedback = true
         do {
             let transcript = messages
@@ -101,7 +104,7 @@ class RolePlayViewModel {
         isGeneratingFeedback = false
         llm.endsession()
     }
-
+    
     // model kecil kadang tidak patuh format — parser ini memaafkan:
     // kalau marker FEEDBACK: tidak ketemu, seluruh teks jadi summary
     static func parseFeedback(_ raw: String) -> (String, String) {
@@ -117,20 +120,20 @@ class RolePlayViewModel {
         return (summary.trimmingCharacters(in: .whitespacesAndNewlines),
                 feedback.trimmingCharacters(in: .whitespacesAndNewlines))
     }
-
+    
     func endSession() {
         timerTask?.cancel()
         speechToText.stopPlaying()
         llm.endsession()
         isSessionOver = true
     }
-
+    
     func handleBaristaSpeech(_ text: String) async {
         let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !isSessionOver, !isThinking, !trimmed.isEmpty else { return }
-
+        
         messages.append(ChatMessage(role: .barista, text: trimmed))
-
+        
         isThinking = true
         do {
             let reply = try await llm.send(trimmed)
