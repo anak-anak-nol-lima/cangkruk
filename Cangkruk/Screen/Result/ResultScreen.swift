@@ -90,18 +90,22 @@ struct ResultScreen: View {
                     VStack(alignment: .leading) {
                         Text("Summary")
                             .font(.shakyComicBold(size: 25, relativeTo: .callout))
-                        
+                            .foregroundStyle(Color("Secondary"))
+
                         Text(summary)
                             .font(.default)
+                            .foregroundStyle(Color("Secondary"))
                     }
                     .padding(.bottom, 32)
-                    
+
                     VStack(alignment: .leading) {
                         Text("Feedback")
                             .font(.shakyComicBold(size: 25, relativeTo: .callout))
-                        
+                            .foregroundStyle(Color("Secondary"))
+
                         Text(feedback)
                             .font(.default)
+                            .foregroundStyle(Color("Secondary"))
                     }
                 }
                 .padding()
