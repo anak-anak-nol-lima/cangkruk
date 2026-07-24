@@ -23,7 +23,7 @@ extension View {
             
             Text(message)
                 .font(.caption)
-                .foregroundStyle(.gray)
+                .foregroundStyle(.black)
                 .multilineTextAlignment(.leading)
                 .bold()
                 .fixedSize(horizontal: false, vertical: true)
@@ -41,6 +41,7 @@ extension View {
         }
         .padding(30)
         .frame(maxWidth: 270)
+        .background(.white)
         .presentationCompactAdaptation(.popover)
         .interactiveDismissDisabled()
     }
