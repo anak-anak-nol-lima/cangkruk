@@ -99,7 +99,7 @@ struct LevelScreen: View {
             VStack {
                 Spacer()
                 
-                AppButton(label: "Mulai") {
+                AppButton(label: "Mulai Sesi Latihan") {
                     router.push(.roleplay(levelNumber))
                 }
                 .screenPadding()
@@ -122,7 +122,7 @@ struct LevelScreen: View {
     @ViewBuilder
     private var hasilSection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("HASIL")
+            Text("RIWAYAT LATIHAN")
                 .font(.shakyComicBold(size: 30))
                 .bold()
                 .foregroundStyle(Color("Secondary"))
