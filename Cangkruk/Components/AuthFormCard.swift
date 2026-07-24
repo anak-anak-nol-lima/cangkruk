@@ -11,6 +11,7 @@ struct AuthFormCard: View {
     @Binding var email: String
     @Binding var password: String
     var isEmailEditable: Bool = true
+    var onForgotPassword: (() -> Void)? = nil
 
     var body: some View {
         VStack(alignment: .leading, spacing: 32) {
@@ -44,6 +45,10 @@ struct AuthFormCard: View {
                 Rectangle()
                     .fill(Color("Primary"))
                     .frame(height: 1.5)
+
+                if let onForgotPassword {
+                    AppButtonText(label: "Lupa Kata Sandi?", action: onForgotPassword)
+                }
             }
         }
         .padding(32)
