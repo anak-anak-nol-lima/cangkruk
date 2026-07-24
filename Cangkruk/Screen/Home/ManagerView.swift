@@ -41,7 +41,7 @@ struct ManagerView: View {
         UTType(filenameExtension: "docx") ?? .data
     ]
     
-    private static let dateFormatter: DateFormatter = {
+    static let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "dd MMMM yyyy"
         formatter.locale = Locale(identifier: "id_ID")
