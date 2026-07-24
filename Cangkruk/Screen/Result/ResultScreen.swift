@@ -41,53 +41,58 @@ struct ResultScreen: View {
     
     var body: some View {
         VStack {
-            HStack {
-                Image(systemName: "xmark.circle.fill")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(height: 50)
-                    .foregroundStyle(Color("Secondary"))
-                    .padding(.bottom, 10)
-                    .padding(.leading,10)
-                    .onTapGesture {
-                        if !isLevelScreen{
-                            router.pop()
-                        }
-                        dismiss()
-                    }
-                Spacer()
+            ZStack {
                 Text("HASIL TES")
                     .font(.shakyComicBold(size: 43, relativeTo: .body))
                     .foregroundStyle(Color("Primary"))
-                    .padding()
-                Spacer()
-                ShareLink(item: shareText) {
-                    Image(systemName: "square.and.arrow.up")
-                        .padding(10)
-                        .font(.title2)
-                        .background(Color("Primary"))
-                        .foregroundStyle(Color("Background"))
-                        .clipShape(Circle())
-                        .padding()
-                        .accessibilityLabel("Share Hasil Tes")
-                }
-                .disabled(isShare)
-                .simultaneousGesture(
-                    TapGesture().onEnded {
-                        isShare = true
-                        
-                        Task {
-                            try? await Task.sleep(for: .seconds(2))
-                            isShare = false
+                    .frame(maxWidth: .infinity, alignment: .center)
+
+                HStack {
+                    Image(systemName: "xmark.circle.fill")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 38, height: 38)
+                        .foregroundStyle(Color("Secondary"))
+                        .onTapGesture {
+                            if !isLevelScreen{
+                                router.pop()
+                            }
+                            dismiss()
                         }
+
+                    Spacer()
+
+                    ShareLink(item: shareText) {
+                        Image(systemName: "square.and.arrow.up")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 18, height: 18)
+                            .padding(10)
+                            .background(Color("Primary"))
+                            .foregroundStyle(Color("Background"))
+                            .clipShape(Circle())
+                            .accessibilityLabel("Share Hasil Tes")
                     }
-                )
+                    .disabled(isShare)
+                    .simultaneousGesture(
+                        TapGesture().onEnded {
+                            isShare = true
+
+                            Task {
+                                try? await Task.sleep(for: .seconds(2))
+                                isShare = false
+                            }
+                        }
+                    )
+                }
             }
             Text(String(format: "%02d:%02d",
                         duration / 60,
                         duration % 60))
             .font(.shakyComicBold(size: 12))
             .foregroundStyle(Color("Primary"))
+            .padding(.horizontal, 20)
+            .padding(.top, 20)
             
             AppLottie(animation: "CangkrukMeditate", placeholder: "CangkrukMeditate", placeholderHeight: 210)
                 .frame(height: 250)
@@ -120,9 +125,10 @@ struct ResultScreen: View {
                 .padding()
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
-            .background(.white)
+            .background(Color("lightBackground"))
             .clipShape(RoundedRectangle(cornerRadius: 12))
-            .padding()
+            .padding(.vertical, 16)
+            .screenPadding()
             .offset(y: -20)
             
             
