@@ -26,9 +26,7 @@ struct ResultScreen: View {
     private var shareText: String {
             """
             Hasil Tes
-            \(String(format: "%02d:%02d",
-                                    duration / 60,
-                                    duration % 60))
+            \(String(format: "%02d:%02d",duration / 60, duration % 60))
             
             Summary:
             \(summary)
@@ -86,14 +84,18 @@ struct ResultScreen: View {
                     )
                 }
             }
+            // Jarak dari atas layar buat header (exit, judul, share) biar gak mepet.
+            .padding(.horizontal, 20)
+            .padding(.top, 30)
+
             Text(String(format: "%02d:%02d",
                         duration / 60,
                         duration % 60))
             .font(.shakyComicBold(size: 12))
             .foregroundStyle(Color("Primary"))
             .padding(.horizontal, 20)
-            .padding(.top, 20)
-            
+            .padding(.top, 8)
+
             AppLottie(animation: "CangkrukMeditate", placeholder: "CangkrukMeditate", placeholderHeight: 210)
                 .frame(height: 250)
                 .padding(.bottom, -40)
@@ -127,7 +129,7 @@ struct ResultScreen: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
             .background(Color("lightBackground"))
             .clipShape(RoundedRectangle(cornerRadius: 12))
-            .padding(.vertical, 16)
+            .padding(.vertical, 24)
             .screenPadding()
             .offset(y: -20)
             
