@@ -21,6 +21,7 @@ final class FeedbackResult {
     var scenarioName: String
     var summary: String
     var feedback: String
+    var duration: Int
     // log percakapan lengkap sesi ini — belum tampil di UI,
     // disimpan untuk halaman detail nanti
     var transcript: String = ""
@@ -31,7 +32,8 @@ final class FeedbackResult {
         summary: String,
         feedback: String,
         transcript: String = "",
-        date: Date = .now
+        date: Date = .now,
+        duration: Int
     ) {
         self.id = UUID()
         self.date = date
@@ -40,5 +42,6 @@ final class FeedbackResult {
         self.summary = summary
         self.feedback = feedback
         self.transcript = transcript
+        self.duration = duration
     }
 }

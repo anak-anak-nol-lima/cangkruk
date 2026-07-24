@@ -21,10 +21,14 @@ struct ResultScreen: View {
     // MARK: - Property
     let summary: String
     let feedback: String
+    let duration: Int
     
     private var shareText: String {
             """
             Hasil Tes
+            \(String(format: "%02d:%02d",
+                                    duration / 60,
+                                    duration % 60))
             
             Summary:
             \(summary)
@@ -79,6 +83,11 @@ struct ResultScreen: View {
                     }
                 )
             }
+            Text(String(format: "%02d:%02d",
+                        duration / 60,
+                        duration % 60))
+            .font(.shakyComicBold(size: 12))
+            .foregroundStyle(Color("Primary"))
             
             AppLottie(animation: "CangkrukMeditate", placeholder: "CangkrukMeditate", placeholderHeight: 210)
                 .frame(height: 250)
