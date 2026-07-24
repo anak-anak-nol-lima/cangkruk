@@ -223,7 +223,7 @@ struct RolePlayScreen: View{
         .overlay {
             AppAlert(
                 isPresented: $showQuitAlert,
-                message: "APAKAH ANDA AKAN MENGAKHIRI TES INI ?",
+                message: "AKHIRI SESI PERCAKAPAN INI ?",
                 primaryButtonTitle: "YA",
                 primaryAction: {
                     viewModel.endSession()
