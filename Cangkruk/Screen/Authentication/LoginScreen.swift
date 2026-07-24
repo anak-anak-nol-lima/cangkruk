@@ -36,22 +36,13 @@ struct LoginScreen: View {
                     .padding(.top, 60)
                     .accessibilityLabel("halaman masuk")
 
-                AuthFormCard(email: $email, password: $password)
-
-                AppButtonText(label: "Lupa Kata Sandi?") {
+                AuthFormCard(email: $email, password: $password) {
                     showForgotPassword = true
                 }
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.horizontal, 35)
 
                 Spacer()
             }
             .padding(24)
-            // Cap scaling here so this VStack (title + form + "Lupa Kata Sandi?") can't
-            // grow tall enough to collide with the Lottie+"Masuk" block below, which is
-            // fixed via .offset/.padding and doesn't resize based on this VStack's height.
-            // Capped at xxxLarge (not accessibility2) because the collision with "Lupa Kata
-            // Sandi?" already starts at accessibility1, not later.
             .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 
             VStack {
