@@ -32,14 +32,12 @@ struct LevelScreen: View {
         }
     }
     
-    
-    
-    var body: some View {
+        var body: some View {
         ZStack {
             Color("Background")
                 .ignoresSafeArea()
             
-            VStack(spacing: 0) {
+            VStack {
                 HStack {
                     Button {
                         router.pop()
@@ -60,41 +58,36 @@ struct LevelScreen: View {
                         .padding(.horizontal, 10)
                     
                     Spacer()
+                }.padding(.top, 20)
+                
+                VStack(spacing: 20){
+                    ScrollView(showsIndicators: false) {
+                        
+                        if let levelMaterials {
+                            ForEach(levelMaterials) { material in
+                                let cleaned = material.body.replacingOccurrences(of: "\\n", with: "\n")
+                                moduleSection(
+                                    title: material.title,
+                                    content: cleaned
+                                ).padding(.top, 10)
+                            }
+                        }
+                    }
+                    .padding(20)
+                    .background(Color("lightBackground"))
+                    .clipShape(RoundedRectangle(cornerRadius: 20))
+                    
+                    hasilSection.padding(.bottom, 100)
                 }
                 .overlay(alignment: .topTrailing) {
                     AppLottie(animation: "CangkrukWipe")
-                        .frame(width: 350)
+                        .frame(width: 90)
                         .scaleEffect(2.0)
-                        .offset(x: 90, y: 50)
+                        .offset(x: -40, y: -250)
                         .allowsHitTesting(false)
                 }
-                .padding(.top, 20)
-                .zIndex(1)
-                
-                ScrollView(.vertical, showsIndicators: false) {
-                    VStack(alignment: .leading, spacing: 28) {
-                        VStack(alignment: .leading, spacing: 24) {
-                            
-                            if let levelMaterials {
-                                ForEach(levelMaterials) { material in
-                                    let cleaned = material.body.replacingOccurrences(of: "\\n", with: "\n")
-                                    moduleSection(
-                                        title: material.title,
-                                        content: cleaned
-                                    )
-                                }
-                            }
-                        }
-                        .padding(25)
-                        .background(Color("lightBackground"))
-                        .clipShape(RoundedRectangle(cornerRadius: 20))
-                        
-                        hasilSection
-                        
-                    } .padding(.top, 20)
-                }
-                .padding(.bottom, 100) // agar ScrollView tidak overlapping dengan button 'Mulai'
-            }.screenPadding()
+            }
+            .screenPadding()
             
             VStack {
                 Spacer()
@@ -112,10 +105,10 @@ struct LevelScreen: View {
         }
     }
     
-    // format tanggal persis mockup: 10-10-2026
     private static let hasilDateFormatter: DateFormatter = {
         let formatter = DateFormatter()
-        formatter.dateFormat = "dd-MM-yyyy"
+        formatter.dateFormat = "dd MMMM yyyy"
+        formatter.locale = Locale(identifier: "id_ID")
         return formatter
     }()
     
@@ -137,31 +130,33 @@ struct LevelScreen: View {
                     Spacer()
                 }
             } else {
-                VStack(spacing: 12) {
-                    ForEach(Array(levelResults.enumerated()), id: \.element.id) { index, result in
-                        Button {
-                            selectedResult = result
-                        } label: {
-                            HStack {
-                                Text("Summary \(levelResults.count - index)")
-                                    .font(.system(size: 16, weight: .medium))
-                                Spacer()
-                                Text(Self.hasilDateFormatter.string(from: result.date))
-                                    .font(.subheadline)
+                ScrollView(showsIndicators: false){
+                    VStack(spacing: 12) {
+                        ForEach(Array(levelResults.enumerated()), id: \.element.id) { index, result in
+                            Button {
+                                selectedResult = result
+                            } label: {
+                                HStack {
+                                    Text("Summary \(levelResults.count - index)")
+                                        .font(.system(size: 16, weight: .medium))
+                                    Spacer()
+                                    Text(Self.hasilDateFormatter.string(from: result.date))
+                                        .font(.subheadline)
+                                }
+                                .foregroundStyle(.black.opacity(0.75))
+                                .padding(.horizontal, 16)
+                                .padding(.vertical, 14)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 12)
+                                        .fill(Color("Background"))
+                                )
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 12)
+                                        .stroke(Color("Secondary").opacity(0.25), lineWidth: 1.5)
+                                )
                             }
-                            .foregroundStyle(.black.opacity(0.75))
-                            .padding(.horizontal, 16)
-                            .padding(.vertical, 14)
-                            .background(
-                                RoundedRectangle(cornerRadius: 12)
-                                    .fill(Color("Background"))
-                            )
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 12)
-                                    .stroke(Color("Secondary").opacity(0.25), lineWidth: 1.5)
-                            )
+                            .buttonStyle(.plain)
                         }
-                        .buttonStyle(.plain)
                     }
                 }
             }
