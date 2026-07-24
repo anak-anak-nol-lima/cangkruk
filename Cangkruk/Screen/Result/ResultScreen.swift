@@ -119,7 +119,7 @@ struct ResultScreen: View {
                             .font(.shakyComicBold(size: 25, relativeTo: .callout))
                             .foregroundStyle(Color("Secondary"))
 
-                        Text(feedback)
+                        Text(feedback)  
                             .font(.default)
                             .foregroundStyle(Color("Secondary"))
                     }
