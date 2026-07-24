@@ -77,8 +77,9 @@ struct LevelScreen: View {
                     .background(Color("lightBackground"))
                     .clipShape(RoundedRectangle(cornerRadius: 20))
                     
-                    hasilSection.padding(.bottom, 100)
+                    hasilSection
                 }
+                .padding(.bottom, 100)
                 .overlay(alignment: .topTrailing) {
                     AppLottie(animation: "CangkrukWipe")
                         .frame(width: 90)
@@ -104,14 +105,7 @@ struct LevelScreen: View {
             ResultScreen(isLevelScreen: true, summary: result.summary, feedback: result.feedback, duration: result.duration)
         }
     }
-    
-    private static let hasilDateFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "dd MMMM yyyy"
-        formatter.locale = Locale(identifier: "id_ID")
-        return formatter
-    }()
-    
+        
     @ViewBuilder
     private var hasilSection: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -130,8 +124,8 @@ struct LevelScreen: View {
                     Spacer()
                 }
             } else {
-                ScrollView(showsIndicators: false){
-                    VStack(spacing: 12) {
+                ScrollView(showsIndicators: false) {
+                    VStack {
                         ForEach(Array(levelResults.enumerated()), id: \.element.id) { index, result in
                             Button {
                                 selectedResult = result
@@ -140,28 +134,29 @@ struct LevelScreen: View {
                                     Text("Summary \(levelResults.count - index)")
                                         .font(.system(size: 16, weight: .medium))
                                     Spacer()
-                                    Text(Self.hasilDateFormatter.string(from: result.date))
+                                    Text(ManagerView.dateFormatter.string(from: result.date))
                                         .font(.subheadline)
                                 }
-                                .foregroundStyle(.black.opacity(0.75))
-                                .padding(.horizontal, 16)
-                                .padding(.vertical, 14)
-                                .background(
-                                    RoundedRectangle(cornerRadius: 12)
-                                        .fill(Color("Background"))
-                                )
+                                .foregroundStyle(Color("Secondary"))
+                                .padding(.horizontal, 12)
+                                .padding(.vertical, 10)
+                                .background(Color("Background"))
+                                .clipShape(RoundedRectangle(cornerRadius: 12))
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 12)
-                                        .stroke(Color("Secondary").opacity(0.25), lineWidth: 1.5)
+                                        .strokeBorder(Color("Secondary"), lineWidth: 1.5)
                                 )
                             }
                             .buttonStyle(.plain)
                         }
                     }
                 }
+                .frame(maxHeight: 80)
             }
         }
-        .padding(20)
+        .padding(.horizontal, 20)
+        .padding(.top, 20)
+        .padding(.bottom, 10)
         .background(Color("lightBackground"))
         .clipShape(RoundedRectangle(cornerRadius: 20))
     }
