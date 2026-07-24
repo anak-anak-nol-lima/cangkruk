@@ -20,9 +20,10 @@ struct AuthFormCard: View {
                     .font(.shakyComicBold(size: 30, relativeTo: .subheadline))
                     .foregroundStyle(Color("Secondary"))
 
-                TextField("", text: $email)
+                TextField("", text: $email, prompt: Text("ivone@gmail.com").foregroundColor(.gray))
                     .font(.title3)
                     .foregroundStyle(.black)
+                    .tint(.black)
                     .disabled(!isEmailEditable)
                     .opacity(isEmailEditable ? 1 : 0.6)
                     .accessibilityLabel("tempat mengisi email")
@@ -37,9 +38,10 @@ struct AuthFormCard: View {
                     .font(.shakyComicBold(size: 30, relativeTo: .subheadline))
                     .foregroundStyle(Color("Secondary"))
 
-                SecureField("", text: $password)
+                SecureField("", text: $password, prompt: Text("******").foregroundColor(.gray))
                     .font(.title3)
                     .foregroundStyle(.black)
+                    .tint(.black)
                     .accessibilityLabel("tempat mengisi kata sandi")
 
                 Rectangle()
