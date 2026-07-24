@@ -212,7 +212,8 @@ struct RolePlayScreen: View{
             ResultScreen(
                 isLevelScreen: false,
                 summary: viewModel.feedbackSummary ?? "Belum ada penilaian untuk sesi ini.",
-                feedback: viewModel.feedbackText ?? ""
+                feedback: viewModel.feedbackText ?? "",
+                duration: (300 - viewModel.remainingSeconds)
             )
         }
         .overlay(alignment: .bottom) {
@@ -240,7 +241,8 @@ struct RolePlayScreen: View{
                 scenarioName: viewModel.scenario.name,
                 summary: summary,
                 feedback: viewModel.feedbackText ?? "",
-                transcript: viewModel.sessionTranscript ?? ""
+                transcript: viewModel.sessionTranscript ?? "",
+                duration: viewModel.remainingSeconds
             ))
         }
         
