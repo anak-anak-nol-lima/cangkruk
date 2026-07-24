@@ -118,7 +118,7 @@ struct RolePlayScreen: View{
                         if viewModel.isThinking {
                             Text("Pelanggan sedang berpikir...")
                                 .font(.caption)
-                                .foregroundStyle(.secondary)
+                                .foregroundStyle(Color("Secondary"))
                         }
                     }
                     .padding(.horizontal)
@@ -133,7 +133,7 @@ struct RolePlayScreen: View{
                                     viewModel.speechToText.recordingSeconds / 60,
                                     viewModel.speechToText.recordingSeconds % 60))
                         .font(.caption)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(Color("Secondary"))
                     }
                     .padding(.vertical, 12)
                     .padding(.horizontal, 20)
@@ -148,6 +148,7 @@ struct RolePlayScreen: View{
                 
                 if viewModel.isPreparing {
                     ProgressView("Menyiapkan pelanggan... (pertama kali bisa lama)")
+                        .foregroundStyle(Color("Secondary"))
                         .padding(.bottom, 24)
                 } else if !viewModel.isSessionOver {
                     VStack(spacing: 12) {
@@ -188,6 +189,7 @@ struct RolePlayScreen: View{
                             .foregroundStyle(Color("Secondary"))
                         if viewModel.isGeneratingFeedback {
                             ProgressView("Pelanggan sedang menilai kamu...")
+                                .foregroundStyle(Color("Secondary"))
                         } else {
                             AppButton(label: "Lihat Hasil") {
                                 isLevelScreen = false
