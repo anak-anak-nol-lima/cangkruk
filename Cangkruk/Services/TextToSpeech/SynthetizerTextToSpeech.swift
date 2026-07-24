@@ -12,7 +12,7 @@ import AVFoundation
 // interface for the textToSpeech functionality
 // need to implement the functionality specified
 protocol TextToSpeechProtocol {
-    func speak(_ text: String) throws
+    func speak(_ text: String) async throws
 }
 
 
@@ -22,7 +22,7 @@ class SynthetizerTextToSpeech: TextToSpeechProtocol {
     // speak will accept text from the caller ( viewmodel )
     // it will initialize the audioSession with playback mode
     // it will filter the premium quality of the voice
-    func speak(_ text: String) throws {
+    func speak(_ text: String) async throws {
         let utterance = AVSpeechUtterance(string: text)
         let bestVoice = getPremiumQuality(voices: AVSpeechSynthesisVoice.speechVoices())
         utterance.voice = bestVoice
