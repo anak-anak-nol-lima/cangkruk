@@ -20,6 +20,7 @@ class SpeechToTextViewModel {
     var result: [String] = []
     var onFinalTranscript: ((String) async -> Void)?
     var micLevels: [CGFloat] = []
+    var remainingSeconds: Int = 15
     
     var recordingSeconds: Int = 0
     private var recordingTimer: Task<Void, Never>?
@@ -111,6 +112,10 @@ class SpeechToTextViewModel {
                 while !Task.isCancelled{
                     try? await Task.sleep(for: .seconds(1))
                     recordingSeconds += 1
+                    if recordingSeconds >= remainingSeconds{
+                        stopPlaying()
+                        return
+                    }
                 }
             }
             isPlaying = true
