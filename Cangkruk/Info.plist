@@ -4,6 +4,10 @@
 <dict>
 	<key>CRYPTO_SECRET_KEY</key>
 	<string>$(CRYPTO_SECRET_KEY)</string>
+	<key>GEMINI_API_KEY</key>
+	<string>$(GEMINI_API_KEY)</string>
+	<key>GEMINI_HOST</key>
+	<string>$(GEMINI_HOST)</string>
 	<key>SECRET_PASSWORD</key>
 	<string>$(SECRET_PASSWORD)</string>
 	<key>SECRET_USERNAME</key>
