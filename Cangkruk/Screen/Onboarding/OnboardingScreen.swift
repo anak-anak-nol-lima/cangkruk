@@ -20,7 +20,6 @@ struct OnboardingScreen: View {
     // MARK: - State
     @State private var user: User?
     
-    
     var body: some View {
         ZStack {
             Color("Background")
@@ -39,7 +38,6 @@ struct OnboardingScreen: View {
                         .offset(y: -210)
                         .accessibilityLabel("cangkruk")
                 }
-                
                 
                 AppButton(label: "Mulai") {
                     router.push(user == nil ? .register : .home)
