@@ -108,7 +108,7 @@ struct LevelScreen: View {
         }
         .navigationBarBackButtonHidden()
         .sheet(item: $selectedResult) { result in
-            ResultScreen(isLevelScreen: true, summary: result.summary, feedback: result.feedback)
+            ResultScreen(isLevelScreen: true, summary: result.summary, feedback: result.feedback, duration: result.duration)
         }
     }
     
