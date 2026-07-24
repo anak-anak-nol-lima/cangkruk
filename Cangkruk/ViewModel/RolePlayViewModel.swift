@@ -80,6 +80,7 @@ class RolePlayViewModel {
     // dipanggil saat timer habis: sesi berakhir NORMAL, jadi minta penilaian.
     // beda dengan endSession() yang dipanggil tombol X (keluar paksa, tanpa nilai)
     func finishSession() async {
+        timerTask?.cancel()
         speechToText.stopPlaying()
         isSessionOver = true
         
