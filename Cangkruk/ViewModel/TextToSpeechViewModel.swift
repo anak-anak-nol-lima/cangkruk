@@ -21,7 +21,7 @@ class TextToSpeechViewModel {
         errorMessage = ""
         
         do {
-            try textToSpeech.speak(text)
+            try await textToSpeech.speak(text)
         } catch {
             errorMessage = error.localizedDescription
         }
