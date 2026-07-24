@@ -97,7 +97,7 @@ struct ResultScreen: View {
             ScrollView {
                 VStack(alignment: .leading) {
                     VStack(alignment: .leading) {
-                        Text("Summary")
+                        Text("Ringkasan Hasil Latihan")
                             .font(.shakyComicBold(size: 25, relativeTo: .callout))
                             .foregroundStyle(Color("Secondary"))
 
@@ -108,7 +108,7 @@ struct ResultScreen: View {
                     .padding(.bottom, 32)
 
                     VStack(alignment: .leading) {
-                        Text("Feedback")
+                        Text("Saran")
                             .font(.shakyComicBold(size: 25, relativeTo: .callout))
                             .foregroundStyle(Color("Secondary"))
 
