@@ -13,7 +13,7 @@ class RolePlayViewModel {
     // MARK: - Constant
     private let llm: ILLMService
     let speechToText = SpeechToTextViewModel()
-    let textToSpeech = TextToSpeechViewModel()
+    let textToSpeech = TextToSpeechViewModel(textToSpeech: GeminiTextToSpeech())
     let scenario: RolePlayScenario
     private let sessionLength: Duration = .seconds(60 * 5)
 
@@ -41,10 +41,8 @@ class RolePlayViewModel {
             // when first initialize the viewmodel
             // it will init the Network for rest call to the API
             // it initialize the scenario from the caller too, for the randomize case
-            
             self.scenario = scenario
             self.llm = llm
-            
             
             // onFinalTranscript will
             speechToText.onFinalTranscript = { [weak self] transcript in
