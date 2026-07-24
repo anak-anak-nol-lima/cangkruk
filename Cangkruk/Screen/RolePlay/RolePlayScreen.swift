@@ -203,9 +203,11 @@ struct RolePlayScreen: View{
             }
         }
         .fullScreenCover(isPresented: $showLoading) {
-            LoadingScreen() {
-                showLoading = false
-                showHasil = true
+            LoadingScreen {
+                if !viewModel.isGeneratingFeedback {
+                    showLoading = false
+                    showHasil = true
+                }
             }
         }
         .sheet(isPresented: $showHasil) {
@@ -227,23 +229,49 @@ struct RolePlayScreen: View{
                 message: "AKHIRI SESI PERCAKAPAN INI ?",
                 primaryButtonTitle: "YA",
                 primaryAction: {
-                    viewModel.endSession()
-                    isPresented = false
+                    guard viewModel.messages.count >= 2 else {
+                        viewModel.endSession()
+                        isPresented = false
+                        return
+                    }
+                    isLevelScreen = false
+                    showLoading = true
+                    Task {
+                        viewModel.speechToText.stopPlaying()
+                        await viewModel.finishSession()
+                    }
                 }
             )
         }
+//        .onChange(of: viewModel.isGeneratingFeedback) { _, generating in
+//            guard !generating, !hasSavedResult,
+//                  let summary = viewModel.feedbackSummary else { return }
+//            hasSavedResult = true
+//            modelContext.insert(FeedbackResult(
+//                levelNumber: viewModel.scenario.difficulty,
+//                scenarioName: viewModel.scenario.name,
+//                summary: summary,
+//                feedback: viewModel.feedbackText ?? "",
+//                transcript: viewModel.sessionTranscript ?? "",
+//                duration: viewModel.remainingSeconds
+//            ))
+//        }
         .onChange(of: viewModel.isGeneratingFeedback) { _, generating in
-            guard !generating, !hasSavedResult,
-                  let summary = viewModel.feedbackSummary else { return }
-            hasSavedResult = true
-            modelContext.insert(FeedbackResult(
-                levelNumber: viewModel.scenario.difficulty,
-                scenarioName: viewModel.scenario.name,
-                summary: summary,
-                feedback: viewModel.feedbackText ?? "",
-                transcript: viewModel.sessionTranscript ?? "",
-                duration: viewModel.remainingSeconds
-            ))
+            if !generating, !hasSavedResult, let summary = viewModel.feedbackSummary {
+                hasSavedResult = true
+                modelContext.insert(FeedbackResult(
+                    levelNumber: viewModel.scenario.difficulty,
+                    scenarioName: viewModel.scenario.name,
+                    summary: summary,
+                    feedback: viewModel.feedbackText ?? "",
+                    transcript: viewModel.sessionTranscript ?? "",
+                    duration: viewModel.remainingSeconds
+                ))
+            }
+            if !generating, showLoading {
+                showLoading = false
+                showHasil = true
+            }
         }
         
         .onChange(of: viewModel.errorMessage) { _, new in showError(new) }
