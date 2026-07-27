@@ -138,6 +138,10 @@ struct ManagerView: View {
                             Text("(Opsional) Cukup unggah salah satu")
                                 .font(.caption)
                                 .foregroundStyle(Color("Secondary"))
+
+                            Text("File yang diterima hanya PDF dan Docs")
+                                .font(.caption)
+                                .foregroundStyle(Color("Secondary"))
                         }
                         
                         Spacer()
