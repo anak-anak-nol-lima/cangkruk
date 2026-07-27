@@ -86,8 +86,6 @@ struct RolePlayScreen: View{
                 primaryButtonTitle: "YA",
                 primaryAction: {
                     guard viewModel.messages.count >= 2 else {
-                        viewModel.endSession()
-                        isPresented = false
                         return
                     }
                     isLevelScreen = false
@@ -273,8 +271,15 @@ struct RolePlayScreen: View{
                         .foregroundStyle(Color("Secondary"))
                 } else {
                     AppButton(label: "Lihat Hasil") {
+                        guard viewModel.messages.count >= 2 else {
+                            return
+                        }
                         isLevelScreen = false
                         showLoading = true
+                        Task {
+                            viewModel.speechToText.stopPlaying()
+                            await viewModel.finishSession()
+                        }
                     }
                     .padding(.horizontal, 12)
                 }
