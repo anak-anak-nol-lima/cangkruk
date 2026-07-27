@@ -86,7 +86,7 @@ struct RegisterScreen: View {
                     }
                     .frame(maxWidth: .infinity, alignment: .center)
                 }
-                .padding(.top, 250)
+                .padding(.top, 290)
                 .screenPadding()
 
             }
