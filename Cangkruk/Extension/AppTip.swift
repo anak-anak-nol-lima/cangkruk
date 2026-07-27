@@ -25,7 +25,6 @@ extension View {
                 .font(.caption)
                 .foregroundStyle(.black)
                 .multilineTextAlignment(.leading)
-                .bold()
                 .fixedSize(horizontal: false, vertical: true)
                 .padding(.bottom, 12)
             
@@ -41,7 +40,7 @@ extension View {
         }
         .padding(30)
         .frame(maxWidth: 270)
-        .background(.white)
+        .background(Color("lightBackground"))
         .presentationCompactAdaptation(.popover)
         .interactiveDismissDisabled()
     }
