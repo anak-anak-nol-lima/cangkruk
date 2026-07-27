@@ -110,10 +110,16 @@ struct ManagerView: View {
                 
                 VStack(spacing: 16) {
                     HStack {
-                        Text("UNGGAH FILE")
-                            .font(.shakyComicBold(size: 43))
-//                            .bold()
-                            .foregroundStyle(Color("Secondary"))
+                        VStack(alignment: .leading){
+                            Text("UNGGAH FILE")
+                                .font(.shakyComicBold(size: 43))
+                                .bold()
+                                .foregroundStyle(Color("Primary"))
+                            
+                            Text("(Opsional) Cukup unggah salah satu")
+                                .font(.caption)
+                                .foregroundStyle(Color("Secondary"))
+                        }
                         
                         Spacer()
                         
@@ -306,10 +312,9 @@ struct ManagerView: View {
             localSopFiles = sopFiles
             localResepFiles = resepFiles
         }
-        .interactiveDismissDisabled(!filesToAdd.isEmpty || !filesToDelete.isEmpty)
+        .interactiveDismissDisabled(!filesToAdd.isEmpty || !filesToDelete.isEmpty || isExtractingText || isLoading)
     }
     
-    // UI fileCard milikmu
     @ViewBuilder
     private func fileCard(file: TrainingFile) -> some View {
         HStack(spacing: 8) {
@@ -332,7 +337,7 @@ struct ManagerView: View {
                     .font(.system(size: 14, weight: .bold))
                     .foregroundStyle(Color("lightBackground"))
                     .frame(width: 32, height: 32)
-                    .background(Color("Primary"))
+                    .background(Color("Secondary"))
                     .clipShape(Circle())
             }
         }
@@ -432,4 +437,5 @@ struct ManagerView: View {
     ManagerView()
         .modelContainer(for: TrainingFile.self, inMemory: true)
         .environment(RouterViewModel())
+        .environment(LearningMaterialViewModel())
 }
