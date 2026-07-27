@@ -6,8 +6,7 @@
 import SwiftUI
 import SwiftData
 
-
-struct RolePlayScreen: View{
+struct RolePlayScreen: View {
     // MARK: - Binding
     @Binding var isPresented: Bool
     @Binding var isLevelScreen: Bool
@@ -183,24 +182,42 @@ struct RolePlayScreen: View{
     }
 
     private var chatList: some View {
-        ScrollView {
-            VStack(spacing: 12) {
-                ForEach(viewModel.messages) { message in
-                    ChatBubbleView(message: message)
-                        .onTapGesture {
-                            Task {
-                                await viewModel.textToSpeech.speak(message.text)
+        ScrollViewReader { proxy in
+            ScrollView{
+                VStack(spacing: 12) {
+                    ForEach(viewModel.messages) { message in
+                        ChatBubbleView(message: message)
+                            .id(message.id)
+                            .onTapGesture {
+                                Task {
+                                    await viewModel.textToSpeech.speak(message.text)
+                                }
                             }
-                        }
+                    }
+                    
+                    if viewModel.isThinking {
+                        Text("Pelanggan sedang berpikir...")
+                            .font(.caption)
+                            .foregroundStyle(Color("Secondary"))
+                            .id("thinkingIndicator")
+                    }
                 }
-
-                if viewModel.isThinking {
-                    Text("Pelanggan sedang berpikir...")
-                        .font(.caption)
-                        .foregroundStyle(Color("Secondary"))
+                .padding(.horizontal)
+            }
+            .onChange(of: viewModel.messages.count){ _, _ in
+                if let lastId = viewModel.messages.last?.id{
+                    withAnimation{
+                        proxy.scrollTo(lastId, anchor: .bottom)
+                    }
                 }
             }
-            .padding(.horizontal)
+            .onChange(of: viewModel.isThinking){ _, isThinking in
+                if isThinking {
+                    withAnimation{
+                        proxy.scrollTo("thinkingIndicator", anchor: .bottom)
+                    }
+                }
+            }
         }
     }
 
@@ -288,8 +305,6 @@ struct RolePlayScreen: View{
         }
     }
 }
-
-
 
 #Preview {
     RolePlayScreen(isPresented: .constant(true))
