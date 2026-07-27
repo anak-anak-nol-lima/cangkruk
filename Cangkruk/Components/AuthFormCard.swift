@@ -20,10 +20,13 @@ struct AuthFormCard: View {
                     .font(.shakyComicBold(size: 30, relativeTo: .subheadline))
                     .foregroundStyle(Color("Secondary"))
 
-                TextField("", text: $email, prompt: Text("ivone@gmail.com").foregroundColor(.gray))
+                TextField("", text: $email, prompt: Text(verbatim: "ivone@gmail.com").foregroundColor(.gray))
                     .font(.title3)
                     .foregroundStyle(.black)
                     .tint(.black)
+                    .textContentType(.emailAddress)
+                    .keyboardType(.emailAddress)
+                    .textInputAutocapitalization(.never)
                     .disabled(!isEmailEditable)
                     .opacity(isEmailEditable ? 1 : 0.6)
                     .accessibilityLabel("tempat mengisi email")
@@ -42,6 +45,7 @@ struct AuthFormCard: View {
                     .font(.title3)
                     .foregroundStyle(.black)
                     .tint(.black)
+                    .textContentType(.password)
                     .accessibilityLabel("tempat mengisi kata sandi")
 
                 Rectangle()

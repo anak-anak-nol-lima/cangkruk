@@ -33,6 +33,22 @@ struct RegisterScreen: View {
                 .ignoresSafeArea()
 
             VStack(spacing: 24) {
+                HStack {
+                    Button {
+                        router.pop()
+                    } label: {
+                        Image(systemName: "chevron.backward.circle.fill")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(height: 45)
+                            .foregroundStyle(Color("Secondary"))
+                            .padding(.bottom, 10)
+                    }
+                    .buttonStyle(.plain)
+
+                    Spacer()
+                }
+
                 Image("daftarTitle")
                     .resizable()
                     .scaledToFit()
@@ -75,6 +91,7 @@ struct RegisterScreen: View {
 
             }
         }
+        .navigationBarBackButtonHidden()
         .ignoresSafeArea(.keyboard, edges: .bottom)
         .overlay(alignment: .bottom) {
             if authVM.isError {
