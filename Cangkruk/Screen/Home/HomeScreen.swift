@@ -76,15 +76,6 @@ struct HomeScreen: View {
                                     isSOPOpen = true
                                 }
                                 .accessibilityLabel(Text("Unggah File SOP dan Menu"))
-//                                .popover(isPresented: .constant(step == 1), arrowEdge: .top) {
-//                                    appTip(
-//                                        title: "Unggah File Pendukung",
-//                                        message: "Silahkan unggah file SOP atau file lain yang diperlukan pada salah satu atau kedua kolom berikut."
-//                                    ) {
-//                                        // go to next pop-over
-//                                        step += 1
-//                                    }
-//                                }
                         }
                     }
                     .screenPadding() //padding untuk button di top leading
