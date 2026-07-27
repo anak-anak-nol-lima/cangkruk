@@ -65,7 +65,7 @@ struct LoginScreen: View {
                 AppLottie(animation: "CangkrukClimb")
                     .frame(height: 250)
                     .allowsHitTesting(false)
-                    .offset(x: 45, y: 125)
+                    .offset(x: 45, y: 130)
                     .zIndex(1)
                     
                 
@@ -77,6 +77,7 @@ struct LoginScreen: View {
                 .screenPadding()
                 .padding(.top, 40)
             }
+            .padding(.top, 120)
 
         }
         .navigationBarBackButtonHidden()
