@@ -20,6 +20,7 @@ struct LoginScreen: View {
     @State private var email: String = ""
     @State private var password: String = ""
     @State private var showForgotPassword = false
+    @AppStorage("stepLoginScreen") private var stepPopOver = 0
 
     var body: some View {
         @Bindable var authVM = authVM
@@ -51,6 +52,15 @@ struct LoginScreen: View {
                     .frame(height: 60)
                     .padding(.top, 60)
                     .accessibilityLabel("halaman masuk")
+                    .popover(isPresented: .constant(stepPopOver == 0), arrowEdge: .top) {
+                        appTip(
+                            title: "Masuk sebagai Manager",
+                            message: "Silahkan masukkan email dan kata sandi Anda sebagai Manager untuk melanjutkan"
+                        ) {
+                            // go to next pop-over
+                            stepPopOver += 1
+                        }
+                    }
 
                 AuthFormCard(email: $email, password: $password) {
                     showForgotPassword = true

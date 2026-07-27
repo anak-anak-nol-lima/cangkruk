@@ -33,6 +33,7 @@ struct HomeScreen: View {
     ]
     @State private var user: User?
     @State private var isSOPOpen: Bool = false
+    @AppStorage("stepHomeScreen") private var step = 0
     
     func getTilteByLevel(_ level: Int) -> String {
         let m = materials.first { l in
@@ -53,12 +54,6 @@ struct HomeScreen: View {
             VStack {
                 if router.isManagerUnlocked {
                     ZStack {
-//                        Image("tantanganTitle")
-//                            .resizable()
-//                            .scaledToFit()
-//                            .frame(height: 50)
-//                            .padding(.vertical, 12)
-//                            .accessibilityLabel(Text("Halaman Manager"))
                         Text("TANTANGAN")
                             .font(.shakyComicBold(size: 43))
                             .foregroundStyle(Color("Primary"))
@@ -81,18 +76,21 @@ struct HomeScreen: View {
                                     isSOPOpen = true
                                 }
                                 .accessibilityLabel(Text("Unggah File SOP dan Menu"))
+//                                .popover(isPresented: .constant(step == 1), arrowEdge: .top) {
+//                                    appTip(
+//                                        title: "Unggah File Pendukung",
+//                                        message: "Silahkan unggah file SOP atau file lain yang diperlukan pada salah satu atau kedua kolom berikut."
+//                                    ) {
+//                                        // go to next pop-over
+//                                        step += 1
+//                                    }
+//                                }
                         }
                     }
                     .screenPadding() //padding untuk button di top leading
                     .padding(.top, 10)
                 } else {
                     ZStack {
-//                        Image("tantanganTitle")
-//                            .resizable()
-//                            .scaledToFit()
-//                            .frame(height: 50)
-//                            .padding(.vertical, 12)
-//                            .accessibilityLabel(Text("Halaman Tantangan Barista"))
                         Text("TANTANGAN")
                             .font(.shakyComicBold(size: 43))
                             .foregroundStyle(Color("Primary"))
@@ -114,6 +112,15 @@ struct HomeScreen: View {
                                         router.push(.login)
                                     }
                                     .accessibilityLabel(Text("Masuk sebagai Manager"))
+                                    .popover(isPresented: .constant(step == 0), arrowEdge: .top) {
+                                        appTip(
+                                            title: "Selamat datang di Aplikasi Cangkruk",
+                                            message: "Sebagai Manager, silahkan masuk ke halaman khusus manager disini."
+                                        ) {
+                                            // go to next pop-over
+                                            step += 1
+                                        }
+                                    }
                             }
                         }
                     }
