@@ -60,8 +60,17 @@ struct ManagerView: View {
     @State private var filesToDelete: [TrainingFile] = []
 
     // Variabel tampilan UI
-    @State private var localSopFiles: [TrainingFile] = []
-    @State private var localResepFiles: [TrainingFile] = []
+    private var displayedSopFiles: [TrainingFile] {
+        let pending = filesToAdd.filter { $0.section == TrainingFileSection.sop.rawValue }
+        let saved = sopFiles.filter { file in !filesToDelete.contains { $0.id == file.id } }
+        return pending + saved
+    }
+
+    private var displayedResepFiles: [TrainingFile] {
+        let pending = filesToAdd.filter { $0.section == TrainingFileSection.resep.rawValue }
+        let saved = resepFiles.filter { file in !filesToDelete.contains { $0.id == file.id } }
+        return pending + saved
+    }
 
     // Variabel alert hapus file
     @State private var showDeleteAlert = false
@@ -89,15 +98,25 @@ struct ManagerView: View {
             filesToDelete.removeAll()
             
             // call the model to generate prompt
+            try modelContext.save()
+
             let materials = try learningMaterialVM.extractingText(context: modelContext)
             let res = try await learningMaterialVM.startGenerateMaterials(materials: materials)
+
+            guard let res, !res.isEmpty else {
+                isLoading = false
+                learningMaterialVM.errorMessage = "Materi gagal dibuat, coba lagi."
+                learningMaterialVM.isError = true
+                return
+            }
             try learningMaterialVM.saveMaterials(context: modelContext, materials: res)
-            
+
             isLoading = false
             dismiss()
         } catch {
             isLoading = false
-            print("saveAndDismiss Error: \(error)")
+            learningMaterialVM.errorMessage = "Gagal menyimpan: \(error.localizedDescription)"
+            learningMaterialVM.isError = true
         }
     }
     
@@ -166,7 +185,7 @@ struct ManagerView: View {
                         
                         ScrollView {
                             VStack(spacing: 10) {
-                                ForEach(localSopFiles) { file in
+                                ForEach(displayedSopFiles) { file in
                                     fileCard(file: file)
                                 }
                             }
@@ -205,7 +224,7 @@ struct ManagerView: View {
                         
                         ScrollView {
                             VStack(spacing: 10) {
-                                ForEach(localResepFiles) { file in
+                                ForEach(displayedResepFiles) { file in
                                     fileCard(file: file)
                                 }
                             }
@@ -233,10 +252,11 @@ struct ManagerView: View {
                         isLoading = true
                         Task {
                             if filesToAdd.isEmpty && filesToDelete.isEmpty {
-                                dismiss ()
-                                return
-                            }
-                            if localSopFiles.isEmpty && localResepFiles.isEmpty {
+                                                            isLoading = false
+                                                            dismiss()
+                                                            return
+                                                        }
+                            if displayedSopFiles.isEmpty && displayedResepFiles.isEmpty {
                                 await deleteAll()
                             }else{
                                 await saveAndDismiss()
@@ -307,11 +327,7 @@ struct ManagerView: View {
                 AppSnackbar(errorMessage: learningMaterialVM.errorMessage ?? "", type: .error, isPresented: $learningMaterialVM.isError)
             }
         }
-        // Inisialisasi onAppear dari branch kamu
-        .onAppear {
-            localSopFiles = sopFiles
-            localResepFiles = resepFiles
-        }
+        
         .interactiveDismissDisabled(!filesToAdd.isEmpty || !filesToDelete.isEmpty || isExtractingText || isLoading)
     }
     
@@ -390,11 +406,6 @@ struct ManagerView: View {
                 // Memasukkan ke sistem antrean milikmu
                 filesToAdd.append(file)
                 
-                if target == .sop {
-                    localSopFiles.insert(file, at: 0)
-                } else {
-                    localResepFiles.insert(file, at: 0)
-                }
                 
             } catch {
                 isExtractingText = false
@@ -406,14 +417,13 @@ struct ManagerView: View {
         }
     }
     
-    private func delete(_ file: TrainingFile) {
-        filesToDelete.append(file)
-        
-        if file.section == "sop" {
-            localSopFiles.removeAll { $0.id == file.id }
-        } else {
-            localResepFiles.removeAll { $0.id == file.id }
-        }
+    private func delete(_ file:TrainingFile) {
+        if let idx = filesToAdd.firstIndex(where: { $0.id == file.id }) {
+                FileStorageManager.delete(storedFileName: file.storedFileName)
+                filesToAdd.remove(at: idx)
+            } else {
+                filesToDelete.append(file)
+            }
     }
     private func deleteAll() async {
         isLoading = true
