@@ -45,7 +45,7 @@ struct LevelScreen: View {
                         Image(systemName: "chevron.backward.circle.fill")
                             .resizable()
                             .scaledToFit()
-                            .frame(height: 45)
+                            .frame(height: 38)
                             .foregroundStyle(Color("Secondary"))
                             .padding(.bottom, 10)
                     }
@@ -131,7 +131,7 @@ struct LevelScreen: View {
                                 selectedResult = result
                             } label: {
                                 HStack {
-                                    Text("Summary \(levelResults.count - index)")
+                                    Text("Riwayat Latihan \(levelResults.count - index)")
                                         .font(.system(size: 16, weight: .medium))
                                     Spacer()
                                     Text(ManagerView.dateFormatter.string(from: result.date))
