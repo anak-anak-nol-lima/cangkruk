@@ -84,14 +84,16 @@ struct RolePlayScreen: View {
                 message: "AKHIRI SESI PERCAKAPAN INI ?",
                 primaryButtonTitle: "YA",
                 primaryAction: {
-                    guard viewModel.messages.count >= 2 else {
-                        return
-                    }
-                    isLevelScreen = false
-                    showLoading = true
-                    Task {
-                        viewModel.speechToText.stopPlaying()
-                        await viewModel.finishSession()
+                    if !sessionStarted || viewModel.messages.count < 2 {
+                        viewModel.endSession()
+                        isPresented = false
+                    } else {
+                        isLevelScreen = false
+                        showLoading = true
+                        Task {
+                            viewModel.speechToText.stopPlaying()
+                            await viewModel.finishSession()
+                        }
                     }
                 }
             )
@@ -161,14 +163,14 @@ struct RolePlayScreen: View {
 
             Spacer()
 
-            Image(systemName: "xmark.circle.fill")
+            Image(systemName: "checkmark.circle.fill")
                 .resizable()
                 .scaledToFit()
                 .frame(height: 50)
                 .foregroundStyle(Color("Secondary"))
                 .padding(.bottom, 10)
                 .onTapGesture { showQuitAlert = true }
-                .popover(isPresented: .constant(stepPopOver == 3)) {
+                .popover(isPresented: .constant(stepPopOver == 3), arrowEdge: .top) {
                     appTip(
                         title: "Akhiri percakapan untuk penilaian",
                         message: "Anda bisa mengakhiri percakapan jika dirasa sudah cukup"
@@ -268,8 +270,8 @@ struct RolePlayScreen: View {
                 }
                 .popover(isPresented: .constant(stepPopOver == 1)) {
                     appTip(
-                        title: "Tahan tombol merah untuk bicara",
-                        message: "Untuk memulai percakapan bisa tekan dan tahan tombol berikut"
+                        title: "Tekan tombol merah untuk bicara",
+                        message: "Untuk memulai percakapan bisa tekan tombol berikut"
                     ) {
                         stepPopOver += 1
                     }
