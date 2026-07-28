@@ -123,14 +123,14 @@ struct ResultScreen: View {
                             .foregroundStyle(Color("Secondary"))
                     }
                 }
-                .padding()
             }
+            .padding(20)
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
             .background(Color("lightBackground"))
             .clipShape(RoundedRectangle(cornerRadius: 12))
-            .padding(.vertical, 24)
+            .padding(.top, 24)
+            .padding(.bottom, 4)
             .screenPadding()
-            .offset(y: -20)
             
             
         }
