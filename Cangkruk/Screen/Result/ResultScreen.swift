@@ -84,15 +84,14 @@ struct ResultScreen: View {
                     )
                 }
             }
-            // Jarak dari atas layar buat header (exit, judul, share) biar gak mepet.
             .padding(.horizontal, 20)
             .padding(.top, 30)
 
-            Text(String(format: "%02d:%02d",
-                        duration / 60,
-                        duration % 60))
-            .font(.shakyComicBold(size: 12))
-            .foregroundStyle(Color("Primary"))
+            Text(verbatim: "Durasi latihan \n \(String(format: "%02d:%02d", duration / 60, duration % 60))")
+            .font(.shakyComicBold(size: 22))
+            .foregroundStyle(Color("Secondary"))
+            .multilineTextAlignment(.center)
+            .frame(maxWidth: .infinity, alignment: .center)
             .padding(.horizontal, 20)
             .padding(.top, 8)
 
@@ -148,11 +147,3 @@ struct SharePhoto: Transferable {
 }
 
 
-
-//#Preview {
-//    ResultScreen(
-//        summary: "Kamu sudah menunjukkan keramahan yang baik saat menyapa.",
-//        feedback: "Tadi kamu langsung bilang \"oke\" tanpa mengulang pesanan. Coba ulangi: \"Jadi, satu Latte dan satu Americano, ya?\""
-//    )
-//    .environment(RouterViewModel())
-//}
