@@ -10,6 +10,7 @@ import SwiftData
 
 struct LoadingScreen: View {
     var action: () -> Void
+    @State var countDots: Int = 0
     
     var body: some View{
         ZStack{
@@ -19,8 +20,22 @@ struct LoadingScreen: View {
                 AppLottie(animation: "CangkrukMeditate", placeholder: "CangkrukMeditate", placeholderHeight: 210)
                     .frame(height: 250)
                 
-                Text("Ntar yak...").font(.shakyComicBold(size: 40, relativeTo: .title))
-                    .foregroundStyle(Color("Primary"))
+                HStack {
+                    Text("Ntar yak")
+                        .font(.shakyComicBold(size: 40, relativeTo: .title))
+                        .foregroundStyle(Color("Primary"))
+                    Text(String(repeating: ". ", count: countDots))
+                        .font(.shakyComicBold(size: 40, relativeTo: .title))
+                        .foregroundStyle(Color("Primary"))
+                        .task {
+                            while true {
+                                // when the page loaded
+                                // we add the dots counter
+                                try? await Task.sleep(for: .seconds(0.4))
+                                countDots = (countDots + 1) % 4
+                            }
+                        }
+                }
             }
         }
         .task {
@@ -32,7 +47,7 @@ struct LoadingScreen: View {
 
 #Preview {
     LoadingScreen() {
-        
+
     }
 }
 
