@@ -21,9 +21,14 @@ struct Provider: AppIntentTimelineProvider {
     func timeline(for configuration: ConfigurationAppIntent, in context: Context) async -> Timeline<SimpleEntry> {
         var entries: [SimpleEntry] = []
         
-        let isTrained = false
+        let isTrained = false // delete soon
         
-        let entry = SimpleEntry(date: Date(), configuration: configuration, hasCompletedTraining: isTrained)
+        /// Integrating App Group – uncomment when final deploy app
+//        let sharedDefaults = UserDefaults(suiteName: "group.com.ivone.Cangkruk")
+//        let hasCompletedTraining = sharedDefaults?.bool(forKey: "hasCompletedTrainingToday") ?? false
+//        let entry = SimpleEntry(date: Date(), configuration: configuration, hasCompletedTraining: hasCompletedTraining)
+        
+        let entry = SimpleEntry(date: Date(), configuration: configuration, hasCompletedTraining: isTrained) // delete soon (replace with the code above)
         entries.append(entry)
         
         let startOfToday = Calendar.current.startOfDay(for: Date())
