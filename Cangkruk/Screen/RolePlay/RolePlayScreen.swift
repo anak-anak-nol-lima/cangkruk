@@ -65,7 +65,7 @@ struct RolePlayScreen: View {
                 }
             }
         }
-        .sheet(isPresented: $showHasil) {
+        .fullScreenCover(isPresented: $showHasil) {
             ResultScreen(
                 isLevelScreen: false,
                 summary: viewModel.feedbackSummary ?? "Belum ada penilaian untuk sesi ini.",
