@@ -43,8 +43,7 @@ struct MainScreen: View {
                                     }
                                 }
                             ),
-                           scenario: RolePlayScenario.all.first { $0.difficulty == number }
-                           ?? RolePlayScenario.all[0]
+                            levelNumber: number
                         )
                     }
                 }
