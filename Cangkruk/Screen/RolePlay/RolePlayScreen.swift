@@ -5,6 +5,7 @@
 
 import SwiftUI
 import SwiftData
+import WidgetKit
 
 struct RolePlayScreen: View {
     // MARK: - Binding
@@ -113,6 +114,10 @@ struct RolePlayScreen: View {
                     transcript: viewModel.sessionTranscript ?? "",
                     duration: viewModel.remainingSeconds
                 ))
+
+                let sharedDefaults = UserDefaults(suiteName: "group.com.ivone.Cangkruk")
+                sharedDefaults?.set(Date(), forKey: "lastTrainingCompletedDate")
+                WidgetCenter.shared.reloadAllTimelines()
             }
             if !generating, showLoading {
                 showLoading = false

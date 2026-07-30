@@ -49,6 +49,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		491D20073019F6FE00241332 /* WidgetScreenExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WidgetScreenExtension.entitlements; sourceTree = "<group>"; };
 		B9466B9430108CF40071AD17 /* WidgetScreenExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = WidgetScreenExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		B9466B9530108CF40071AD17 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		B9466B9730108CF40071AD17 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
@@ -173,6 +174,7 @@
 		C8EAA57B2FFD04DB0024B4CC = {
 			isa = PBXGroup;
 			children = (
+				491D20073019F6FE00241332 /* WidgetScreenExtension.entitlements */,
 				B9466BB530108E9B0071AD17 /* Font */,
 				C8EAA5862FFD04DB0024B4CC /* Cangkruk */,
 				C8B53CBF300342DB00BEA38F /* CangkrukUnitTests */,
@@ -388,6 +390,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = WidgetScreenExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 95C9G5AYFC;
@@ -418,6 +421,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = WidgetScreenExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 95C9G5AYFC;

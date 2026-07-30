@@ -21,14 +21,13 @@ struct Provider: AppIntentTimelineProvider {
     func timeline(for configuration: ConfigurationAppIntent, in context: Context) async -> Timeline<SimpleEntry> {
         var entries: [SimpleEntry] = []
         
-        let isTrained = false // delete soon
         
         /// Integrating App Group – uncomment when final deploy app
-//        let sharedDefaults = UserDefaults(suiteName: "group.com.ivone.Cangkruk")
-//        let hasCompletedTraining = sharedDefaults?.bool(forKey: "hasCompletedTrainingToday") ?? false
-//        let entry = SimpleEntry(date: Date(), configuration: configuration, hasCompletedTraining: hasCompletedTraining)
+        let sharedDefaults = UserDefaults(suiteName: "group.com.ivone.Cangkruk")
+        let lastCompletedDate = sharedDefaults?.object(forKey: "lastTrainingCompletedDate") as? Date
+        let hasCompletedTraining = lastCompletedDate.map { Calendar.current.isDateInToday($0) } ?? false
+        let entry = SimpleEntry(date: Date(), configuration: configuration, hasCompletedTraining: hasCompletedTraining)
         
-        let entry = SimpleEntry(date: Date(), configuration: configuration, hasCompletedTraining: isTrained) // delete soon (replace with the code above)
         entries.append(entry)
         
         let startOfToday = Calendar.current.startOfDay(for: Date())
@@ -49,56 +48,45 @@ struct SimpleEntry: TimelineEntry {
 struct WidgetScreenEntryView : View {
     var entry: Provider.Entry
 
+    /// Mode render yang dipilih sistem: `.fullColor` untuk home screen biasa,
+    /// `.accented` saat home screen di-tint, `.vibrant` untuk lock screen/StandBy.
+    @Environment(\.widgetRenderingMode) private var renderingMode
+
+    /// Artwork lengkap (gradient latar + teks + maskot), sudah di-flatten.
+    private var fullColorArtwork: String {
+        entry.hasCompletedTraining ? "udahLatihanWidget" : "belumLatihanWidget"
+    }
+
+    /// Artwork tanpa latar — hanya teks + maskot dengan alpha.
+    /// Di mode tinted/clear sistem membentuk siluet dari alpha channel, jadi
+    /// gambar yang latarnya solid akan jadi kotak polos tanpa detail.
+    private var maskedArtwork: String {
+        entry.hasCompletedTraining ? "udahLatihanFG" : "belumLatihanFG"
+    }
+
     var body: some View {
-        ZStack {
-            if entry.hasCompletedTraining {
-                VStack {
-                    HStack(alignment: .top){
-                        Text("MANTAP...\nNANTI\nLATIHAN LAGI\nYAK !")
-                            .font(.shakyComicBold(size: 20))
-                            .foregroundStyle(Color("Orange"))
-                            .accessibilityLabel(Text("Mantap, nanti latihan lagi, yak!"))
-                        Spacer()
-                    }
-                    Spacer()
-                }
-                VStack {
-                    Spacer()
-                    
-                    Image("LuwakTiduran")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 100)
-                        .offset(y: 36)
-                        .accessibilityHidden(true)
-                }
+        Group {
+            if renderingMode == .fullColor {
+                Image(fullColorArtwork)
+                    .resizable()
+                    .scaledToFill()
             } else {
-                VStack {
-                    HStack(alignment: .top){
-                        Text("AYO\nWAKTUNYA\nLATIHAN")
-                            .font(.shakyComicBold(size: 20))
-                            .foregroundStyle(Color("LightBeige"))
-                            .accessibilityLabel(Text("Ayo, waktunya latihan"))
-                        Spacer()
-                    }
-                    Spacer()
-                }
-                
-                VStack {
-                    Spacer()
-                    Image("LuwakDuduk")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 110)
-                        .offset(x: -25, y: 30)
-                        .scaleEffect(x: -1, y: 1)
-                        .accessibilityHidden(true)
-                }
+                Image(maskedArtwork)
+                    .resizable()
+                    .scaledToFit()
+                    .padding(8)
+                    // ikut warna tint yang dipilih user, bukan diredupkan
+                    .widgetAccentable()
             }
         }
-        .containerBackground(entry.hasCompletedTraining ? Color("Beige") : Color("Orange"), for: .widget)
+        .containerBackground(for: .widget) {
+            // di mode tinted/clear latar disediakan sistem, jadi dikosongkan
+            Color.clear
+        }
+        .accessibilityElement()
+        .accessibilityLabel(entry.hasCompletedTraining
+                            ? Text("Mantap, nanti latihan lagi, yak!")
+                            : Text("Ayo, waktunya latihan"))
     }
 }
 
@@ -112,6 +100,7 @@ struct WidgetScreen: Widget {
         .configurationDisplayName("Status Latihan")
         .description("Pantau apakah kamu sudah menyelesaikan modul latihan hari ini.")
         .supportedFamilies([.systemSmall])
+        .contentMarginsDisabled()
     }
 }
 
