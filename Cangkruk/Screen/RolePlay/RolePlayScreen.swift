@@ -28,11 +28,15 @@ struct RolePlayScreen: View {
 
     init(
         isPresented: Binding<Bool>,
-        scenario: RolePlayScenario = RolePlayScenario.all.first!
+        isLevelScreen: Binding<Bool> = .constant(false),
+        levelNumber: Int
     ) {
         self._isPresented = isPresented
-        self._viewModel = State(initialValue: RolePlayViewModel(scenario: scenario))
-        self._isLevelScreen = .constant(false)
+        self._isLevelScreen = isLevelScreen
+        
+        let matchedScenario = RolePlayScenario.all.first(where: { $0.difficulty == levelNumber }) ?? RolePlayScenario.all[0]
+        
+        self._viewModel = State(initialValue: RolePlayViewModel(scenario: matchedScenario))
     }
 
 
@@ -309,5 +313,5 @@ struct RolePlayScreen: View {
 }
 
 #Preview {
-    RolePlayScreen(isPresented: .constant(true))
+    RolePlayScreen(isPresented: .constant(true), levelNumber: 1)
 }

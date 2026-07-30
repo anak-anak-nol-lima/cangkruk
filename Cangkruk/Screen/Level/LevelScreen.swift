@@ -192,7 +192,6 @@ struct LevelScreen: View {
         }
     }
 }
-@Observable class isinLevelScreen { var isinLevelScreen:Bool = true }
 
 #Preview {
     LevelScreen(levelNumber: 1)
