@@ -1,0 +1,62 @@
+{
+  "fill" : {
+    "linear-gradient" : [
+      "display-p3:0.83496,0.35547,0.20715,1.00000",
+      "display-p3:0.62910,0.25801,0.14663,1.00000"
+    ],
+    "orientation" : {
+      "start" : {
+        "x" : 0.5,
+        "y" : 0
+      },
+      "stop" : {
+        "x" : 0.5,
+        "y" : 0.7
+      }
+    }
+  },
+  "groups" : [
+    {
+      "layers" : [
+        {
+          "glass" : false,
+          "image-name" : "Artboard 14.png",
+          "name" : "Artboard 14",
+          "position" : {
+            "scale" : 0.41,
+            "translation-in-points" : [
+              -60.50889680282921,
+              -140.60140039674752
+            ]
+          }
+        },
+        {
+          "glass" : false,
+          "image-name" : "Luwak tapa.png",
+          "name" : "Luwak tapa",
+          "position" : {
+            "scale" : 0.23,
+            "translation-in-points" : [
+              214.90010135491866,
+              281.7660537957604
+            ]
+          }
+        }
+      ],
+      "shadow" : {
+        "kind" : "neutral",
+        "opacity" : 0.5
+      },
+      "translucency" : {
+        "enabled" : true,
+        "value" : 0.5
+      }
+    }
+  ],
+  "supported-platforms" : {
+    "circles" : [
+      "watchOS"
+    ],
+    "squares" : "shared"
+  }
+}
