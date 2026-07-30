@@ -52,9 +52,14 @@ struct RolePlayScenario: Identifiable {
             difficulty: 2
         ),
         RolePlayScenario(
+            name: "Pelanggan Perfeksionis",
+            persona: "Pelanggan yang sangat teliti dan mudah kecewa. Kamu punya banyak permintaan khusus (seperti takaran tak biasa atau alergi) dan langsung komplain jika rasa minuman tidak sesuai harapan. Kamu baru bisa puas kalau barista menunjukkan empati, mau mendengarkan keluhanmu, dan menawarkan solusi yang tepat.",
+            difficulty: 3
+        ),
+        RolePlayScenario(
             name: "Si Karen",
             persona: "Pelanggan yang merasa selalu benar. Kamu minta diskon yang tidak ada, membandingkan dengan kafe lain, dan mengancam kasih bintang 1. Kamu hanya tenang kalau barista tetap sopan, tegas, dan menawarkan solusi.",
-            difficulty: 3
+            difficulty: 4
         )
     ]
 }
